@@ -11,6 +11,10 @@ namespace _02.Scripts.Level.Note
         public HitType hitType;
         public AudioClip hitSound;
         public SpriteRenderer spriteRenderer;
+        public AnimationCurve moveCurve = new(
+            new Keyframe(0f, 0f), 
+            new Keyframe(1f, 0f)
+            );
 
         public float scrollSpeedRate = 1f;
         public bool fitInShootPoint = true;
@@ -28,12 +32,12 @@ namespace _02.Scripts.Level.Note
             {
                 case HitType.Attack:
                 {
-                    _hitPointRenderer = Instantiate(LevelManager.instance.AttackPoint, transform).GetComponent<SpriteRenderer>();
+                    _hitPointRenderer = Instantiate(LevelManager.instance.attackPoint, transform).GetComponent<SpriteRenderer>();
                     break;
                 }
                 case HitType.Defend:
                 {
-                    _hitPointRenderer = Instantiate(LevelManager.instance.DefendPoint, transform).GetComponent<SpriteRenderer>();
+                    _hitPointRenderer = Instantiate(LevelManager.instance.defendPoint, transform).GetComponent<SpriteRenderer>();
                     break;
                 }
                 default:
@@ -117,6 +121,8 @@ namespace _02.Scripts.Level.Note
                     throw new ArgumentOutOfRangeException();
             }
             
+            ParticleManager.instance.PlayParticle(ParticleManager.instance.hitParticle, 
+                LevelManager.instance.player.hitPoint.position);
             LevelManager.instance.currentLevelPlayerData.AddJudgement(
                 LevelManager.instance.currentPlayTime,
                 LevelManager.instance.BeatToPlayTime(note.appearBeat)

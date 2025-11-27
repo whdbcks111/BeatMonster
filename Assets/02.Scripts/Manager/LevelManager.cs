@@ -20,23 +20,23 @@ namespace _02.Scripts.Manager
 
         public double dspTime => _interpolatedDspTime;
         public bool isPlaying { get; private set; } = false;
-        public float offset => 0.24f;
         public float currentPlayTime => (float)(_accDspTime + (
             isPlaying ? 
                 dspTime - _startDspTime : 
                 0.0
             ));
 
-        public float currentBeat => currentPlayTime * currentLevel.defaultBpm / 60f;
+        public float currentBeat => currentLevel == null ? 0f : currentPlayTime * currentLevel.defaultBpm / 60f;
 
+        public float offset = 0.24f;
         public Player player;
         public LevelPlayerData currentLevelPlayerData;
         [NonSerialized] public Level currentLevel;
         [NonSerialized] public Boss currentBoss;
         [NonSerialized] public bool isLoaded = false;
 
-        public GameObject AttackPoint;
-        public GameObject DefendPoint;
+        public GameObject attackPoint;
+        public GameObject defendPoint;
 
         private double _startDspTime, _pauseDspTime, _accDspTime = 0.0;
         private readonly List<NoteObject> _noteObjects = new();

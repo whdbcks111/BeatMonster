@@ -35,6 +35,11 @@ namespace _02.Scripts.Level
             {
                 noteMap[noteObject.noteType] = noteObject;
             }
+
+            transform.position = new Vector3(
+                Camera.main.ViewportToWorldPoint(new Vector3(1, 0)).x,
+                0
+                );
         }
 
         public void Hit()

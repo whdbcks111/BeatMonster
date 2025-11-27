@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using _02.Scripts.Level.Note;
 using _02.Scripts.Manager;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 namespace _02.Scripts.Level
 {
@@ -12,7 +10,8 @@ namespace _02.Scripts.Level
     {
         private readonly Queue<NoteObject> _triggeredNotes = new();
 
-        private SpriteRenderer _renderer;
+        public HeartBeat heartbeat;
+        public SpriteRenderer spriteRenderer;
         private Animator _animator;
         
         private static readonly int AnimParry = Animator.StringToHash("Attack");
@@ -25,8 +24,7 @@ namespace _02.Scripts.Level
 
         private void Awake()
         {
-            _animator = GetComponent<Animator>();
-            _renderer = GetComponent<SpriteRenderer>();
+            _animator = spriteRenderer.gameObject.GetComponent<Animator>();
         }
 
         private void Update()
@@ -69,6 +67,7 @@ namespace _02.Scripts.Level
         public void Parry()
         {
             _animator.SetTrigger(AnimParry);
+            LevelManager.instance.player.heartbeat.NoticeHit();
             if (_triggeredNotes.Count > 0 && _triggeredNotes.Peek().hitType == HitType.Attack)
             {
                 var noteObject = _triggeredNotes.Dequeue();
@@ -79,6 +78,7 @@ namespace _02.Scripts.Level
         public void Defend()
         {
             _animator.SetTrigger(AnimDefend);
+            LevelManager.instance.player.heartbeat.NoticeHit();
             if (_triggeredNotes.Count > 0 && _triggeredNotes.Peek().hitType == HitType.Defend)
             {
                 var noteObject = _triggeredNotes.Dequeue();

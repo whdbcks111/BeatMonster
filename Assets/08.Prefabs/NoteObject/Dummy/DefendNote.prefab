@@ -50,6 +50,30 @@ MonoBehaviour:
   hitType: 1
   hitSound: {fileID: 8300000, guid: 5251c8c8f177f9242a6631c41c922ef0, type: 3}
   spriteRenderer: {fileID: 8981300342096893567}
+  movingCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   scrollSpeedRate: 1
   fitInShootPoint: 1
   wasHit: 0
