@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace _02.Scripts.Level.Note
 {
-    [RequireComponent(typeof(Collider2D))]
     public class NoteObject : MonoBehaviour
     {
         public string noteType;
@@ -15,6 +14,8 @@ namespace _02.Scripts.Level.Note
             new Keyframe(0f, 0f), 
             new Keyframe(1f, 0f)
             );
+
+        public float moveCurveHeight = 1f;
 
         public float scrollSpeedRate = 1f;
         public bool fitInShootPoint = true;
@@ -55,7 +56,7 @@ namespace _02.Scripts.Level.Note
         protected virtual void UpdatePosition()
         {
             var beatPos = note.appearBeat - LevelManager.instance.currentBeat;
-            var playerDist = transform.position.x - LevelManager.instance.player.hitPoint.position.x;
+            var playerToNoteDist = transform.position.x - LevelManager.instance.player.hitPoint.position.x;
             var totalDist = LevelManager.instance.currentBoss.shootPoint.transform.position.x 
                             - LevelManager.instance.player.hitPoint.transform.position.x;
             var shootPointY = LevelManager.instance.currentBoss.shootPoint.position.y;
@@ -64,8 +65,9 @@ namespace _02.Scripts.Level.Note
             var x = LevelManager.instance.player.hitPoint.transform.position.x 
                 + beatPos * LevelManager.instance.currentLevel.baseScrollSpeed * scrollSpeedRate;
             var y = fitInShootPoint ? 
-                Mathf.Lerp(playerHitPointY, shootPointY + Mathf.Sin(beatPos * Mathf.PI * 0.8f) * 1.5f, playerDist / totalDist)
+                Mathf.Lerp(playerHitPointY, shootPointY, playerToNoteDist / totalDist)
                 : 0f;
+            y += moveCurve.Evaluate(playerToNoteDist / totalDist) * moveCurveHeight;
             
             transform.position = new Vector3(x, y);
         }
@@ -125,7 +127,8 @@ namespace _02.Scripts.Level.Note
                 LevelManager.instance.player.hitPoint.position);
             LevelManager.instance.currentLevelPlayerData.AddJudgement(
                 LevelManager.instance.currentPlayTime,
-                LevelManager.instance.BeatToPlayTime(note.appearBeat)
+                LevelManager.instance.BeatToPlayTime(note.appearBeat),
+                LevelManager.instance.judgementTime
             );
         }
 

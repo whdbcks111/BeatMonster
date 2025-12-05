@@ -1,0 +1,468 @@
+fileFormatVersion: 2
+guid: 1a6641ad40e8343439d712658dc4ba75
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7960277356653620332
+    second: PlayerDefend_0003_0
+  - first:
+      213: 7963438248019001947
+    second: PlayerDefend_0003_1
+  - first:
+      213: -8706073251971963023
+    second: PlayerDefend_0003_2
+  - first:
+      213: 792917833605982075
+    second: PlayerDefend_0003_3
+  - first:
+      213: -244198003670706511
+    second: PlayerDefend_0003_4
+  - first:
+      213: -5217181219183528091
+    second: PlayerDefend_0003_5
+  - first:
+      213: 1041094745451450539
+    second: PlayerDefend_0003_6
+  - first:
+      213: -4659595502206537463
+    second: PlayerDefend_0003_7
+  - first:
+      213: 5096523133521394749
+    second: PlayerDefend_0003_8
+  - first:
+      213: 2831462692262835309
+    second: PlayerDefend_0003_9
+  - first:
+      213: -1798826146911369043
+    second: PlayerDefend_0003_10
+  - first:
+      213: 3345114903673991139
+    second: PlayerDefend_0003_11
+  - first:
+      213: 3951518466499714459
+    second: PlayerDefend_0003_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 6
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: PlayerDefend_0003_0
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 432
+        width: 22
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49353136be9678190800000000000000
+      internalID: -7960277356653620332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerDefend_0003_1
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 389
+        width: 33
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b528eebf4e0d38e60800000000000000
+      internalID: 7963438248019001947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerDefend_0003_2
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 0
+        width: 329
+        height: 386
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1776eab0180dd2780800000000000000
+      internalID: -8706073251971963023
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerDefend_0003_3
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 231
+        width: 89
+        height: 141
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7728209192010b00800000000000000
+      internalID: 792917833605982075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerDefend_0003_4
+      rect:
+        serializedVersion: 2
+        x: 458
+        y: 268
+        width: 80
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b61950a53f6c9cf0800000000000000
+      internalID: -244198003670706511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerDefend_0003_5
+      rect:
+        serializedVersion: 2
+        x: 417
+        y: 183
+        width: 23
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 567f9bda259d897b0800000000000000
+      internalID: -5217181219183528091
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerDefend_0003_6
+      rect:
+        serializedVersion: 2
+        x: 599
+        y: 197
+        width: 27
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba0d820b726b27e00800000000000000
+      internalID: 1041094745451450539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerDefend_0003_7
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 61
+        width: 44
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 901b8fd049ac55fb0800000000000000
+      internalID: -4659595502206537463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerDefend_0003_8
+      rect:
+        serializedVersion: 2
+        x: 555
+        y: 151
+        width: 27
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3c7a1399cc7ab640800000000000000
+      internalID: 5096523133521394749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerDefend_0003_9
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 5
+        width: 213
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d64f81f11506b4720800000000000000
+      internalID: 2831462692262835309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerDefend_0003_10
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 84
+        width: 52
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da8c9a466294907e0800000000000000
+      internalID: -1798826146911369043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerDefend_0003_11
+      rect:
+        serializedVersion: 2
+        x: 578
+        y: 89
+        width: 30
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ef6a5e184c3c6e20800000000000000
+      internalID: 3345114903673991139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerDefend_0003_12
+      rect:
+        serializedVersion: 2
+        x: 570
+        y: 19
+        width: 29
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9d9c17fb1d96d630800000000000000
+      internalID: 3951518466499714459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      PlayerDefend_0003_0: -7960277356653620332
+      PlayerDefend_0003_1: 7963438248019001947
+      PlayerDefend_0003_10: -1798826146911369043
+      PlayerDefend_0003_11: 3345114903673991139
+      PlayerDefend_0003_12: 3951518466499714459
+      PlayerDefend_0003_2: -8706073251971963023
+      PlayerDefend_0003_3: 792917833605982075
+      PlayerDefend_0003_4: -244198003670706511
+      PlayerDefend_0003_5: -5217181219183528091
+      PlayerDefend_0003_6: 1041094745451450539
+      PlayerDefend_0003_7: -4659595502206537463
+      PlayerDefend_0003_8: 5096523133521394749
+      PlayerDefend_0003_9: 2831462692262835309
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

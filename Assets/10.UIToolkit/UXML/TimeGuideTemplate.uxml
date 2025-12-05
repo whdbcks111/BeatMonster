@@ -1,0 +1,6 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/10.UIToolkit/USS/Editor.uss?fileID=7433441132597879392&amp;guid=652f52cd5fb47704b9a3b249d1e12c31&amp;type=3#Editor" />
+    <ui:VisualElement name="TimeGuide" picking-mode="Ignore" class="time-guide" style="background-color: rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.5);">
+        <ui:Label text="00:00" name="TimeLabel" picking-mode="Ignore" style="position: absolute; font-size: 16px;" />
+    </ui:VisualElement>
+</ui:UXML>

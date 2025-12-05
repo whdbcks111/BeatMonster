@@ -14,7 +14,7 @@ namespace _02.Scripts.Level
         public SpriteRenderer spriteRenderer;
         private Animator _animator;
         
-        private static readonly int AnimParry = Animator.StringToHash("Attack");
+        private static readonly int AnimAttack = Animator.StringToHash("Attack");
         private static readonly int AnimDefend = Animator.StringToHash("Defend");
 
         public bool autoPlay;
@@ -29,16 +29,20 @@ namespace _02.Scripts.Level
 
         private void Update()
         {
-            if (autoPlay && _triggeredNotes.Count > 0 &&
-                _triggeredNotes.Peek().note.appearBeat <= LevelManager.instance.currentBeat)
+            if (!LevelManager.instance || !LevelManager.instance.isLoaded) return;
+            
+            var nextNote = LevelManager.instance.GetNextNote();
+            
+            if (autoPlay && nextNote && nextNote.note.appearBeat <= LevelManager.instance.currentBeat)
             {
-                switch (_triggeredNotes.Peek().hitType)
+                print($"Hit! {nextNote.note.appearBeat} {LevelManager.instance.currentBeat}");
+                switch (nextNote.hitType)
                 {
                     case HitType.Defend:
                         Defend();
                         break;
                     case HitType.Attack:
-                        Parry();
+                        Attack();
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -47,7 +51,7 @@ namespace _02.Scripts.Level
             
             if (Input.GetKeyDown(KeyCode.F))
             {
-                Parry();   
+                Attack();   
             }
 
             if (Input.GetKeyDown(KeyCode.J))
@@ -60,46 +64,41 @@ namespace _02.Scripts.Level
                 if(LevelManager.instance.isPlaying)
                     LevelManager.instance.Pause();
                 else 
-                    LevelManager.instance.Resume();
+                    LevelManager.instance.Play();
             }
         }
 
-        public void Parry()
+        public void Attack()
         {
-            _animator.SetTrigger(AnimParry);
+            var nextNote = LevelManager.instance.GetNextNote();
+            
+            _animator.SetTrigger(AnimAttack);
             LevelManager.instance.player.heartbeat.NoticeHit();
-            if (_triggeredNotes.Count > 0 && _triggeredNotes.Peek().hitType == HitType.Attack)
+
+            if (nextNote)
             {
-                var noteObject = _triggeredNotes.Dequeue();
-                noteObject.Hit();
+                var diff = LevelManager.instance.currentBeat - nextNote.note.appearBeat;
+                if (diff is > -1f and < 1f)
+                {
+                    nextNote.Hit();
+                }
             }
         }
 
         public void Defend()
         {
+            var nextNote = LevelManager.instance.GetNextNote();
+            
             _animator.SetTrigger(AnimDefend);
             LevelManager.instance.player.heartbeat.NoticeHit();
-            if (_triggeredNotes.Count > 0 && _triggeredNotes.Peek().hitType == HitType.Defend)
-            {
-                var noteObject = _triggeredNotes.Dequeue();
-                noteObject.Hit();
-            }
-        }
 
-        private void OnTriggerStay2D(Collider2D other)
-        {
-            if (!other.TryGetComponent(out NoteObject noteObject) || 
-                noteObject.wasHit || _triggeredNotes.Contains(noteObject)) return;
-            
-            _triggeredNotes.Enqueue(noteObject);
-        }
-
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            if (other.TryGetComponent(out NoteObject noteObject) && _triggeredNotes.Contains(noteObject))
+            if (nextNote)
             {
-                _triggeredNotes.Dequeue();
-                
+                var diff = LevelManager.instance.currentBeat - nextNote.note.appearBeat;
+                if (diff is > -1f and < 1f)
+                {
+                    nextNote.Hit();
+                }
             }
         }
     }

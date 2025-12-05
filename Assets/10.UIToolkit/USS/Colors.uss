@@ -1,0 +1,8 @@
+:root {
+    --dark-main: rgb(21, 21, 22);
+}
+
+.main-bg {
+    color: rgb(255, 255, 255);
+    background-color: var(--dark-main);
+}
