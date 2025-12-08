@@ -37,8 +37,12 @@ namespace _02.Scripts.Manager
         [NonSerialized] public bool isLoaded = false;
 
         [Header("Gameplay Settings")] 
-        public JudgementTime judgementTime;
-        public bool playAtAwake = false;
+        public JudgementTimeSettings judgementTimeSettings;
+        public bool playAtLoaded = false;
+
+        [Header("Camera Settings")] 
+        public Vector2 playingViewportStart = Vector2.zero;
+        public Vector2 playingViewportEnd = Vector2.one; 
         
         [Header("Note Hit-Point Prefabs")]
         public GameObject attackPoint;
@@ -60,6 +64,9 @@ namespace _02.Scripts.Manager
         
         private static readonly int CheckpointVfxRadius = Shader.PropertyToID("_Radius");
         private static readonly int CheckpointVfxCenter = Shader.PropertyToID("_Center");
+
+        [Multiline]
+        public string debugText;
 
         private void Awake()
         {
@@ -88,13 +95,26 @@ namespace _02.Scripts.Manager
 
         private void Start()
         {
-            LoadLevel().Forget();
+            LoadLevel(Path.Combine(Application.dataPath, "Test.json")).Forget();
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.magenta;
+            if (_camera == null) _camera = Camera.main;
+
+            if (_camera != null)
+            {
+                Gizmos.DrawWireCube(_camera.ViewportToWorldPoint(playingViewportStart * 0.5f + playingViewportEnd * 0.5f), 
+                    _camera.ViewportToWorldPoint(playingViewportEnd) - _camera.ViewportToWorldPoint(playingViewportStart));
+            }
         }
 
         private void Update()
         {
             InterpolateDspTime();
             UpdateCheckpointVfx();
+            AdjustBossPosition();
             
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
@@ -129,11 +149,20 @@ namespace _02.Scripts.Manager
             }
         }
 
-        private async UniTask LoadLevel()
+        public async UniTask SaveLevel(string path)
         {
-            currentLevel = JsonUtility.FromJson<Level>(await File.ReadAllTextAsync(
-                Path.Combine(Application.dataPath, "Test.json")
-                ));
+            await File.WriteAllTextAsync(path, JsonUtility.ToJson(currentLevel, true));
+        }
+
+        public async UniTask LoadLevel(string path)
+        {
+            await LoadLevel(JsonUtility.FromJson<Level>(await File.ReadAllTextAsync(path)));
+            Debug.Log($"Load level from ${path} / music id: ${currentLevel.musicId}");
+        }
+
+        public async UniTask LoadLevel(Level level)
+        {
+            currentLevel = level;
             
             var bossObj = await Addressables.InstantiateAsync($"Boss/{currentLevel.bossId}");
             if (!bossObj || !bossObj.TryGetComponent(out currentBoss))
@@ -148,17 +177,12 @@ namespace _02.Scripts.Manager
             }
 
             InitGame();
-            
-            if (playAtAwake)
-            {
-                _startDspTime = dspTime + offset + currentLevel.startOffset;
-                _pauseDspTime = _startDspTime - 1;
-                
-                _audioSource.PlayScheduled(_startDspTime - offset - currentLevel.startOffset);
-                
-                isPlaying = true;
-            }
             isLoaded = true;
+            
+            if (playAtLoaded)
+            {
+                Play();
+            }
         }
 
         private void InitGame()
@@ -175,20 +199,44 @@ namespace _02.Scripts.Manager
             
             foreach (var note in currentLevel.pattern)
             {
-                var prefab = currentBoss.noteMap[note.noteType];
-                var noteObj = Instantiate(prefab, transform, true);
+                var newNoteObj = AddNoteObject(note);
                 
-                noteObjects.Add(noteObj);
-                noteObj.note = note;
-                
-                if (noteObj.hitType == HitType.Attack) parryCount++;
+                if (newNoteObj.hitType == HitType.Attack) parryCount++;
             }
             
             currentBoss.InitHp(parryCount);
 
+            AdjustBossPosition();
+
             _accDspTime = -2.0;
             _pauseDspTime = 0;
             _startDspTime = 0;
+        }
+
+        private NoteObject AddNoteObject(Note note)
+        {
+            var prefab = currentBoss.noteMap[note.noteType];
+            var noteObj = Instantiate(prefab, transform, true);
+                
+            noteObjects.Add(noteObj);
+            noteObj.note = note;
+
+            return noteObj;
+        }
+
+        public NoteObject AddPattern(Note newNote)
+        {
+            currentLevel.pattern.Add(newNote);
+            return AddNoteObject(newNote);
+        }
+
+        private void AdjustBossPosition()
+        {
+            if(!currentBoss) return;
+            currentBoss.transform.position = new Vector3(
+                _camera.ViewportToWorldPoint(new Vector3(playingViewportEnd.x, 0)).x,
+                0
+            );
         }
 
         public void Pause()
@@ -212,12 +260,12 @@ namespace _02.Scripts.Manager
         {
             var isCorrectTime = 0 <= time && time < _audioSource.clip.length;
             
-            _startDspTime = dspTime + offset + currentLevel.startOffset;
+            _startDspTime = dspTime;
             _accDspTime = time;
             
             _audioSource.Stop();
 
-            if(isCorrectTime) _audioSource.time = (float)time;
+            if(isCorrectTime) _audioSource.time = (float)time + offset + currentLevel.startOffset;
             
             if (isPlaying && time < _audioSource.clip.length)
             {
@@ -246,10 +294,12 @@ namespace _02.Scripts.Manager
 
         public void Play()
         {
+            if(isPlaying) return;
+            
             _startDspTime = dspTime;
             if (_accDspTime < 0f)
             {
-                _audioSource.PlayScheduled(dspTime - _accDspTime - offset - currentLevel.startOffset);
+                _audioSource.PlayScheduled(_startDspTime - _accDspTime - offset - currentLevel.startOffset);
             }
             else if(_audioSource.isPlaying)
             {
@@ -289,29 +339,37 @@ namespace _02.Scripts.Manager
             return score / maxScore;
         }
 
-        public void AddJudgement(float inputTime, float originTime, JudgementTime judgementTime)
+        public JudgementType AddJudgement(float inputTime, float originTime, JudgementTimeSettings judgementTimeSettings)
         {
             var pos = Vector3.up * 1.4f;
             var offset = inputTime - originTime;
             var absOffset = Mathf.Abs(offset);
 
-            if (absOffset <= judgementTime.perfect)
+            if (absOffset <= judgementTimeSettings.perfect)
             {
                 perfectCount++;
+                return JudgementType.Perfect;
             }
-            else if (absOffset <= judgementTime.good)
+            
+            if (absOffset <= judgementTimeSettings.good)
             {
                 goodCount++;
+                return JudgementType.Good;
             }
-            else if (absOffset <= judgementTime.bad)
+            
+            if (absOffset <= judgementTimeSettings.bad)
             {
-                if (offset < 0f) earlyCount++;
-                else lateCount++;
+                if (offset < 0f)
+                {
+                    earlyCount++;
+                    return JudgementType.Early;
+                }
+                lateCount++;
+                return JudgementType.Late;
             }
-            else
-            {
-                missCount++;
-            }
+            
+            missCount++;
+            return JudgementType.Miss;
         } 
     }
 
@@ -333,14 +391,19 @@ namespace _02.Scripts.Manager
     {
         public float appearBeat;
         public string noteType;
-        public bool? isCheckpoint;
     }
 
-    public struct JudgementTime
+    [Serializable]
+    public struct JudgementTimeSettings
     {
         public float miss;
         public float perfect;
         public float good;
         public float bad;
+    }
+
+    public enum JudgementType
+    {
+        Miss, Perfect, Good, Late, Early
     }
 }

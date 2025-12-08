@@ -8,8 +8,6 @@ namespace _02.Scripts.Level
 {
     public class Player : MonoBehaviour
     {
-        private readonly Queue<NoteObject> _triggeredNotes = new();
-
         public HeartBeat heartbeat;
         public SpriteRenderer spriteRenderer;
         private Animator _animator;
@@ -75,13 +73,12 @@ namespace _02.Scripts.Level
             _animator.SetTrigger(AnimAttack);
             LevelManager.instance.player.heartbeat.NoticeHit();
 
-            if (nextNote)
+            if (!nextNote || nextNote.hitType != HitType.Attack) return;
+            
+            var diff = LevelManager.instance.currentBeat - nextNote.note.appearBeat;
+            if (diff is > -1f and < 1f)
             {
-                var diff = LevelManager.instance.currentBeat - nextNote.note.appearBeat;
-                if (diff is > -1f and < 1f)
-                {
-                    nextNote.Hit();
-                }
+                nextNote.Hit();
             }
         }
 
@@ -92,13 +89,12 @@ namespace _02.Scripts.Level
             _animator.SetTrigger(AnimDefend);
             LevelManager.instance.player.heartbeat.NoticeHit();
 
-            if (nextNote)
+            if (!nextNote || nextNote.hitType != HitType.Defend) return;
+            
+            var diff = LevelManager.instance.currentBeat - nextNote.note.appearBeat;
+            if (diff is > -1f and < 1f)
             {
-                var diff = LevelManager.instance.currentBeat - nextNote.note.appearBeat;
-                if (diff is > -1f and < 1f)
-                {
-                    nextNote.Hit();
-                }
+                nextNote.Hit();
             }
         }
     }

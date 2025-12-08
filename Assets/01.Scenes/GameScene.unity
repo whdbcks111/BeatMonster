@@ -200,7 +200,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 0}
+  m_BackGroundColor: {r: 0.24359201, g: 0.2707959, b: 0.3207547, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -310,6 +310,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7018711355878142922, guid: 2144a7a465973934eb9304aa392ff805, type: 3}
       propertyPath: playAtAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7018711355878142922, guid: 2144a7a465973934eb9304aa392ff805, type: 3}
+      propertyPath: playAtLoaded
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

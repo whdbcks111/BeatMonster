@@ -30,7 +30,7 @@ namespace _02.Scripts.Level
             var m = LevelManager.instance.currentBeat % 1.0f;
             if (m < 0) m = 1 - m;
 
-            if (!float.IsNaN(_hitBeatTime) && LevelManager.instance.currentBeat - _hitBeatTime <= 1f)
+            if (!float.IsNaN(_hitBeatTime) && LevelManager.instance.currentBeat - _hitBeatTime is <= 1f and > 0f)
             {
                 m = LevelManager.instance.currentBeat - _hitBeatTime;
             }

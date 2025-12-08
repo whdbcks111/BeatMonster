@@ -1,6 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using _02.Scripts.Level.Note;
 using _02.Scripts.Manager;
+using Cysharp.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 // ReSharper disable MemberCanBePrivate.Global
@@ -14,10 +19,11 @@ namespace _02.Scripts.UI
         private VisualElement _rootElement;
 
         public VisualTreeAsset timeGuideTemplate;
+        public VisualTreeAsset noteTemplate;
 
         [NonSerialized] public Button playBtn, stopBtn, pauseBtn,
             zoomOutBtn, zoomInBtn,
-            saveBtn, saveAndExitBtn, exitBtn,
+            autoPlayBtn, saveBtn, saveAndExitBtn, exitBtn,
             addNoteBtn, addLastNoteBtn, duplicateBtn, copyBtn,
             delBtn, moveLeftBtn, moveRightBtn;
 
@@ -27,7 +33,10 @@ namespace _02.Scripts.UI
             noteTrack, eventTrack, 
             timeline, timeLabels, timeChangeZone, timeGuideContainer;
 
-        [NonSerialized] private Image _gameRenderImage;
+        [NonSerialized] private VisualElement _gameViewVisualElement;
+
+        [NonSerialized] public VisualElement levelMenuSelector, propsMenuSelector, editorMenuSelector;
+        [NonSerialized] public VisualElement levelMenu, propsMenu, editorMenu;
 
         private bool _isCurrentTimeChanging = false;
         private bool _isTimelineDragging = false;
@@ -38,6 +47,7 @@ namespace _02.Scripts.UI
         private float _timelineDragStartX, _timelineDragStartLeftEndBeat;
 
         private readonly List<VisualElement> _guideLines = new();
+        private readonly List<NoteVisualElementWrapper> _noteWrappers = new();
         
         private void OnEnable()
         {
@@ -46,10 +56,100 @@ namespace _02.Scripts.UI
 
             BindElements();
             RegisterEvents();
+            
         }
 
         private void Update()
         {
+            AdjustCameraToGameView();
+
+            TimelineRenderUpdate();
+            NoteRenderUpdate();
+
+            if (LevelManager.instance)
+            {
+                if (LevelManager.instance.player.autoPlay)
+                {
+                    autoPlayBtn.AddToClassList("active");
+                }
+                else
+                {
+                    autoPlayBtn.RemoveFromClassList("active");
+                }
+            }
+        }
+
+        private void AdjustCameraToGameView()
+        {
+            if (LevelManager.instance)
+            {
+                LevelManager.instance.playingViewportStart = new Vector2(
+                    0f,
+                    1f - _gameViewVisualElement.resolvedStyle.height / Screen.height
+                );
+                LevelManager.instance.playingViewportEnd = new Vector2(
+                    _gameViewVisualElement.resolvedStyle.width / Screen.width,
+                    1f
+                );
+            }
+        }
+
+        private void NoteRenderUpdate()
+        {
+            if (!LevelManager.instance) return;
+            var noteObjectCount = LevelManager.instance.noteObjects.Count;
+
+            if (_noteWrappers.Count > noteObjectCount)
+            {
+                var removeCount = _noteWrappers.Count - noteObjectCount;
+                for (var i = 0; i < removeCount; i++)
+                {
+                    noteTrack.Remove(_noteWrappers[i].element);
+                }
+                _noteWrappers.RemoveRange(0, removeCount);
+            }
+            else if (_noteWrappers.Count < noteObjectCount)
+            {
+                var addCount = noteObjectCount - _noteWrappers.Count;
+                for (var i = 0; i < addCount; i++)
+                {
+                    var noteElement = noteTemplate.Instantiate() as VisualElement;
+                    foreach (var j in noteElement.Children())
+                    {
+                        noteElement = j;
+                        break;
+                    }
+                    
+                    noteTrack.Add(noteElement);
+                    var wrapper = new NoteVisualElementWrapper { element = noteElement };
+                    _noteWrappers.Add(wrapper);
+                    
+                    noteElement.RegisterCallback<PointerDownEvent>(e => OnClickNote(e, wrapper));
+                }
+            }
+
+            for (var i = 0; i < _noteWrappers.Count; i++)
+            {
+                var noteObj = _noteWrappers[i].noteObject = LevelManager.instance.noteObjects[i];
+                var element = _noteWrappers[i].element;
+
+                element.style.backgroundImage = noteObj.spriteRenderer.sprite.texture;
+                element.style.left = (noteObj.note.appearBeat - _currentLeftEndBeat) * _horizontalGuideSpan;
+
+                if (_noteWrappers[i].isSelected)
+                {
+                    element.AddToClassList("selected");
+                }
+                else
+                {
+                    element.RemoveFromClassList("selected");
+                }
+            }
+        }
+
+        private void TimelineRenderUpdate()
+        {
+            if (!LevelManager.instance) return;
             var neededGuideLineCount = Mathf.FloorToInt(timeChangeZone.resolvedStyle.width / _horizontalGuideSpan + 2);
             
             if (_guideLines.Count > neededGuideLineCount && neededGuideLineCount >= 0)
@@ -77,7 +177,7 @@ namespace _02.Scripts.UI
                 }
             }
 
-            if (LevelManager.instance && LevelManager.instance.currentLevel != null)
+            if (LevelManager.instance.currentLevel != null)
             {
                 var currentPlayTime = LevelManager.instance.currentPlayTime;
                 var currentBeat = LevelManager.instance.currentBeat;
@@ -128,7 +228,7 @@ namespace _02.Scripts.UI
 
         private void BindElements()
         {
-            _gameRenderImage = _rootElement.Q<Image>("GameView");
+            _gameViewVisualElement = _rootElement.Q<VisualElement>("GameView");
             
             playBtn = _rootElement.Q<Button>("PlayButton");
             stopBtn = _rootElement.Q<Button>("StopButton");
@@ -136,7 +236,8 @@ namespace _02.Scripts.UI
             
             zoomOutBtn = _rootElement.Q<Button>("ZoomOutButton");
             zoomInBtn = _rootElement.Q<Button>("ZoomInButton");
-            
+
+            autoPlayBtn = _rootElement.Q<Button>("AutoPlayButton");
             saveBtn = _rootElement.Q<Button>("SaveButton");
             saveAndExitBtn = _rootElement.Q<Button>("SaveAndExitButton");
             exitBtn = _rootElement.Q<Button>("ExitButton");
@@ -161,21 +262,54 @@ namespace _02.Scripts.UI
             timeChangeZone = _rootElement.Q<VisualElement>("TimeChangeZone");
 
             timeGuideContainer = _rootElement.Q<VisualElement>("TimeGuideContainer");
+
+            levelMenuSelector = _rootElement.Q<VisualElement>("LevelMenuSelector");
+            propsMenuSelector = _rootElement.Q<VisualElement>("PropsMenuSelector");
+            editorMenuSelector = _rootElement.Q<VisualElement>("EditorMenuSelector");
+
+            levelMenu = _rootElement.Q<VisualElement>("LevelMenu");
+            propsMenu = _rootElement.Q<VisualElement>("PropsMenu");
+            editorMenu = _rootElement.Q<VisualElement>("EditorMenu");
         }
 
         private void RegisterEvents()
         {
-            playBtn.clicked += LevelManager.instance.Play;
-            pauseBtn.clicked += LevelManager.instance.Pause;
-            stopBtn.clicked += LevelManager.instance.Stop;
+            playBtn.clicked += () => LevelManager.instance.Play();
+            pauseBtn.clicked += () => LevelManager.instance.Pause();
+            stopBtn.clicked += () => LevelManager.instance.Stop();
 
             zoomInBtn.clicked += () => _horizontalGuideSpan /= 1.1f;
             zoomOutBtn.clicked += () => _horizontalGuideSpan *= 1.1f;
+
+            delBtn.clicked += OnClickDeleteBtn;
+            addNoteBtn.clicked += () => AddNote(LevelManager.instance.currentBeat);
+
+            saveBtn.clicked += () => LevelManager.instance.SaveLevel(Path.Combine(Application.dataPath, "test.json")).Forget();
             
             timeChangeZone.RegisterCallback<PointerDownEvent>(OnPointerDownInTimeChangeZone);
             timeline.RegisterCallback<PointerDownEvent>(OnPointerDownInTimeline);
             _rootElement.RegisterCallback<PointerMoveEvent>(OnPointerMoveInRoot);
             _rootElement.RegisterCallback<PointerUpEvent>(OnPointerUpInRoot);
+            
+            levelMenuSelector.RegisterCallback<ClickEvent>(_ => SelectMenu(levelMenuSelector, levelMenu));
+            editorMenuSelector.RegisterCallback<ClickEvent>(_ => SelectMenu(editorMenuSelector, editorMenu));
+            propsMenuSelector.RegisterCallback<ClickEvent>(_ => SelectMenu(propsMenuSelector, propsMenu));
+
+            autoPlayBtn.clicked += () => LevelManager.instance.player.autoPlay = !LevelManager.instance.player.autoPlay;
+        }
+
+        private void OnClickDeleteBtn()
+        {
+            var targets = _noteWrappers.Where(w => w.isSelected).ToList();
+            foreach (var wrapper in targets)
+            {
+                DeleteNote(wrapper);
+            }
+        }
+
+        public NoteVisualElementWrapper GetSelectedNoteElementWrapper()
+        {
+            return _noteWrappers.FirstOrDefault(wrapper => wrapper.isSelected);
         }
 
         private void OnChangeTime(float x)
@@ -201,6 +335,72 @@ namespace _02.Scripts.UI
         private float BeatToTimelineScale(float beat)
         {
             return beat * _horizontalGuideSpan;
+        }
+
+        private void OnClickNote(PointerDownEvent e, NoteVisualElementWrapper wrapper)
+        {
+            if (e.button == 0)
+            {
+                SelectNote(wrapper, e.shiftKey);
+            }
+            else
+            {
+                DeselectNote(wrapper, e.shiftKey);
+            }
+        }
+
+        private void DeleteNote(NoteVisualElementWrapper wrapper)
+        {
+            LevelManager.instance.currentLevel.pattern.Remove(wrapper.noteObject.note);
+            LevelManager.instance.noteObjects.Remove(wrapper.noteObject);
+            _noteWrappers.Remove(wrapper);
+            wrapper.element.RemoveFromHierarchy();
+            Destroy(wrapper.noteObject.gameObject);
+        }
+
+        private void AddNote(float appearBeat)
+        {
+            LevelManager.instance.AddPattern(new Note
+            {
+                appearBeat = appearBeat,
+                noteType = LevelManager.instance.currentBoss.noteMap.Keys.ToList()[0]
+            });
+        }
+
+        private void SelectNote(NoteVisualElementWrapper wrapper, bool isMultiSelect = false)
+        {
+            if (!isMultiSelect)
+            {
+                foreach (var w in _noteWrappers)
+                {
+                    w.isSelected = false;
+                }
+            }
+            wrapper.isSelected = true;
+        }
+
+        private void DeselectNote(NoteVisualElementWrapper wrapper, bool isMultiDeselect = false)
+        {if (!isMultiDeselect)
+            {
+                foreach (var w in _noteWrappers)
+                {
+                    w.isSelected = false;
+                }
+            }
+            else wrapper.isSelected = false;
+        }
+
+        public void SelectMenu(VisualElement selector, VisualElement menu)
+        {
+            var beforeSelector = _rootElement.Q<VisualElement>(classes: new[] { "menu-selector", "selected" });
+            beforeSelector.RemoveFromClassList("selected");
+            beforeSelector.AddToClassList("unselected");
+            var beforeMenu = _rootElement.Q<VisualElement>(classes: new[] { "side-menu", "selected" });
+            beforeMenu.RemoveFromClassList("selected");
+            
+            selector.AddToClassList("selected");
+            selector.RemoveFromClassList("unselected");
+            menu.AddToClassList("selected");
         }
 
         private void OnPointerDownInTimeChangeZone(PointerDownEvent e)
@@ -233,5 +433,12 @@ namespace _02.Scripts.UI
             _isCurrentTimeChanging = false;
             _isTimelineDragging = false;
         }
+    }
+
+    public class NoteVisualElementWrapper
+    {
+        public VisualElement element;
+        public NoteObject noteObject;
+        public bool isSelected = false;
     }
 }

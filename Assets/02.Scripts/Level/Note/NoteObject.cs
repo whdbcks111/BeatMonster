@@ -125,21 +125,23 @@ namespace _02.Scripts.Level.Note
             
             ParticleManager.instance.PlayParticle(ParticleManager.instance.hitParticle, 
                 LevelManager.instance.player.hitPoint.position);
-            LevelManager.instance.currentLevelPlayerData.AddJudgement(
+            
+            var judgement = LevelManager.instance.currentLevelPlayerData.AddJudgement(
                 LevelManager.instance.currentPlayTime,
                 LevelManager.instance.BeatToPlayTime(note.appearBeat),
-                LevelManager.instance.judgementTime
+                LevelManager.instance.judgementTimeSettings
             );
+            print($"{judgement} {LevelManager.instance.currentPlayTime-LevelManager.instance.BeatToPlayTime(note.appearBeat):0.000}");
         }
 
         private void CheckHitSound()
         {
             var beatOffset = (note.appearBeat - LevelManager.instance.currentBeat) /
-                LevelManager.instance.currentLevel.defaultBpm * 60f - LevelManager.instance.offset;
+                (LevelManager.instance.currentLevel.defaultBpm / 60f) - LevelManager.instance.offset;
             if (beatOffset < LevelManager.instance.offset)
             {
                 if (!canPlayHitSound) return;
-                SoundManager.instance.PlaySfxScheduled(hitSound, LevelManager.instance.dspTime + beatOffset);
+                if(LevelManager.instance.isPlaying) SoundManager.instance.PlaySfxScheduled(hitSound, LevelManager.instance.dspTime + beatOffset);
                 canPlayHitSound = false;
             }
             else

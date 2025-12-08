@@ -1,8 +1,13 @@
 :root {
     --dark-main: rgb(21, 21, 22);
+    --dark-sub: rgb(30, 32, 34);
 }
 
 .main-bg {
     color: rgb(255, 255, 255);
     background-color: var(--dark-main);
+}
+
+.sub-bg {
+    background-color: var(--dark-sub);
 }

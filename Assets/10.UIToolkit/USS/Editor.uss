@@ -1,4 +1,6 @@
 :root {
+    --new-var-1: rgb(17, 17, 18);
+    --new-var-2: rgb(33, 36, 43);
 }
 
 .button {
@@ -37,20 +39,19 @@
 
 .track {
     color: rgb(180, 182, 188);
-    border-top-width: 2px;
-    border-bottom-width: 2px;
+    border-top-width: 0;
+    border-bottom-width: 0;
     border-left-color: rgba(255, 255, 255, 0.2);
     border-right-color: rgba(255, 255, 255, 0.2);
     border-top-color: rgba(255, 255, 255, 0.2);
     border-bottom-color: rgba(255, 255, 255, 0.2);
     justify-content: center;
-    border-right-width: 2px;
-    border-left-width: 2px;
+    border-right-width: 0;
+    border-left-width: 0;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
-    background-color: rgba(122, 166, 229, 0.1);
 }
 
 .menu {
@@ -67,6 +68,8 @@
     position: absolute;
     top: 0;
     left: 10px;
+    background-color: rgba(255, 255, 255, 0);
+    font-size: 15px;
 }
 
 .time-guide {
@@ -75,16 +78,82 @@
     flex-shrink: 0;
     height: 100%;
     width: 2px;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.12);
     translate: 0 0;
     left: 0;
 }
 
 .time-guide.on-beat {
-    background-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.51);
     color: rgb(255, 255, 255);
 }
 
 .hidden {
     display: none;
+}
+
+Toggle Label {
+    width: auto;
+    min-width: 0;
+}
+
+.selected {
+}
+
+.menu-selector {
+    flex-shrink: 0;
+    flex-basis: auto;
+    height: 100%;
+    width: 100px;
+    background-color: rgb(21, 24, 29);
+    translate: 0 0;
+    margin-right: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-left-color: rgba(255, 255, 255, 0.2);
+    border-right-color: rgba(255, 255, 255, 0.2);
+    border-top-color: rgba(255, 255, 255, 0.2);
+    border-bottom-color: rgba(255, 255, 255, 0.2);
+    -unity-text-align: upper-left;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.menu-selector.selected {
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    color: rgb(255, 255, 255);
+}
+
+.side-menu {
+    display: none;
+}
+
+.side-menu.selected {
+    display: flex;
+}
+
+.menu-selector.unselected {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#AutoPlayButton.active {
+    border-left-color: rgb(0, 159, 83);
+    border-right-color: rgb(0, 159, 83);
+    border-top-color: rgb(0, 159, 83);
+    border-bottom-color: rgb(0, 159, 83);
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    background-color: rgba(0, 255, 49, 0.12);
+}
+
+.note.selected {
+    filter: hue-rotate(3.1415) invert(1);
 }
