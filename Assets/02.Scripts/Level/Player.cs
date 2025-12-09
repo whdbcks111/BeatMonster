@@ -46,15 +46,15 @@ namespace _02.Scripts.Level
                         throw new ArgumentOutOfRangeException();
                 }
             }
-            
+
             if (Input.GetKeyDown(KeyCode.F))
             {
-                Attack();   
+                Defend();
             }
-
+            
             if (Input.GetKeyDown(KeyCode.J))
             {
-                Defend();
+                Attack();   
             }
 
             if (Input.GetKeyDown(KeyCode.Escape))

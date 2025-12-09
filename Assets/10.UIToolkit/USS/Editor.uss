@@ -19,7 +19,7 @@
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     border-bottom-left-radius: 20px;
-    background-color: rgba(255, 255, 255, 0.06);
+    background-color: rgb(41, 41, 41);
     color: rgb(255, 255, 255);
 }
 
@@ -132,6 +132,10 @@ Toggle Label {
 
 .side-menu {
     display: none;
+    padding-left: 5px;
+    padding-right: 1px;
+    padding-top: 20px;
+    font-size: 17px;
 }
 
 .side-menu.selected {
@@ -156,4 +160,31 @@ Toggle Label {
 
 .note.selected {
     filter: hue-rotate(3.1415) invert(1);
+}
+
+.side-menu TextField > Label {
+    width: 120px;
+    min-width: 0;
+    color: rgb(255, 255, 255);
+}
+
+.side-menu TextField {
+}
+
+.side-menu > ScrollView > * {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.side-menu .button {
+    flex-grow: 0;
+    width: 100%;
+    height: 40px;
+    font-size: 16px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+TextField > #unity-text-input {
+    color: rgb(0, 0, 0);
 }

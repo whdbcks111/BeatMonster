@@ -1,79 +1,88 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/10.UIToolkit/USS/Editor.uss?fileID=7433441132597879392&amp;guid=652f52cd5fb47704b9a3b249d1e12c31&amp;type=3#Editor" />
-    <Style src="project://database/Assets/10.UIToolkit/USS/Colors.uss?fileID=7433441132597879392&amp;guid=612650f8fe4b5a64a92b98a063086976&amp;type=3#Colors" />
+    <Style src="project://database/Assets/10.UIToolkit/USS/Editor.uss?fileID=7433441132597879392&amp;guid=652f52cd5fb47704b9a3b249d1e12c31&amp;type=3"/>
+    <Style src="project://database/Assets/10.UIToolkit/USS/Colors.uss?fileID=7433441132597879392&amp;guid=612650f8fe4b5a64a92b98a063086976&amp;type=3"/>
     <ui:VisualElement name="Root" style="flex-grow: 1; flex-direction: row; align-items: flex-end; justify-content: flex-start;">
         <ui:VisualElement name="LeftSpace" style="flex-grow: 1; height: 100%;">
-            <ui:VisualElement name="GameView" style="flex-grow: 0; height: 40%; flex-basis: auto; flex-shrink: 0; background-image: none; width: auto; opacity: 0; background-color: rgba(0, 0, 0, 0); visibility: hidden;" />
+            <ui:VisualElement name="GameView" style="flex-grow: 0; height: 40%; flex-basis: auto; flex-shrink: 0; background-image: none; width: auto; opacity: 0; background-color: rgba(0, 0, 0, 0); visibility: hidden;"/>
             <ui:VisualElement name="EditorMain" class="main-bg" style="flex-grow: 1; height: auto; background-size: 100% 100%; width: auto; margin-top: 0; border-top-width: 2px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgba(255, 255, 255, 0.2); border-bottom-color: rgb(0, 0, 0); border-right-width: 0; border-bottom-width: 0; border-left-width: 0; flex-direction: column; flex-shrink: 0;">
                 <ui:ScrollView name="HeaderMenu" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" mode="Horizontal" focusable="false" class="menu" style="flex-basis: auto; justify-content: center; align-items: flex-start; padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; border-top-width: 2px; border-bottom-width: 2px; border-left-color: rgba(255, 255, 255, 0.2); border-right-color: rgba(255, 255, 255, 0.2); border-top-color: rgba(255, 255, 255, 0.2); border-bottom-color: rgba(255, 255, 255, 0.2);">
                     <ui:VisualElement name="SongControllBtns" style="flex-grow: 0; flex-direction: row;">
-                        <ui:Button text="▶️" name="PlayButton" class="button" />
-                        <ui:Button text="⏹️" name="StopButton" class="button" />
-                        <ui:Button text="⏸️" name="PauseButton" class="button" />
+                        <ui:Button text="" name="PlayButton" icon-image="project://database/Assets/03.Graphics/UI/LevelEditor/PlayBtn.png?fileID=21300000&amp;guid=bbe9cda0cf4367c45a60071f7a739946&amp;type=3#PlayBtn" class="button"/>
+                        <ui:Button text="" name="StopButton" icon-image="project://database/Assets/03.Graphics/UI/LevelEditor/StopBtn.png?fileID=21300000&amp;guid=45d793cfd1eb9db459e79e2de26a520e&amp;type=3#StopBtn" class="button"/>
+                        <ui:Button text="" name="PauseButton" icon-image="project://database/Assets/03.Graphics/UI/LevelEditor/PauseBtn.png?fileID=21300000&amp;guid=a06b4a23334da3840a94c035c20ce33c&amp;type=3#PauseBtn" class="button"/>
                     </ui:VisualElement>
                     <ui:VisualElement name="TimeLabels" focusable="false" style="flex-grow: 0; align-content: flex-start; justify-content: center; margin-left: 30px; flex-shrink: 0; flex-direction: row;">
-                        <ui:Label text="Time" name="TimeDisplayLabel" style="font-size: 15px; -unity-font-style: normal; color: rgb(255, 255, 255); -unity-text-align: middle-left; justify-content: flex-start;" />
-                        <ui:Label text="00:00" name="TimeDisplay" style="font-size: 30px; -unity-font-style: normal; color: rgb(255, 255, 255); -unity-text-align: middle-left; justify-content: flex-start;" />
-                        <ui:Label text="Beat" name="BeatDisplayLabel" style="font-size: 15px; -unity-font-style: normal; color: rgb(255, 255, 255); -unity-text-align: middle-left; justify-content: flex-start;" />
-                        <ui:Label text="0 bar 0 beat" name="BeatDisplay" style="font-size: 30px; -unity-font-style: normal; color: rgb(255, 255, 255); -unity-text-align: middle-left; justify-content: flex-start;" />
+                        <ui:Label text="Time" name="TimeDisplayLabel" style="font-size: 15px; -unity-font-style: normal; color: rgb(255, 255, 255); -unity-text-align: middle-left; justify-content: flex-start;"/>
+                        <ui:Label text="00:00" name="TimeDisplay" style="font-size: 30px; -unity-font-style: normal; color: rgb(255, 255, 255); -unity-text-align: middle-left; justify-content: flex-start;"/>
+                        <ui:Label text="Beat" name="BeatDisplayLabel" style="font-size: 15px; -unity-font-style: normal; color: rgb(255, 255, 255); -unity-text-align: middle-left; justify-content: flex-start;"/>
+                        <ui:Label text="0 bar 0 beat" name="BeatDisplay" style="font-size: 30px; -unity-font-style: normal; color: rgb(255, 255, 255); -unity-text-align: middle-left; justify-content: flex-start;"/>
+                        <ui:Button text="&#51088;&#46041; &#54540;&#47112;&#51060;" name="AutoPlayButton" class="button active" style="width: 200px; margin-left: 30px;"/>
                     </ui:VisualElement>
                     <ui:VisualElement name="ScreenControllBtns" style="flex-grow: 0; flex-direction: row; padding-left: 50px;">
-                        <ui:Button text="🔎+" name="ZoomOutButton" class="button" />
-                        <ui:Button text="🔎-" name="ZoomInButton" class="button" />
+                        <ui:Button text="" name="ZoomOutButton" icon-image="project://database/Assets/03.Graphics/UI/LevelEditor/ZoomOutBtn.png?fileID=21300000&amp;guid=bd639df1234a0f44eaf6f5253be71ff3&amp;type=3#ZoomOutBtn" class="button"/>
+                        <ui:Button text="" name="ZoomInButton" icon-image="project://database/Assets/03.Graphics/UI/LevelEditor/ZoomInBtn.png?fileID=21300000&amp;guid=b50031473d3ee4e439755eb6da835eb5&amp;type=3#ZoomInBtn" class="button"/>
                     </ui:VisualElement>
                     <ui:VisualElement name="EditorControllBtns" style="flex-grow: 1; flex-direction: row; padding-left: 50px; justify-content: flex-end;">
-                        <ui:Button text="자동 플레이" name="AutoPlayButton" class="button active" style="width: 200px;" />
-                        <ui:Button text="💾" name="SaveButton" class="button" />
-                        <ui:Button text="저장하고&#10;나가기" name="SaveAndExitButton" class="button" style="font-size: 20px;" />
-                        <ui:Button text="나가기" name="ExitButton" class="button" />
+                        <ui:Button text="" name="OpenButton" icon-image="project://database/Assets/03.Graphics/UI/LevelEditor/Open.png?fileID=2800000&amp;guid=486267cd02eb05b418b2a70e4aa8281e&amp;type=3#Open" class="button"/>
+                        <ui:Button text="" name="SaveButton" icon-image="project://database/Assets/03.Graphics/UI/LevelEditor/SaveBtn.png?fileID=2800000&amp;guid=4412970f9fb6ead44a66cc3babe6236a&amp;type=3#SaveBtn" class="button"/>
+                        <ui:Button text="" name="SaveAsButton" icon-image="project://database/Assets/03.Graphics/UI/LevelEditor/SaveAsBtn.png?fileID=2800000&amp;guid=78c61797868cb3f4cbf9356541f3b055&amp;type=3#SaveAsBtn" class="button" style="font-size: 20px;"/>
+                        <ui:Button text="" name="ExitButton" icon-image="project://database/Assets/03.Graphics/UI/LevelEditor/Exit.png?fileID=2800000&amp;guid=51a397cb95b81df4ea4396c3c6290205&amp;type=3#Exit" class="button"/>
                     </ui:VisualElement>
                 </ui:ScrollView>
                 <ui:VisualElement name="Timeline" style="flex-grow: 1; border-top-width: 4px; border-right-width: 0; border-bottom-width: 4px; border-left-width: 0; width: auto; flex-wrap: nowrap; flex-direction: column; padding-top: 0; overflow: hidden; padding-left: 0; background-color: rgba(0, 0, 0, 0);">
-                    <ui:VisualElement name="TimeChangeZone" style="flex-grow: 0; flex-basis: 50px; flex-shrink: 0; margin-left: 0;" />
+                    <ui:VisualElement name="TimeChangeZone" style="flex-grow: 0; flex-basis: 50px; flex-shrink: 0; margin-left: 0;"/>
                     <ui:VisualElement name="NoteTrack" picking-mode="Ignore" class="time-layer track sub-bg" style="flex-grow: 1; justify-content: center; flex-shrink: 0; margin-bottom: 5px;">
-                        <ui:Label text="Note" name="TrackTitle" picking-mode="Ignore" class="track-title" style="position: absolute; -unity-font-style: bold; right: 0; left: 0; padding-left: 10px; overflow: hidden;" />
+                        <ui:Label text="Note" name="TrackTitle" picking-mode="Ignore" class="track-title" style="position: absolute; -unity-font-style: bold; right: 0; left: 0; padding-left: 10px; overflow: hidden;"/>
                     </ui:VisualElement>
                     <ui:VisualElement name="EventTrack" picking-mode="Ignore" class="time-layer track sub-bg" style="flex-grow: 1; flex-shrink: 0;">
-                        <ui:Label text="Events" name="TrackTitle" picking-mode="Ignore" class="track-title" style="position: absolute; -unity-font-style: bold; right: 0; left: 0; padding-left: 10px;" />
+                        <ui:Label text="Events" name="TrackTitle" picking-mode="Ignore" class="track-title" style="position: absolute; -unity-font-style: bold; right: 0; left: 0; padding-left: 10px;"/>
                     </ui:VisualElement>
-                    <ui:VisualElement name="TimePicker" picking-mode="Ignore" style="flex-grow: 0; position: absolute; flex-shrink: 0; height: 100%; width: 2px; background-color: rgb(103, 202, 255); translate: 0 0; left: 30%; bottom: 0; top: 0;" />
-                    <ui:VisualElement name="TimeGuideContainer" picking-mode="Ignore" style="flex-grow: 0; border-top-width: 0; border-bottom-width: 0; border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); flex-direction: row; flex-basis: auto; flex-shrink: 0; background-color: rgba(255, 255, 255, 0); height: 100%; align-items: center; width: auto; position: absolute; display: flex; visibility: visible; opacity: 1; left: 0; right: 0; top: 0; bottom: 0; border-right-width: 0; border-left-width: 0; margin-left: 0;" />
+                    <ui:VisualElement name="TimePicker" picking-mode="Ignore" style="flex-grow: 0; position: absolute; flex-shrink: 0; height: 100%; width: 2px; background-color: rgb(103, 202, 255); translate: 0 0; left: 30%; bottom: 0; top: 0;"/>
+                    <ui:VisualElement name="TimeGuideContainer" picking-mode="Ignore" style="flex-grow: 0; border-top-width: 0; border-bottom-width: 0; border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); flex-direction: row; flex-basis: auto; flex-shrink: 0; background-color: rgba(255, 255, 255, 0); height: 100%; align-items: center; width: auto; position: absolute; display: flex; visibility: visible; opacity: 1; left: 0; right: 0; top: 0; bottom: 0; border-right-width: 0; border-left-width: 0; margin-left: 0;"/>
                 </ui:VisualElement>
                 <ui:ScrollView name="FooterMenu" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" mode="Horizontal" focusable="false" class="menu" style="border-top-color: rgba(255, 255, 255, 0.2); border-top-width: 2px;">
                     <ui:VisualElement name="NoteControllBtns" style="flex-grow: 0; flex-direction: row; padding-left: 0;">
-                        <ui:Button text="➕" name="AddNoteButton" class="button" />
-                        <ui:Button text="➕" name="AddLastNoteButton" class="button" />
-                        <ui:Button text="복제" name="DuplicateNoteButton" class="button" />
-                        <ui:Button text="복사" name="CopyButton" class="button" />
-                        <ui:Button text="붙여넣기" name="PasteButton" class="button" style="font-size: 20px;" />
-                        <ui:Button text="❌" name="DeleteButton" class="button" style="margin-left: 54px;" />
-                        <ui:Button text="⬅️" name="MoveLeftButton" class="button" />
-                        <ui:Button text="➡️" name="MoveRightButton" class="button" />
+                        <ui:Button text="" name="AddNoteButton" icon-image="project://database/Assets/03.Graphics/UI/LevelEditor/AddNote.png?fileID=2800000&amp;guid=aedc1c5701d108249a46060419bd90fe&amp;type=3#AddNote" class="button"/>
+                        <ui:Button text="" name="DuplicateNoteButton" icon-image="project://database/Assets/03.Graphics/UI/LevelEditor/Duplicate.png?fileID=2800000&amp;guid=1f214013115c9814f827ae280a583efe&amp;type=3#Duplicate" class="button"/>
+                        <ui:Button text="" name="CopyButton" icon-image="project://database/Assets/03.Graphics/UI/LevelEditor/Copy.png?fileID=2800000&amp;guid=008fb485d71e4a645b720eff40055ee0&amp;type=3#Copy" class="button"/>
+                        <ui:Button text="" name="PasteButton" icon-image="project://database/Assets/03.Graphics/UI/LevelEditor/Paste.png?fileID=2800000&amp;guid=fa54b26882f8bcd4d8c4b2325ed7c636&amp;type=3#Paste" class="button" style="font-size: 20px;"/>
+                        <ui:Button text="" name="DeleteButton" icon-image="project://database/Assets/03.Graphics/UI/LevelEditor/Delete.png?fileID=2800000&amp;guid=65904f12f271da448bb42638b38b6404&amp;type=3#Delete" class="button" style="margin-left: 54px; width: 70px;"/>
+                        <ui:Button text="" name="MoveLeftButton" icon-image="project://database/Assets/03.Graphics/UI/LevelEditor/LeftArrow.png?fileID=2800000&amp;guid=7dba4a83f75e1eb4c887ab80aeca677b&amp;type=3#LeftArrow" class="button"/>
+                        <ui:Button text="" name="MoveRightButton" icon-image="project://database/Assets/03.Graphics/UI/LevelEditor/RightArrow.png?fileID=2800000&amp;guid=9f5b7a0c69fe4bd42a4d07a0f8c7fc8e&amp;type=3#RightArrow" class="button"/>
                     </ui:VisualElement>
                 </ui:ScrollView>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="SideMenu" picking-mode="Ignore" class="main-bg" style="flex-grow: 0; flex-basis: 400px; border-left-color: rgba(255, 255, 255, 0.2); border-left-width: 2px; height: 100%; flex-shrink: 0; width: 400px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;">
-            <ui:VisualElement name="MenuSelectorContainer" picking-mode="Ignore" style="flex-grow: 0; flex-shrink: 0; flex-basis: 70px; flex-direction: row; translate: 0 3px;">
+            <ui:VisualElement name="MenuSelectorContainer" picking-mode="Ignore" style="flex-grow: 0; flex-shrink: 0; flex-basis: 70px; flex-direction: row; translate: 0 5px;">
                 <ui:VisualElement name="LevelMenuSelector" class="menu-selector selected sub-bg">
-                    <ui:Label text="레벨" picking-mode="Ignore" style="flex-grow: 1; -unity-text-align: middle-center; font-size: 20px;" />
+                    <ui:Label text="&#47112;&#48296;" picking-mode="Ignore" style="flex-grow: 1; -unity-text-align: middle-center; font-size: 20px;"/>
                 </ui:VisualElement>
                 <ui:VisualElement name="PropsMenuSelector" class="menu-selector sub-bg unselected">
-                    <ui:Label text="속성" picking-mode="Ignore" style="flex-grow: 1; -unity-text-align: middle-center; font-size: 20px;" />
+                    <ui:Label text="&#49549;&#49457;" picking-mode="Ignore" style="flex-grow: 1; -unity-text-align: middle-center; font-size: 20px;"/>
                 </ui:VisualElement>
                 <ui:VisualElement name="EditorMenuSelector" class="menu-selector sub-bg unselected">
-                    <ui:Label text="에디터" picking-mode="Ignore" style="flex-grow: 1; -unity-text-align: middle-center; font-size: 20px;" />
+                    <ui:Label text="&#50640;&#46356;&#53552;" picking-mode="Ignore" style="flex-grow: 1; -unity-text-align: middle-center; font-size: 20px;"/>
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement name="MenuControlsContainer" class="sub-bg" style="flex-grow: 1; flex-shrink: 0; flex-basis: auto; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;">
+            <ui:VisualElement name="MenuControlsContainer" class="sub-bg" style="flex-grow: 1; flex-shrink: 0; flex-basis: auto; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; border-top-left-radius: 5px; padding-top: 0;">
                 <ui:VisualElement name="LevelMenu" picking-mode="Ignore" class="selected side-menu" style="flex-grow: 1; left: 0; top: 0; right: 0; bottom: 0; position: absolute;">
                     <ui:ScrollView name="ScrollView" vertical-scroller-visibility="Auto" horizontal-scroller-visibility="Hidden">
-                        <ui:VisualElement name="VisualElement" style="flex-grow: 1;" />
+                        <ui:TextField label="&#47112;&#48296; &#51228;&#47785;" placeholder-text="&#51228;&#47785;&#51012; &#51077;&#47141;&#54616;&#49464;&#50836;." name="LevelNameTextField" focusable="true"/>
+                        <ui:TextField label="&#44257; &#51060;&#47492;" placeholder-text="&#44257;&#47749;&#51012; &#51077;&#47141;&#54616;&#49464;&#50836;." name="MusicNameTextField" focusable="true"/>
+                        <ui:TextField label="&#51089;&#44257;&#44032;" placeholder-text="&#51089;&#44257;&#44032;&#47484; &#51077;&#47141;&#54616;&#49464;&#50836;." name="AuthorNameTextField" focusable="true"/>
+                        <ui:VisualElement name="MusicFileDisplay" style="flex-grow: 1; flex-direction: row; margin-left: 2px;">
+                            <ui:Label text="&#44257; &#54028;&#51068;" name="" style="width: 120px; margin-left: 4px;"/>
+                            <ui:Label text="Test.mp3" name="MusicFilePathLabel"/>
+                        </ui:VisualElement>
+                        <ui:Button text="&#44257; &#54028;&#51068; &#48520;&#47084;&#50724;&#44592;" name="MusicFileLoadBtn" class="button"/>
+                        <ui:TextField label="BPM" placeholder-text="BPM&#51012; &#51077;&#47141;&#54616;&#49464;&#50836;." name="BPMTextField" focusable="true" keyboard-type="NumberPad"/>
                     </ui:ScrollView>
                 </ui:VisualElement>
-                <ui:VisualElement name="PropsMenu" picking-mode="Ignore" class="side-menu" style="flex-grow: 1; left: 0; top: 0; right: 0; bottom: 0; position: absolute;" />
-                <ui:VisualElement name="EditorMenu" picking-mode="Ignore" class="side-menu" style="flex-grow: 1; left: 0; top: 0; right: 0; bottom: 0; position: absolute;" />
+                <ui:VisualElement name="PropsMenu" picking-mode="Ignore" class="side-menu" style="flex-grow: 1; left: 0; top: 0; right: 0; bottom: 0; position: absolute;"/>
+                <ui:VisualElement name="EditorMenu" picking-mode="Ignore" class="side-menu" style="flex-grow: 1; left: 0; top: 0; right: 0; bottom: 0; position: absolute;"/>
             </ui:VisualElement>
         </ui:VisualElement>
+        <ui:Label text="&#53664;&#49828;&#53944; &#47700;&#49884;&#51648; &#51077;&#45768;&#45796;" picking-mode="Ignore" name="ToastLabel" style="position: absolute; left: 50%; bottom: 10%; translate: -50% 0; background-color: rgba(157, 0, 255, 0.04); border-left-color: rgba(175, 0, 255, 0.12); border-right-color: rgba(175, 0, 255, 0.12); border-top-color: rgba(175, 0, 255, 0.12); border-bottom-color: rgba(175, 0, 255, 0.12); border-top-width: 4px; border-right-width: 4px; border-bottom-width: 4px; border-left-width: 4px; border-top-left-radius: 15px; border-top-right-radius: 15px; border-bottom-right-radius: 15px; border-bottom-left-radius: 15px; color: rgb(255, 255, 255); transition-property: opacity; transition-duration: 0.5s; padding-left: 20px; padding-right: 20px; padding-top: 10px; padding-bottom: 10px; margin-top: 0; margin-left: 0; margin-bottom: 0; margin-right: 0; min-width: 300px; font-size: 20px; -unity-text-align: upper-center; opacity: 0;"/>
     </ui:VisualElement>
 </ui:UXML>

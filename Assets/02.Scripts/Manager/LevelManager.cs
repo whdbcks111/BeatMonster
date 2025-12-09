@@ -1,15 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using _02.Scripts.Level;
 using _02.Scripts.Level.Note;
-using _02.Scripts.UI;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Serialization;
 
 namespace _02.Scripts.Manager
 {
@@ -95,7 +91,7 @@ namespace _02.Scripts.Manager
 
         private void Start()
         {
-            LoadLevel(Path.Combine(Application.dataPath, "Test.json")).Forget();
+            LoadLevel(JsonUtility.FromJson<Level>(Resources.Load<TextAsset>("Test").text)).Forget();
         }
 
         private void OnDrawGizmos()
@@ -233,6 +229,7 @@ namespace _02.Scripts.Manager
         private void AdjustBossPosition()
         {
             if(!currentBoss) return;
+            
             currentBoss.transform.position = new Vector3(
                 _camera.ViewportToWorldPoint(new Vector3(playingViewportEnd.x, 0)).x,
                 0
@@ -382,6 +379,12 @@ namespace _02.Scripts.Manager
         public float baseScrollSpeed;
         public string bossId;
         public string musicId;
+
+        public string levelName;
+        public string musicName;
+        public string authorName;
+
+        public string musicPath;
         
         public List<Note> pattern;
     }
@@ -391,6 +394,15 @@ namespace _02.Scripts.Manager
     {
         public float appearBeat;
         public string noteType;
+
+        public Note Clone()
+        {
+            return new Note
+            {
+                appearBeat = appearBeat,
+                noteType = noteType
+            };
+        }
     }
 
     [Serializable]

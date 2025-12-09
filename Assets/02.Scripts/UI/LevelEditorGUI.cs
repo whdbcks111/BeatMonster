@@ -21,13 +21,13 @@ namespace _02.Scripts.UI
         public VisualTreeAsset timeGuideTemplate;
         public VisualTreeAsset noteTemplate;
 
-        [NonSerialized] public Button playBtn, stopBtn, pauseBtn,
+        [NonSerialized] public Button playBtn, stopBtn, pauseBtn, autoPlayBtn, 
             zoomOutBtn, zoomInBtn,
-            autoPlayBtn, saveBtn, saveAndExitBtn, exitBtn,
-            addNoteBtn, addLastNoteBtn, duplicateBtn, copyBtn,
+            openBtn, saveBtn, saveAsBtn, exitBtn,
+            addNoteBtn, duplicateBtn, copyBtn,
             delBtn, moveLeftBtn, moveRightBtn;
 
-        [NonSerialized] public Label curTimeLabel, curBeatLabel;
+        [NonSerialized] public Label curTimeLabel, curBeatLabel, toastLabel;
 
         [NonSerialized] public VisualElement timePicker, 
             noteTrack, eventTrack, 
@@ -81,17 +81,20 @@ namespace _02.Scripts.UI
 
         private void AdjustCameraToGameView()
         {
-            if (LevelManager.instance)
-            {
-                LevelManager.instance.playingViewportStart = new Vector2(
-                    0f,
-                    1f - _gameViewVisualElement.resolvedStyle.height / Screen.height
-                );
-                LevelManager.instance.playingViewportEnd = new Vector2(
-                    _gameViewVisualElement.resolvedStyle.width / Screen.width,
-                    1f
-                );
-            }
+            if (!LevelManager.instance) return;
+            var width = _gameViewVisualElement.resolvedStyle.width / Screen.width;
+            var height = _gameViewVisualElement.resolvedStyle.height / Screen.height;
+            
+            if(float.IsNaN(width) || float.IsNaN(height)) return;
+            
+            LevelManager.instance.playingViewportStart = new Vector2(
+                0f,
+                1f - height
+            );
+            LevelManager.instance.playingViewportEnd = new Vector2(
+                width,
+                1f
+            );
         }
 
         private void NoteRenderUpdate()
@@ -233,17 +236,17 @@ namespace _02.Scripts.UI
             playBtn = _rootElement.Q<Button>("PlayButton");
             stopBtn = _rootElement.Q<Button>("StopButton");
             pauseBtn = _rootElement.Q<Button>("PauseButton");
+            autoPlayBtn = _rootElement.Q<Button>("AutoPlayButton");
             
             zoomOutBtn = _rootElement.Q<Button>("ZoomOutButton");
             zoomInBtn = _rootElement.Q<Button>("ZoomInButton");
 
-            autoPlayBtn = _rootElement.Q<Button>("AutoPlayButton");
+            openBtn = _rootElement.Q<Button>("OpenButton");
             saveBtn = _rootElement.Q<Button>("SaveButton");
-            saveAndExitBtn = _rootElement.Q<Button>("SaveAndExitButton");
+            saveAsBtn = _rootElement.Q<Button>("SaveAsButton");
             exitBtn = _rootElement.Q<Button>("ExitButton");
             
             addNoteBtn = _rootElement.Q<Button>("AddNoteButton");
-            addLastNoteBtn = _rootElement.Q<Button>("AddLastNoteButton");
             duplicateBtn = _rootElement.Q<Button>("DuplicateNoteButton");
             copyBtn = _rootElement.Q<Button>("CopyButton");
             
@@ -270,6 +273,8 @@ namespace _02.Scripts.UI
             levelMenu = _rootElement.Q<VisualElement>("LevelMenu");
             propsMenu = _rootElement.Q<VisualElement>("PropsMenu");
             editorMenu = _rootElement.Q<VisualElement>("EditorMenu");
+
+            toastLabel = _rootElement.Q<Label>("ToastLabel");
         }
 
         private void RegisterEvents()
@@ -281,10 +286,14 @@ namespace _02.Scripts.UI
             zoomInBtn.clicked += () => _horizontalGuideSpan /= 1.1f;
             zoomOutBtn.clicked += () => _horizontalGuideSpan *= 1.1f;
 
+            moveLeftBtn.clicked += OnClickMoveLeftBtn;
+            moveRightBtn.clicked += OnClickMoveRightBtn;
+            
             delBtn.clicked += OnClickDeleteBtn;
-            addNoteBtn.clicked += () => AddNote(LevelManager.instance.currentBeat);
+            addNoteBtn.clicked += OnClickAddNoteBtn;
+            duplicateBtn.clicked += OnClickDuplicateBtn;
 
-            saveBtn.clicked += () => LevelManager.instance.SaveLevel(Path.Combine(Application.dataPath, "test.json")).Forget();
+            saveBtn.clicked += OnClickSaveBtn;
             
             timeChangeZone.RegisterCallback<PointerDownEvent>(OnPointerDownInTimeChangeZone);
             timeline.RegisterCallback<PointerDownEvent>(OnPointerDownInTimeline);
@@ -298,6 +307,62 @@ namespace _02.Scripts.UI
             autoPlayBtn.clicked += () => LevelManager.instance.player.autoPlay = !LevelManager.instance.player.autoPlay;
         }
 
+        private void OnClickSaveBtn()
+        {
+            LevelManager.instance.SaveLevel(Path.Combine(Application.dataPath, "test.json")).Forget();
+            ShowToastTask("저장되었습니다.").Forget();
+        }
+
+        private void OnClickDuplicateBtn()
+        {
+            var targets = _noteWrappers.Where(w => w.isSelected).ToList();
+
+            var selectTargetNoteObjects = new List<NoteObject>();
+            
+            foreach (var wrapper in targets)
+            {
+                var clone = wrapper.noteObject.note.Clone();
+                clone.appearBeat += 1f;
+                var addedNoteObject = LevelManager.instance.AddPattern(clone);
+                
+                selectTargetNoteObjects.Add(addedNoteObject);
+                wrapper.isSelected = false;
+            }
+            
+            NoteRenderUpdate();
+            
+            foreach (var wrapper in _noteWrappers.Where(wrapper => selectTargetNoteObjects.Contains(wrapper.noteObject)))
+            {
+                wrapper.isSelected = true;
+            }
+        }
+
+        private async UniTask ShowToastTask(string text, float time = 1f)
+        {
+            toastLabel.text = text;
+            toastLabel.style.opacity = new StyleFloat(1f);
+            await UniTask.Delay((int)(time * 1000));
+            toastLabel.style.opacity = new StyleFloat(0f);
+        }
+
+        private void OnClickMoveLeftBtn()
+        {
+            var targets = _noteWrappers.Where(w => w.isSelected).ToList();
+            foreach (var wrapper in targets)
+            {
+                wrapper.noteObject.note.appearBeat = Mathf.Max(wrapper.noteObject.note.appearBeat - 1f, 0);
+            }
+        }
+
+        private void OnClickMoveRightBtn()
+        {
+            var targets = _noteWrappers.Where(w => w.isSelected).ToList();
+            foreach (var wrapper in targets)
+            {
+                wrapper.noteObject.note.appearBeat = Mathf.Max(wrapper.noteObject.note.appearBeat + 1f, 0);
+            }
+        }
+
         private void OnClickDeleteBtn()
         {
             var targets = _noteWrappers.Where(w => w.isSelected).ToList();
@@ -305,11 +370,6 @@ namespace _02.Scripts.UI
             {
                 DeleteNote(wrapper);
             }
-        }
-
-        public NoteVisualElementWrapper GetSelectedNoteElementWrapper()
-        {
-            return _noteWrappers.FirstOrDefault(wrapper => wrapper.isSelected);
         }
 
         private void OnChangeTime(float x)
@@ -358,11 +418,11 @@ namespace _02.Scripts.UI
             Destroy(wrapper.noteObject.gameObject);
         }
 
-        private void AddNote(float appearBeat)
+        private void OnClickAddNoteBtn()
         {
             LevelManager.instance.AddPattern(new Note
             {
-                appearBeat = appearBeat,
+                appearBeat = LevelManager.instance.currentBeat,
                 noteType = LevelManager.instance.currentBoss.noteMap.Keys.ToList()[0]
             });
         }

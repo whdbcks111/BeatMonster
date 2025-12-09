@@ -311,9 +311,9 @@ MonoBehaviour:
     missCount: 0
   judgementTimeSettings:
     miss: 1
-    perfect: 0.05
-    good: 0.15
-    bad: 0.4
+    perfect: 0.025
+    good: 0.07
+    bad: 0.2
   playAtLoaded: 0
   playingViewportStart: {x: 0, y: 0}
   playingViewportEnd: {x: 1, y: 1}
