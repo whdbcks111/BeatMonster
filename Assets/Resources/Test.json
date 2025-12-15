@@ -4,7 +4,12 @@
     "defaultBpm": 180,
     "baseScrollSpeed": 4.0,
     "bossId": "Slime",
-    "musicId": "Platform Shoes",
+    "musicPath": "$Platform Shoes",
+    "levelName": "Test Level",
+    "musicName": "Platform Shoes",
+    "authorName": "nickpanek",
+    "backgroundId": "Sky",
+    "groundId": "Ground",
     "pattern": [
         {
             "appearBeat": 0.0,
@@ -95,15 +100,7 @@
             "noteType": "Defend"
         },
         {
-            "appearBeat": 19.50115203857422,
-            "noteType": "Defend"
-        },
-        {
             "appearBeat": 19.999340057373048,
-            "noteType": "Defend"
-        },
-        {
-            "appearBeat": 20.497528076171876,
             "noteType": "Defend"
         },
         {
@@ -119,10 +116,6 @@
             "noteType": "Defend"
         },
         {
-            "appearBeat": 23.48665428161621,
-            "noteType": "Defend"
-        },
-        {
             "appearBeat": 23.98484230041504,
             "noteType": "Defend"
         },
@@ -135,11 +128,131 @@
             "noteType": "Defend"
         },
         {
-            "appearBeat": 27.988136291503908,
+            "appearBeat": 29.998680114746095,
             "noteType": "Defend"
         },
         {
-            "appearBeat": 29.998680114746095,
+            "appearBeat": 32.0072135925293,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 32.980987548828128,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 33.49443054199219,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 34.00787353515625,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 35.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 35.5,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 36.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 36.5,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 37.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 38.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 39.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 39.5,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 40.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 41.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 41.5,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 42.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 43.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 43.5,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 44.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 45.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 46.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 47.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 48.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 49.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 49.5,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 50.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 19.5,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 20.5,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 23.5,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 28.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 30.998680114746095,
             "noteType": "Defend"
         }
     ]

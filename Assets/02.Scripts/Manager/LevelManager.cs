@@ -1,11 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using _02.Scripts.Level;
 using _02.Scripts.Level.Note;
+using _02.Scripts.Utils;
+using _09.ScriptableObjects;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Networking;
+using UnityEngine.Serialization;
 
 namespace _02.Scripts.Manager
 {
@@ -32,6 +37,10 @@ namespace _02.Scripts.Manager
         [NonSerialized] public readonly List<NoteObject> noteObjects = new();
         [NonSerialized] public bool isLoaded = false;
 
+        [NonSerialized] public Action onLoaded;
+
+        public LevelEditorBindings editorBindings;
+
         [Header("Gameplay Settings")] 
         public JudgementTimeSettings judgementTimeSettings;
         public bool playAtLoaded = false;
@@ -47,6 +56,7 @@ namespace _02.Scripts.Manager
         private double _startDspTime = 0, _pauseDspTime = 0, _accDspTime = -2.0;
         private AudioSource _audioSource;
         private float _checkpointEnterTime = float.NaN;
+        private float _lastCheckpointBeat = float.NaN;
         private Camera _camera;
 
         private double _prevDspTime, _interpolatedDspTime;
@@ -56,13 +66,10 @@ namespace _02.Scripts.Manager
         
         [Header("Background Objects")]
         [SerializeField] private SpriteRenderer groundObject;
-        [SerializeField] private SpriteRenderer skyObject;
+        [SerializeField] private SpriteRenderer backgroundObject;
         
         private static readonly int CheckpointVfxRadius = Shader.PropertyToID("_Radius");
         private static readonly int CheckpointVfxCenter = Shader.PropertyToID("_Center");
-
-        [Multiline]
-        public string debugText;
 
         private void Awake()
         {
@@ -82,16 +89,16 @@ namespace _02.Scripts.Manager
                 groundObject.transform.position.y);
             groundObject.size = _camera.ViewportToWorldPoint(new Vector3(2f, 1)) -
                                 _camera.ViewportToWorldPoint(new Vector3(-1f, 0));
-            skyObject.transform.position = new Vector3(
+            backgroundObject.transform.position = new Vector3(
                 _camera.ViewportToWorldPoint(new Vector3(.5f, .5f)).x, 
-                skyObject.transform.position.y);
-            skyObject.size = _camera.ViewportToWorldPoint(new Vector3(1.1f, 1)) -
+                backgroundObject.transform.position.y);
+            backgroundObject.size = _camera.ViewportToWorldPoint(new Vector3(1.1f, 1)) -
                              _camera.ViewportToWorldPoint(new Vector3(-0.1f, 0));
         }
 
         private void Start()
         {
-            LoadLevel(JsonUtility.FromJson<Level>(Resources.Load<TextAsset>("Test").text)).Forget();
+            LoadLevel("$Test").Forget();
         }
 
         private void OnDrawGizmos()
@@ -111,17 +118,13 @@ namespace _02.Scripts.Manager
             InterpolateDspTime();
             UpdateCheckpointVfx();
             AdjustBossPosition();
-            
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                Seek(currentPlayTime - 5);
-            }
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                Seek(currentPlayTime + 5);
-            }
+            AdjustPlayerPosition();
+        }
 
-            if (Input.GetKeyDown(KeyCode.C)) _checkpointEnterTime = Time.unscaledTime;
+        public void SetCheckpoint()
+        {
+            _lastCheckpointBeat = currentPlayTime;
+            _checkpointEnterTime = Time.unscaledTime;
         }
 
         private void UpdateCheckpointVfx()
@@ -147,18 +150,32 @@ namespace _02.Scripts.Manager
 
         public async UniTask SaveLevel(string path)
         {
-            await File.WriteAllTextAsync(path, JsonUtility.ToJson(currentLevel, true));
+            if(string.IsNullOrEmpty(path)) return;
+            
+            var json = JsonUtility.ToJson(currentLevel, true);
+            if (path.StartsWith("$"))
+            {
+                path = Path.Combine(Application.dataPath, "Resources/" + path[1..] + ".json");
+            }
+            
+            await File.WriteAllTextAsync(path, json);
+            Debug.Log($"Save level [{currentLevel.levelName}] to {path}");
         }
 
         public async UniTask LoadLevel(string path)
         {
-            await LoadLevel(JsonUtility.FromJson<Level>(await File.ReadAllTextAsync(path)));
-            Debug.Log($"Load level from ${path} / music id: ${currentLevel.musicId}");
+            var level = path.StartsWith("$") ? 
+                JsonUtility.FromJson<Level>(Resources.Load<TextAsset>(path[1..]).text) : 
+                JsonUtility.FromJson<Level>(await File.ReadAllTextAsync(path));
+            level.loadedPath = path;
+            await LoadLevel(level);
+            Debug.Log($"Load level [{currentLevel.levelName}] from {path} / music id: {currentLevel.musicPath}");
         }
 
         public async UniTask LoadLevel(Level level)
         {
             currentLevel = level;
+            if (editorBindings) editorBindings.level = currentLevel;
             
             var bossObj = await Addressables.InstantiateAsync($"Boss/{currentLevel.bossId}");
             if (!bossObj || !bossObj.TryGetComponent(out currentBoss))
@@ -166,14 +183,37 @@ namespace _02.Scripts.Manager
                 throw new Exception($"Boss Load Failed (Id: {currentLevel.bossId})");
             }
 
-            _audioSource.clip = await Addressables.LoadAssetAsync<AudioClip>($"Music/{currentLevel.musicId}");
+            if (currentLevel.musicPath.StartsWith("$"))
+            {
+                // music path is addressable asset key
+                _audioSource.clip = await Addressables.LoadAssetAsync<AudioClip>($"Music/{currentLevel.musicPath[1..]}");
+            }
+            else
+            {
+                // music path is relative local audio file path
+                
+                var audioFilePath = Path.GetFullPath(Path.Combine(currentLevel.loadedPath, currentLevel.musicPath));
+                var audioType = AudioTypeFinder.GetAudioTypeFromFileExtension(audioFilePath);
+
+                if (audioType != AudioType.UNKNOWN)
+                {
+                    var handler = new DownloadHandlerAudioClip($"file://{audioFilePath}", audioType);
+                    handler.compressed = true;
+
+                    var request = new UnityWebRequest($"file://{audioFilePath}", "GET", handler, null);
+                    await request.SendWebRequest();
+                    if (request.responseCode == 200) _audioSource.clip = handler.audioClip;
+                }
+            }
+            
             if (!_audioSource.clip)
             {
-                throw new Exception($"Music Load Failed (Id: {currentLevel.musicId})");
+                throw new Exception($"Music Load Failed (Id: {currentLevel.musicPath})");
             }
 
             InitGame();
             isLoaded = true;
+            onLoaded?.Invoke();
             
             if (playAtLoaded)
             {
@@ -204,6 +244,7 @@ namespace _02.Scripts.Manager
 
             AdjustBossPosition();
 
+            _lastCheckpointBeat = float.NaN;
             _accDspTime = -2.0;
             _pauseDspTime = 0;
             _startDspTime = 0;
@@ -231,7 +272,17 @@ namespace _02.Scripts.Manager
             if(!currentBoss) return;
             
             currentBoss.transform.position = new Vector3(
-                _camera.ViewportToWorldPoint(new Vector3(playingViewportEnd.x, 0)).x,
+                _camera.ViewportToWorldPoint(new Vector3(playingViewportEnd.x, 0)).x - 0.5f,
+                0
+            );
+        }
+
+        private void AdjustPlayerPosition()
+        {
+            if(!player) return;
+            
+            player.transform.position = new Vector3(
+                _camera.ViewportToWorldPoint(new Vector3(playingViewportStart.x, 0)).x + 0.5f,
                 0
             );
         }
@@ -281,12 +332,13 @@ namespace _02.Scripts.Manager
 
             currentBoss.hp = bossHp;
         }
-
+        
         public NoteObject GetNextNote()
         {
-            return noteObjects.Find(
-                noteObj => noteObj.note.appearBeat > LevelManager.instance.currentBeat - 1f && !noteObj.wasHit
-            );
+            return noteObjects
+                .FindAll(noteObj => noteObj.note.appearBeat > currentBeat - 1f && !noteObj.wasHit)
+                .OrderBy(noteObj => noteObj.note.appearBeat)
+                .FirstOrDefault();
         }
 
         public void Play()
@@ -373,18 +425,21 @@ namespace _02.Scripts.Manager
     [Serializable]
     public class Level
     {
+        [NonSerialized] public string loadedPath;
+        
         public float startOffset;
         public int beatsPerMeasure;
         public int defaultBpm;
         public float baseScrollSpeed;
         public string bossId;
-        public string musicId;
+        public string musicPath;
 
         public string levelName;
         public string musicName;
         public string authorName;
 
-        public string musicPath;
+        public string backgroundId;
+        public string groundId;
         
         public List<Note> pattern;
     }

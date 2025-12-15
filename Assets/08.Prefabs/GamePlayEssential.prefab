@@ -309,6 +309,7 @@ MonoBehaviour:
     lateCount: 0
     earlyCount: 0
     missCount: 0
+  editorBindings: {fileID: 0}
   judgementTimeSettings:
     miss: 1
     perfect: 0.025
@@ -321,8 +322,7 @@ MonoBehaviour:
   defendPoint: {fileID: 5737527958629024725, guid: 843df9e0fb6c9654f88469f298be6120, type: 3}
   checkpointMat: {fileID: 2100000, guid: 205234b78af426149bcaeab87930b155, type: 2}
   groundObject: {fileID: 2299150166629920189}
-  skyObject: {fileID: 4509007060260571599}
-  debugText: 
+  backgroundObject: {fileID: 4509007060260571599}
 --- !u!82 &4470343959021046190
 AudioSource:
   m_ObjectHideFlags: 0
@@ -550,53 +550,6 @@ MonoBehaviour:
   maxBeatScale: 1.1
   minBeatScale: 1
   weight: {x: 0, y: 1, z: 0}
---- !u!1 &4302105031132857058
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4792036750581171569}
-  - component: {fileID: 1693741139246137303}
-  m_Layer: 0
-  m_Name: BeatLine
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &4792036750581171569
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4302105031132857058}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.780721, y: 10.282742, z: 1.8204744}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 280446172895068424}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1693741139246137303
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4302105031132857058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91d2f2666ed44bb09c0ef0d4c6695dc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  linePrefab: {fileID: 1116795526793365988, guid: 2890267efbd027d4e9759982e7080005, type: 3}
-  beatColor: {r: 1, g: 1, b: 1, a: 0.1764706}
-  measureColor: {r: 1, g: 1, b: 1, a: 0.5254902}
 --- !u!1 &5311352171151787723
 GameObject:
   m_ObjectHideFlags: 0
@@ -608,12 +561,12 @@ GameObject:
   - component: {fileID: 8102447344336227096}
   - component: {fileID: 4509007060260571599}
   m_Layer: 0
-  m_Name: Sky
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8102447344336227096
 Transform:
   m_ObjectHideFlags: 0
@@ -623,7 +576,7 @@ Transform:
   m_GameObject: {fileID: 5311352171151787723}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.8561, y: -4.1272, z: 0}
+  m_LocalPosition: {x: 13.8561, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -679,11 +632,11 @@ SpriteRenderer:
   m_SortingOrder: -200
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 973a56f90f900bb43bc72f61bf87f54d, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 93.87998, y: 38.55723}
+  m_Size: {x: 93.87998, y: 55.82}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -774,7 +727,6 @@ Transform:
   - {fileID: 531200933626149102}
   - {fileID: 744514922964737391}
   - {fileID: 891939383507281983}
-  - {fileID: 4792036750581171569}
   - {fileID: 7255656859037539262}
   - {fileID: 8102447344336227096}
   m_Father: {fileID: 0}
@@ -5699,7 +5651,7 @@ Transform:
   m_GameObject: {fileID: 7285908776214333234}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.7167, y: 1.51976, z: 0}
+  m_LocalPosition: {x: 12.7167, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10815,7 +10767,7 @@ Transform:
   m_GameObject: {fileID: 8187403799229496861}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.98483, y: 0.51976, z: 0}
+  m_LocalPosition: {x: -5.24, y: 0.51976, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10841,6 +10793,7 @@ MonoBehaviour:
   autoPlay: 0
   bodyCenter: {fileID: 1608391227213116186}
   hitPoint: {fileID: 4038372646998111806}
+  playerOffsetX: 0
 --- !u!61 &5002586247151848926
 BoxCollider2D:
   m_ObjectHideFlags: 0

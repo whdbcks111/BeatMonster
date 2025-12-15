@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using _02.Scripts.Level.Note;
 using _02.Scripts.Manager;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace _02.Scripts.Level
 {
@@ -19,6 +20,8 @@ namespace _02.Scripts.Level
 
         public Transform bodyCenter;
         public Transform hitPoint;
+
+        public float playerOffsetX;
 
         private void Awake()
         {
@@ -46,28 +49,12 @@ namespace _02.Scripts.Level
                         throw new ArgumentOutOfRangeException();
                 }
             }
-
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                Defend();
-            }
-            
-            if (Input.GetKeyDown(KeyCode.J))
-            {
-                Attack();   
-            }
-
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                if(LevelManager.instance.isPlaying)
-                    LevelManager.instance.Pause();
-                else 
-                    LevelManager.instance.Play();
-            }
         }
 
         public void Attack()
         {
+            if(!LevelManager.instance.isPlaying) return;
+            
             var nextNote = LevelManager.instance.GetNextNote();
             
             _animator.SetTrigger(AnimAttack);
@@ -84,6 +71,8 @@ namespace _02.Scripts.Level
 
         public void Defend()
         {
+            if(!LevelManager.instance.isPlaying) return;
+            
             var nextNote = LevelManager.instance.GetNextNote();
             
             _animator.SetTrigger(AnimDefend);

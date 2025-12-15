@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47bee1b346cc400ba35eb53b187eb418, type: 3}
+  m_Name: LevelEditorBindings
+  m_EditorClassIdentifier: Assembly-CSharp::_09.ScriptableObjects.LevelEditorBindings
+  level:
+    startOffset: 0
+    beatsPerMeasure: 4
+    defaultBpm: 180
+    baseScrollSpeed: 4
+    bossId: Slime
+    musicId: Platform Shoes
+    levelName: Test Level 2
+    musicName: Platform Shoes
+    authorName: nickpanek
+    musicPath: 
+    pattern:
+    - appearBeat: 0
+      noteType: Attack
+    - appearBeat: 1
+      noteType: Attack
+    - appearBeat: 1.5
+      noteType: Attack
+    - appearBeat: 2
+      noteType: Attack
+    - appearBeat: 3
+      noteType: Attack
+    - appearBeat: 3.5
+      noteType: Attack
+    - appearBeat: 4
+      noteType: Attack
+    - appearBeat: 5
+      noteType: Attack
+    - appearBeat: 6
+      noteType: Defend
+    - appearBeat: 7
+      noteType: Attack
+    - appearBeat: 8
+      noteType: Defend
+    - appearBeat: 9
+      noteType: Attack
+    - appearBeat: 10
+      noteType: Attack
+    - appearBeat: 11
+      noteType: Attack
+    - appearBeat: 12
+      noteType: Attack
+    - appearBeat: 13
+      noteType: Attack
+    - appearBeat: 14
+      noteType: Defend
+    - appearBeat: 16
+      noteType: Defend
+    - appearBeat: 17
+      noteType: Attack
+    - appearBeat: 17.5
+      noteType: Attack
+    - appearBeat: 18
+      noteType: Attack
+    - appearBeat: 19.020758
+      noteType: Defend
+    - appearBeat: 19.501152
+      noteType: Defend
+    - appearBeat: 19.99934
+      noteType: Defend
+    - appearBeat: 20.497528
+      noteType: Defend
+    - appearBeat: 20.995716
+      noteType: Defend
+    - appearBeat: 22.009884
+      noteType: Defend
+    - appearBeat: 22.988466
+      noteType: Defend
+    - appearBeat: 23.486654
+      noteType: Defend
+    - appearBeat: 23.984842
+      noteType: Defend
+    - appearBeat: 24.999008
+      noteType: Defend
+    - appearBeat: 25.995386
+      noteType: Defend
+    - appearBeat: 27.988136
+      noteType: Defend
+    - appearBeat: 29.99868
+      noteType: Defend
+    - appearBeat: 32.007214
+      noteType: Attack
+    - appearBeat: 32.980988
+      noteType: Attack
+    - appearBeat: 33.49443
+      noteType: Attack
+    - appearBeat: 34.007874
+      noteType: Attack

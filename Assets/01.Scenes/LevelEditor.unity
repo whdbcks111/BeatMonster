@@ -171,8 +171,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: GamePlayEssential
       objectReference: {fileID: 0}
+    - target: {fileID: 7018711355878142922, guid: 2144a7a465973934eb9304aa392ff805, type: 3}
+      propertyPath: editorBindings
+      value: 
+      objectReference: {fileID: 11400000, guid: 05c79085346d60c4ea2dbe6935dffd38, type: 2}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4302105031132857058, guid: 2144a7a465973934eb9304aa392ff805, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2144a7a465973934eb9304aa392ff805, type: 3}
@@ -299,7 +304,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 12
+  orthographic size: 20
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -324,7 +329,7 @@ Transform:
   m_GameObject: {fileID: 686382673}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19.73, y: -3.2, z: -10}
+  m_LocalPosition: {x: 28, y: -1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -374,6 +379,95 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1 &1109880411
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1109880412}
+  - component: {fileID: 1109880415}
+  - component: {fileID: 1109880414}
+  - component: {fileID: 1109880413}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1109880412
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109880411}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 23.45566, y: 13.05866, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1109880413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109880411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f14f285a5f7e4583bd2fc608cd66da2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_02.Scripts.Input.LevelEditorInputBindings
+  editor: {fileID: 1570757132}
+--- !u!114 &1109880414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109880411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40c74905ecf742d59e43f9ad55af3889, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_02.Scripts.Input.PlayerInputBindings
+--- !u!114 &1109880415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109880411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: 6e44e88f9f9c0c94582c5fca1c5ba051, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: LevelEditor
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1570757129
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,7 +537,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_02.Scripts.UI.LevelEditorGUI
   timeGuideTemplate: {fileID: 9197481963319205126, guid: 4407510fb2906674f8bf630dbe2d937b, type: 3}
+  snapGuideTemplate: {fileID: 9197481963319205126, guid: ec5e2d39911ada04c95c06b4edad207a, type: 3}
   noteTemplate: {fileID: 9197481963319205126, guid: 09a0c836668acf245b4961ab813df5fc, type: 3}
+  normalBeatGuidelineHideSpan: 15
+  subBeatGuidelineHideSpan: 60
+  snapSpaceSize: 0.3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -452,3 +550,4 @@ SceneRoots:
   - {fileID: 1570757131}
   - {fileID: 426591769}
   - {fileID: 566090454}
+  - {fileID: 1109880412}
