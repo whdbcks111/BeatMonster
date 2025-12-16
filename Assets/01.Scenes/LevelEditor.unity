@@ -392,7 +392,7 @@ GameObject:
   - component: {fileID: 1109880414}
   - component: {fileID: 1109880413}
   m_Layer: 0
-  m_Name: UIManager
+  m_Name: InputManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -539,9 +539,11 @@ MonoBehaviour:
   timeGuideTemplate: {fileID: 9197481963319205126, guid: 4407510fb2906674f8bf630dbe2d937b, type: 3}
   snapGuideTemplate: {fileID: 9197481963319205126, guid: ec5e2d39911ada04c95c06b4edad207a, type: 3}
   noteTemplate: {fileID: 9197481963319205126, guid: 09a0c836668acf245b4961ab813df5fc, type: 3}
+  eventTemplate: {fileID: 9197481963319205126, guid: da17d21dde7b1514f92c76bdab0499d8, type: 3}
   normalBeatGuidelineHideSpan: 15
   subBeatGuidelineHideSpan: 60
   snapSpaceSize: 0.3
+  buttonSoundClip: {fileID: 8300000, guid: 4e7dc84442cd2f34d9706d8408d905d4, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

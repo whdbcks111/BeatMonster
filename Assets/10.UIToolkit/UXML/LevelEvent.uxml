@@ -1,0 +1,6 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/10.UIToolkit/USS/Editor.uss?fileID=7433441132597879392&amp;guid=652f52cd5fb47704b9a3b249d1e12c31&amp;type=3#Editor"/>
+    <ui:VisualElement name="Note" class="note" style="flex-grow: 1; position: absolute; left: 0; width: 75px; height: 75px; background-image: url(&quot;project://database/Assets/03.Graphics/UI/LevelEditor/EventIcon.png?fileID=2800000&amp;guid=b9395efc79eb6a44793a43fc883b2d73&amp;type=3#EventIcon&quot;); translate: -50% 0; -unity-background-image-tint-color: rgb(190, 190, 190); justify-content: center; align-items: center; background-size: 70% 70%;">
+        <ui:VisualElement style="flex-grow: 0; background-color: rgb(255, 255, 255); width: 5px; height: 5px; flex-shrink: 0; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%;"/>
+    </ui:VisualElement>
+</ui:UXML>

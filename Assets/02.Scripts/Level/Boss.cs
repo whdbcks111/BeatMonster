@@ -7,6 +7,7 @@ namespace _02.Scripts.Level
 {
     public class Boss : MonoBehaviour
     {
+        public string bossName;
         [NonSerialized] public Action onHit = () => { };
         [NonSerialized] public int hp, maxHp;
         public readonly Dictionary<string, NoteObject> noteMap = new();

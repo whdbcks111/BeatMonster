@@ -76,6 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e003eb56cdcf42f3b65101e149d40116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bossName: "\uC2AC\uB77C\uC784 \uB300\uB9C8\uC655"
   notes:
   - {fileID: 516968732864150104, guid: 674e295e3eb05f44e9d8e197a938106f, type: 3}
   - {fileID: 516968732864150104, guid: b442a19296764034f93eae8689a6d45b, type: 3}

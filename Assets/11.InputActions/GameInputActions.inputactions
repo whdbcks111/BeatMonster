@@ -1307,6 +1307,34 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "GameView",
+            "id": "fbc13e2f-4edd-4d9d-8292-8a32f40380f1",
+            "actions": [
+                {
+                    "name": "Escape",
+                    "type": "Button",
+                    "id": "f702f391-2604-4937-b286-28d5f6061f13",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "5699ca66-092c-4a3b-97d1-eb7f7492397f",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

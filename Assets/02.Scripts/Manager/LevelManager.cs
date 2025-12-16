@@ -38,6 +38,7 @@ namespace _02.Scripts.Manager
         [NonSerialized] public bool isLoaded = false;
 
         [NonSerialized] public Action onLoaded;
+        [NonSerialized] public Action<JudgementType> onAddJudgement;
 
         public LevelEditorBindings editorBindings;
 
@@ -225,7 +226,6 @@ namespace _02.Scripts.Manager
         {
             Pause();
             _audioSource.Stop();
-            var parryCount = 0;
 
             foreach (var noteObj in noteObjects)
             {
@@ -235,12 +235,10 @@ namespace _02.Scripts.Manager
             
             foreach (var note in currentLevel.pattern)
             {
-                var newNoteObj = AddNoteObject(note);
-                
-                if (newNoteObj.hitType == HitType.Attack) parryCount++;
+                AddNoteObject(note);
             }
             
-            currentBoss.InitHp(parryCount);
+            currentBoss.InitHp(currentLevel.pattern.Count);
 
             AdjustBossPosition();
 
@@ -265,6 +263,12 @@ namespace _02.Scripts.Manager
         {
             currentLevel.pattern.Add(newNote);
             return AddNoteObject(newNote);
+        }
+
+        public LevelEvent AddEvent(LevelEvent levelEvent)
+        {
+            currentLevel.events.Add(levelEvent);
+            return levelEvent;
         }
 
         private void AdjustBossPosition()
@@ -393,32 +397,39 @@ namespace _02.Scripts.Manager
             var pos = Vector3.up * 1.4f;
             var offset = inputTime - originTime;
             var absOffset = Mathf.Abs(offset);
+            var result = JudgementType.Miss;
 
             if (absOffset <= judgementTimeSettings.perfect)
             {
                 perfectCount++;
-                return JudgementType.Perfect;
+                result = JudgementType.Perfect;
             }
-            
-            if (absOffset <= judgementTimeSettings.good)
+            else if (absOffset <= judgementTimeSettings.good)
             {
                 goodCount++;
-                return JudgementType.Good;
+                result = JudgementType.Good;
             }
-            
-            if (absOffset <= judgementTimeSettings.bad)
+            else if (absOffset <= judgementTimeSettings.bad)
             {
                 if (offset < 0f)
                 {
                     earlyCount++;
-                    return JudgementType.Early;
+                    result = JudgementType.Early;
                 }
-                lateCount++;
-                return JudgementType.Late;
+                else
+                {
+                    lateCount++;
+                    result = JudgementType.Late;
+                }
+            }
+            else
+            {
+                missCount++;
+                result = JudgementType.Miss;
             }
             
-            missCount++;
-            return JudgementType.Miss;
+            LevelManager.instance.onAddJudgement?.Invoke(result);
+            return result;
         } 
     }
 
@@ -442,6 +453,23 @@ namespace _02.Scripts.Manager
         public string groundId;
         
         public List<Note> pattern;
+        public List<LevelEvent> events;
+    }
+
+    [Serializable]
+    public class LevelEvent
+    {
+        public float appearBeat;
+        public bool? isCheckpoint;
+
+        public LevelEvent Clone()
+        {
+            return new LevelEvent
+            {
+                appearBeat = appearBeat,
+                isCheckpoint = isCheckpoint
+            };
+        }
     }
 
     [Serializable]

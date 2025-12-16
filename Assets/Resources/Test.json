@@ -254,6 +254,87 @@
         {
             "appearBeat": 30.998680114746095,
             "noteType": "Defend"
+        },
+        {
+            "appearBeat": 51.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 51.5,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 51.999996185302737,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 52.49999237060547,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 52.99999237060547,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 53.9999885559082,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 54.99998474121094,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 55.49998474121094,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 55.99998092651367,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 57.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 58.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 60.00000762939453,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 62.00000762939453,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 64.00001525878906,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 65.50001525878906,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 65.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 66.5,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 67.0,
+            "noteType": "Attack"
+        },
+        {
+            "appearBeat": 67.49999237060547,
+            "noteType": "Attack"
+        }
+    ],
+    "events": [
+        {
+            "appearBeat": 64.0
         }
     ]
 }

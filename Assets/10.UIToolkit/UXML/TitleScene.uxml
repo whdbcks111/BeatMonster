@@ -1,0 +1,12 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/10.UIToolkit/USS/TitleScene.uss?fileID=7433441132597879392&amp;guid=6ad52b5449653a14b8a305c1ae32ad37&amp;type=3#TitleScene"/>
+    <ui:Image name="Logo" source="project://database/Assets/03.Graphics/UI/Logo.png?fileID=2800000&amp;guid=fc1596e7b857f044fb58f741e65e1018&amp;type=3#Logo" class="logo" style="position: absolute; width: 1000px; height: auto; top: 0; left: 0; bottom: 0; margin-left: 100px; margin-bottom: 200px;"/>
+    <ui:Label text="Title BGM: MFCC - Retro Arcade Game Music " name="Copyrights" style="position: absolute; bottom: 0; left: 0; color: rgb(255, 255, 255);"/>
+    <ui:VisualElement name="Buttons" class="buttons" style="flex-grow: 0; flex-shrink: 0; width: 500px; position: absolute; margin-right: 150px; margin-bottom: 100px; align-items: flex-end; right: 0; top: 0; bottom: 0; justify-content: center;">
+        <ui:Button text="&#44172;&#51076; &#49884;&#51089;" name="GameStartBtn" class="button" style="height: 150px; width: 400px; position: relative; margin-bottom: 10px;"/>
+        <ui:Button text="&#49444;&#51221;" name="SettingsBtn" class="button" style="position: relative; margin-bottom: 10px;"/>
+        <ui:Button text="&#48372;&#51221;" name="CalibrationBtn" class="button" style="position: relative; margin-bottom: 10px;"/>
+        <ui:Button text="&#47112;&#48296; &#50640;&#46356;&#53552;" name="LevelEditorBtn" class="button" style="position: relative; margin-bottom: 10px;"/>
+        <ui:Button text="&#45208;&#44032;&#44592;" name="ExitBtn" class="button" style="position: relative; margin-bottom: 10px;"/>
+    </ui:VisualElement>
+</ui:UXML>

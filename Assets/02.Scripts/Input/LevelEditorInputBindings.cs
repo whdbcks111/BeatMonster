@@ -11,6 +11,8 @@ namespace _02.Scripts.Input
     public class LevelEditorInputBindings : MonoBehaviour
     {
         [SerializeField] private LevelEditorGUI editor;
+        [SerializeField] private float zoomSensibility = 1f;
+        [SerializeField] private float timeLineScrollSensibility = 1f;
 
         private void OnTimeMoveLeft(InputValue value)
         {
@@ -34,7 +36,7 @@ namespace _02.Scripts.Input
         
         private void OnZoom(InputValue value)
         {
-            editor.Zoom(value.Get<float>() * 0.1f);
+            editor.Zoom(value.Get<float>() * zoomSensibility);
         }
         
         private void OnGoToHome(InputValue value)
@@ -49,7 +51,7 @@ namespace _02.Scripts.Input
         
         private void OnDelete(InputValue value)
         {
-            editor.DeleteSelectedNotes();
+            editor.DeleteSelectedElements();
         }
         
         private void OnSaveLevel(InputValue value)
@@ -109,7 +111,7 @@ namespace _02.Scripts.Input
         
         private void OnTimelineScroll(InputValue value)
         {
-            editor.currentLeftEndBeat += -value.Get<float>() * 0.25f;
+            editor.currentLeftEndBeat += -value.Get<float>() * timeLineScrollSensibility;
         }
         
         private void OnCopy(InputValue value)

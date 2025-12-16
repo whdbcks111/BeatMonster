@@ -112,7 +112,6 @@ namespace _02.Scripts.Level.Note
                     //ParticleManager.instance.SpawnHitParticle(this);
                     ParticleManager.instance.PlayParticle(ParticleManager.instance.attackParticle, 
                         LevelManager.instance.player.hitPoint.position);
-                    LevelManager.instance.currentBoss.Hit();
                     break;
                 case HitType.Defend:
                     //ParticleManager.instance.SpawnSplitParticle(this);
