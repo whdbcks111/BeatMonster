@@ -15,15 +15,51 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: c96071bb448e03a4884dd25ef44b0415
   m_SerializeEntries:
+  - m_GUID: 6668d4728aa3c134ea837d140c78899c
+    m_Address: Background/Sky
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - background
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 710a0aa320456154aaf08bec6214b2c4
     m_Address: Boss/Slime
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - boss
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9f827d9fd5ae60f409926ee2add0912f
-    m_Address: Music/Platform Shoes
+  - m_GUID: 755c304f5c21d1348b1fea96635f8add
+    m_Address: Music/Stage_1_1
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 973a56f90f900bb43bc72f61bf87f54d
+    m_Address: BG/Sky
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - background
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f827d9fd5ae60f409926ee2add0912f
+    m_Address: Music/Stage_1_2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a8b763ce5898ef248bb8e423f2a0c7fa
+    m_Address: Boss/MushBoom
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - boss
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b80877e551374c94cb206b1440f21651
+    m_Address: Ground/Ground
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ground
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f9b495bb7555f4f4eb3da2d951e12f86
+    m_Address: Ground/Ground
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ground
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: afbf5235230089c469c56217c6cd9566, type: 2}

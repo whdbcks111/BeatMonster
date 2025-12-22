@@ -53,8 +53,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _Intensity: 0
     m_Colors:
-    - _Bloom: {r: 1.741101, g: 1.741101, b: 1.741101, a: 0}
+    - White: {r: 1, g: 1, b: 1, a: 1}
+    - _Bloom: {r: 2.3245065, g: 2.3245065, b: 2.3245065, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

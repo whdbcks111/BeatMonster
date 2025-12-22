@@ -8,18 +8,18 @@
             "actions": [
                 {
                     "name": "Attack",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "7d9e7422-64ad-485c-85c3-37e19162c138",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
                     "name": "Defend",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "3d6333ce-502a-4a5a-bce2-7104416c0f00",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -1313,7 +1313,7 @@
             "id": "fbc13e2f-4edd-4d9d-8292-8a32f40380f1",
             "actions": [
                 {
-                    "name": "Escape",
+                    "name": "TogglePauseInGame",
                     "type": "Button",
                     "id": "f702f391-2604-4937-b286-28d5f6061f13",
                     "expectedControlType": "",
@@ -1330,7 +1330,75 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Escape",
+                    "action": "TogglePauseInGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "StageSelectScene",
+            "id": "da996701-3847-4e54-af39-7e316c7af8ef",
+            "actions": [
+                {
+                    "name": "GoToNextStage",
+                    "type": "Button",
+                    "id": "aeeccb8a-59fa-4412-8043-cd6e75ca5567",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "GoToPrevStage",
+                    "type": "Button",
+                    "id": "8c18a021-97bf-4e20-972a-863fb3ecf06a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "GoToTitle",
+                    "type": "Button",
+                    "id": "e33777ac-ddfe-428f-ad54-2a5c86ff354f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a460bd3b-926c-4fda-9df6-946afad47372",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GoToNextStage",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "10ae4b55-37a7-44d8-8749-fdaf7dc5ef1c",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GoToPrevStage",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d170a895-181f-448a-8600-0aaf42219a96",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GoToTitle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

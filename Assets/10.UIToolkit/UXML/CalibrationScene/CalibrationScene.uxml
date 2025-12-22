@@ -1,0 +1,31 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/10.UIToolkit/USS/UiDefault.uss?fileID=7433441132597879392&amp;guid=c0cb2bf18008bdd40bf15a1ed68b8adf&amp;type=3#UiDefault"/>
+    <ui:VisualElement name="Background" style="flex-grow: 1; background-color: rgb(90, 104, 110); justify-content: center; align-items: center;">
+        <ui:Label text="&#51020;&#50501; &#50724;&#54532;&#49483; &#48372;&#51221;&#51012; &#49884;&#51089;&#54633;&#45768;&#45796;." name="Label" style="font-size: 30px; -unity-font-style: normal; margin-bottom: 10px;"/>
+        <ui:Label text="&#48149;&#51088;&#50640; &#47582;&#52656; &#50500;&#47924; &#53412;&#45208; &#45572;&#47476;&#49464;&#50836;!" style="font-size: 40px; -unity-font-style: bold; margin-bottom: 30px;"/>
+        <ui:VisualElement name="MarkerContainer" style="flex-grow: 0; flex-direction: row;">
+            <ui:Image source="project://database/Assets/03.Graphics/UI/CalibrationMarker_Empty.png?fileID=2800000&amp;guid=4312022b244a19f478885ec908fd0ada&amp;type=3#CalibrationMarker_Empty" style="width: 40px; height: 40px; margin-right: 5px; margin-left: 5px;"/>
+            <ui:Image source="project://database/Assets/03.Graphics/UI/CalibrationMarker_Empty.png?fileID=2800000&amp;guid=4312022b244a19f478885ec908fd0ada&amp;type=3#CalibrationMarker_Empty" style="width: 40px; height: 40px; margin-right: 5px; margin-left: 5px;"/>
+            <ui:Image source="project://database/Assets/03.Graphics/UI/CalibrationMarker_Empty.png?fileID=2800000&amp;guid=4312022b244a19f478885ec908fd0ada&amp;type=3#CalibrationMarker_Empty" style="width: 40px; height: 40px; margin-right: 5px; margin-left: 5px;"/>
+            <ui:Image source="project://database/Assets/03.Graphics/UI/CalibrationMarker_Empty.png?fileID=2800000&amp;guid=4312022b244a19f478885ec908fd0ada&amp;type=3#CalibrationMarker_Empty" style="width: 40px; height: 40px; margin-right: 5px; margin-left: 5px;"/>
+            <ui:Image source="project://database/Assets/03.Graphics/UI/CalibrationMarker_Empty.png?fileID=2800000&amp;guid=4312022b244a19f478885ec908fd0ada&amp;type=3#CalibrationMarker_Empty" style="width: 40px; height: 40px; margin-right: 5px; margin-left: 5px;"/>
+            <ui:Image source="project://database/Assets/03.Graphics/UI/CalibrationMarker_Empty.png?fileID=2800000&amp;guid=4312022b244a19f478885ec908fd0ada&amp;type=3#CalibrationMarker_Empty" style="width: 40px; height: 40px; margin-right: 5px; margin-left: 5px;"/>
+            <ui:Image source="project://database/Assets/03.Graphics/UI/CalibrationMarker_Empty.png?fileID=2800000&amp;guid=4312022b244a19f478885ec908fd0ada&amp;type=3#CalibrationMarker_Empty" style="width: 40px; height: 40px; margin-right: 5px; margin-left: 5px;"/>
+            <ui:Image source="project://database/Assets/03.Graphics/UI/CalibrationMarker_Empty.png?fileID=2800000&amp;guid=4312022b244a19f478885ec908fd0ada&amp;type=3#CalibrationMarker_Empty" style="width: 40px; height: 40px; margin-right: 5px; margin-left: 5px;"/>
+            <ui:Image source="project://database/Assets/03.Graphics/UI/CalibrationMarker_Empty.png?fileID=2800000&amp;guid=4312022b244a19f478885ec908fd0ada&amp;type=3#CalibrationMarker_Empty" style="width: 40px; height: 40px; margin-right: 5px; margin-left: 5px;"/>
+            <ui:Image source="project://database/Assets/03.Graphics/UI/CalibrationMarker_Empty.png?fileID=2800000&amp;guid=4312022b244a19f478885ec908fd0ada&amp;type=3#CalibrationMarker_Empty" style="width: 40px; height: 40px; margin-right: 5px; margin-left: 5px;"/>
+            <ui:Image source="project://database/Assets/03.Graphics/UI/CalibrationMarker_Empty.png?fileID=2800000&amp;guid=4312022b244a19f478885ec908fd0ada&amp;type=3#CalibrationMarker_Empty" style="width: 40px; height: 40px; margin-right: 5px; margin-left: 5px;"/>
+            <ui:Image source="project://database/Assets/03.Graphics/UI/CalibrationMarker_Empty.png?fileID=2800000&amp;guid=4312022b244a19f478885ec908fd0ada&amp;type=3#CalibrationMarker_Empty" style="width: 40px; height: 40px; margin-right: 5px; margin-left: 5px;"/>
+            <ui:Image source="project://database/Assets/03.Graphics/UI/CalibrationMarker_Empty.png?fileID=2800000&amp;guid=4312022b244a19f478885ec908fd0ada&amp;type=3#CalibrationMarker_Empty" style="width: 40px; height: 40px; margin-right: 5px; margin-left: 5px;"/>
+            <ui:Image source="project://database/Assets/03.Graphics/UI/CalibrationMarker_Empty.png?fileID=2800000&amp;guid=4312022b244a19f478885ec908fd0ada&amp;type=3#CalibrationMarker_Empty" style="width: 40px; height: 40px; margin-right: 5px; margin-left: 5px;"/>
+            <ui:Image source="project://database/Assets/03.Graphics/UI/CalibrationMarker_Empty.png?fileID=2800000&amp;guid=4312022b244a19f478885ec908fd0ada&amp;type=3#CalibrationMarker_Empty" style="width: 40px; height: 40px; margin-right: 5px; margin-left: 5px;"/>
+            <ui:Image source="project://database/Assets/03.Graphics/UI/CalibrationMarker_Empty.png?fileID=2800000&amp;guid=4312022b244a19f478885ec908fd0ada&amp;type=3#CalibrationMarker_Empty" style="width: 40px; height: 40px; margin-right: 5px; margin-left: 5px;"/>
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
+            <ui:Label text="&#54217;&#44512; &#50724;&#54532;&#49483; : " style="margin-top: 10px; margin-left: 0; margin-right: 0;"/>
+            <ui:Label text="0 " name="OffsetLabel" style="margin-top: 10px; margin-right: 0; margin-left: 0;"/>
+            <ui:Label text="ms" style="margin-top: 10px; margin-left: 0; margin-right: 0;"/>
+        </ui:VisualElement>
+        <ui:Image source="project://database/Assets/03.Graphics/UI/LevelEditor/Exit.png?fileID=2800000&amp;guid=51a397cb95b81df4ea4396c3c6290205&amp;type=3#Exit" name="ExitBtn" style="position: absolute; top: 10px; left: 10px; width: 70px; height: 70px;"/>
+    </ui:VisualElement>
+</ui:UXML>

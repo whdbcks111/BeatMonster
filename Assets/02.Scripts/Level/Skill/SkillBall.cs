@@ -17,16 +17,16 @@ namespace _02.Scripts.Level.Skill
             awakenBeat = LevelManager.instance.currentBeat;
         }
 
-        public void Shoot()
+        public void Shoot(Transform parent = null)
         {
-            transform.SetParent(null);
+            transform.SetParent(parent);
             ShootTask().Forget();
         }
 
         private async UniTask ShootTask()
         {
             var startPos = transform.position;
-            var endPos = LevelManager.instance.currentBoss.transform.position;
+            var endPos = LevelManager.instance.currentBoss.bodyCenter.position;
 
             for (var i = 0f; i < 1f; i += Time.deltaTime / shootTime)
             {
@@ -34,8 +34,8 @@ namespace _02.Scripts.Level.Skill
                 transform.position = Vector3.Lerp(startPos, endPos, i);
             }
             
+            DestroyImmediate(gameObject);
             LevelManager.instance.currentBoss.Hit();
-            Destroy(gameObject);
         }
     }
 }

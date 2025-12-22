@@ -5,36 +5,28 @@ namespace _02.Scripts.Utils
 {
     public static class AudioTypeFinder
     {
+        public static readonly string[] avaliableExtensions = {
+            "mp3", "aac", "m4a", "ogg", "wav", "aiff", "aif", "mod", "it", "s3m", "xm"
+        };
+        
         public static AudioType GetAudioTypeFromFileExtension(string filePath)
         {
             var extension = Path.GetExtension(filePath);
 
             if (string.IsNullOrEmpty(extension)) return AudioType.UNKNOWN;
 
-            switch (extension)
+            return extension.Replace(".", string.Empty) switch
             {
-                case ".mp3":
-                case ".aac":
-                case ".m4a":
-                    return AudioType.MPEG;
-                case ".ogg":
-                    return AudioType.OGGVORBIS;
-                case ".wav":
-                    return AudioType.WAV;
-                case ".aiff":
-                case ".aif":
-                    return AudioType.AIFF;
-                case ".mod":
-                    return AudioType.MOD;
-                case ".it":
-                    return AudioType.IT;
-                case ".s3m":
-                    return AudioType.S3M;
-                case ".xm":
-                    return AudioType.XM;
-                default:
-                    return AudioType.UNKNOWN;
-            }
+                "mp3" or "aac" or "m4a" => AudioType.MPEG,
+                "ogg" => AudioType.OGGVORBIS,
+                "wav" => AudioType.WAV,
+                "aiff" or "aif" => AudioType.AIFF,
+                "mod" => AudioType.MOD,
+                "it" => AudioType.IT,
+                "s3m" => AudioType.S3M,
+                "xm" => AudioType.XM,
+                _ => AudioType.UNKNOWN
+            };
         }
     }
 }

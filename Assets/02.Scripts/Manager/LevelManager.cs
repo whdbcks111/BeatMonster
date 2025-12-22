@@ -4,9 +4,12 @@ using System.IO;
 using System.Linq;
 using _02.Scripts.Level;
 using _02.Scripts.Level.Note;
+using _02.Scripts.Settings;
+using _02.Scripts.UI;
 using _02.Scripts.Utils;
 using _09.ScriptableObjects;
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
@@ -26,10 +29,14 @@ namespace _02.Scripts.Manager
                 dspTime - _startDspTime : 
                 0.0
             ));
+        
+        public float maxPlayTime => BeatToPlayTime(currentLevel.pattern
+            .OrderByDescending(n => n.appearBeat)
+            .FirstOrDefault()?.appearBeat ?? 0f);
 
         public float currentBeat => currentLevel == null ? -1f : currentPlayTime * currentLevel.defaultBpm / 60f;
 
-        public float offset = 0.24f;
+        public float offset => GameSettings.settings.audioOffset;
         public Player player;
         public LevelPlayerData currentLevelPlayerData;
         [NonSerialized] public Level currentLevel;
@@ -40,6 +47,7 @@ namespace _02.Scripts.Manager
         [NonSerialized] public Action onLoaded;
         [NonSerialized] public Action<JudgementType> onAddJudgement;
 
+        public bool isLevelEditor;
         public LevelEditorBindings editorBindings;
 
         [Header("Gameplay Settings")] 
@@ -54,13 +62,19 @@ namespace _02.Scripts.Manager
         public GameObject attackPoint;
         public GameObject defendPoint;
 
-        private double _startDspTime = 0, _pauseDspTime = 0, _accDspTime = -2.0;
+        private double _startDspTime = 0, _pauseDspTime = 0, _accDspTime = 0;
         private AudioSource _audioSource;
         private float _checkpointEnterTime = float.NaN;
-        private float _lastCheckpointBeat = float.NaN;
+        private CheckpointData _checkpointData;
         private Camera _camera;
 
         private double _prevDspTime, _interpolatedDspTime;
+
+        private float _prepareEndBeat = 0f;
+        private bool _isPreparing = false;
+        private int _nextPrepareCountdownBeat = 0;
+
+        private bool _isCleared = false;
 
         [Header("Checkpoint Shader Control")]
         [SerializeField] private Material checkpointMat;
@@ -69,12 +83,24 @@ namespace _02.Scripts.Manager
         [SerializeField] private SpriteRenderer groundObject;
         [SerializeField] private SpriteRenderer backgroundObject;
         
+        [Header("GUI")]
+        [SerializeField] private LoadingScreenGUI loadingScreenGUI;
+        [SerializeField] private GameViewGUI gameViewGUI;
+
+        [Header("Prepare Sounds")]
+        [SerializeField] private AudioClip prepareSound;
+        [SerializeField] private float prepareSoundVolume = 1f;
+        
         private static readonly int CheckpointVfxRadius = Shader.PropertyToID("_Radius");
         private static readonly int CheckpointVfxCenter = Shader.PropertyToID("_Center");
+
+        private const double AudioStartEpsilon = 0.01;
 
         private void Awake()
         {
             instance = this;
+            
+            GameSettings.Initialize();
 
             _camera = Camera.main;
             _prevDspTime = _interpolatedDspTime = dspTime;
@@ -99,7 +125,19 @@ namespace _02.Scripts.Manager
 
         private void Start()
         {
-            LoadLevel("$Test").Forget();
+            loadingScreenGUI.HideLoadingPanel();
+            
+            if (SceneTransitionData.levelData != null)
+            {
+                var level = SceneTransitionData.levelData;
+                SceneTransitionData.levelData = null;
+                LoadLevel(level).Forget();
+            }
+            else
+            {
+                // create new level
+                LoadLevel(new Level()).Forget();
+            }
         }
 
         private void OnDrawGizmos()
@@ -120,12 +158,102 @@ namespace _02.Scripts.Manager
             UpdateCheckpointVfx();
             AdjustBossPosition();
             AdjustPlayerPosition();
+            UpdateLevelEvents();
+            UpdatePrepare();
+            GameClearCheckUpdate();
         }
 
-        public void SetCheckpoint()
+        private void GameClearCheckUpdate()
         {
-            _lastCheckpointBeat = currentPlayTime;
-            _checkpointEnterTime = Time.unscaledTime;
+            if (!gameViewGUI) return;
+            
+            if (currentPlayTime > maxPlayTime + 1f)
+            {
+                if (!_isCleared)
+                {
+                    gameViewGUI.OpenClearWindow();
+                    if(!isLevelEditor) currentLevelPlayerData.SaveData(currentLevel.levelUuid);
+                }
+                _isCleared = true;
+            }
+            else
+            {
+                if(_isCleared) gameViewGUI.CloseClearWindow();
+                _isCleared = false;
+            }
+        }
+
+        private void UpdatePrepare()
+        {
+            if(currentLevel == null) return;
+
+            if (_isPreparing)
+            {
+                var countdownAppearBeat = _prepareEndBeat - _nextPrepareCountdownBeat;
+                var beatOffset = BeatToPlayTime(countdownAppearBeat - currentBeat) - offset;
+                
+                if (beatOffset <= offset)
+                {
+                    if (_nextPrepareCountdownBeat >= 0)
+                    {
+                        var playDspTime = dspTime + beatOffset;
+                        SoundManager.instance.PlaySfxScheduled(prepareSound, playDspTime, prepareSoundVolume);
+                    }
+                    
+                    _nextPrepareCountdownBeat--;
+                }
+
+                if (_prepareEndBeat <= currentBeat)
+                {
+                    _isPreparing = false;
+                }
+            }
+
+            if (gameViewGUI)
+            {
+                var countdown = Mathf.FloorToInt(_prepareEndBeat - currentBeat) + 1;
+                gameViewGUI.SetPrepareCountdown(countdown <= 4 ? countdown : -1);
+            }
+        }
+
+        private void UpdateLevelEvents()
+        {
+            if(currentLevel == null) return;
+            
+            foreach (var evt in currentLevel.events.OrderBy(e => e.appearBeat))
+            {
+                if (!evt.isPerformed && evt.appearBeat <= currentBeat)
+                {
+                    PerformEvent(evt);
+                }
+            }
+        }
+
+        public void SetCheckpoint(float beat)
+        {
+            if (currentLevel == null) return;
+            _checkpointData.beat = beat;
+            _checkpointData.playerData = currentLevelPlayerData.Clone();
+            _checkpointEnterTime = Time.unscaledTime + BeatToPlayTime(beat) - currentPlayTime;
+        }
+
+        public void GotoCheckpoint()
+        {
+            if (currentLevel == null) return;
+            
+            var prepareTime = BeatToPlayTime(4f) + 1f;
+            _prepareEndBeat = _checkpointData?.beat ?? 0f;
+            _nextPrepareCountdownBeat = 4;
+            _isPreparing = true;
+            Seek(_checkpointData == null ? 0f : BeatToPlayTime(_checkpointData.beat), prepareTime);
+            player.SetPrepareVfx(_prepareEndBeat);
+            
+            if (_checkpointData != null)
+            {
+                var respawnCount = currentLevelPlayerData.respawnCount;
+                currentLevelPlayerData = _checkpointData.playerData.Clone();
+                currentLevelPlayerData.respawnCount = respawnCount;
+            }
         }
 
         private void UpdateCheckpointVfx()
@@ -151,9 +279,10 @@ namespace _02.Scripts.Manager
 
         public async UniTask SaveLevel(string path)
         {
+            if (currentLevel == null) return;
             if(string.IsNullOrEmpty(path)) return;
             
-            var json = JsonUtility.ToJson(currentLevel, true);
+            var json = JsonConvert.SerializeObject(currentLevel, Formatting.Indented);
             if (path.StartsWith("$"))
             {
                 path = Path.Combine(Application.dataPath, "Resources/" + path[1..] + ".json");
@@ -166,8 +295,8 @@ namespace _02.Scripts.Manager
         public async UniTask LoadLevel(string path)
         {
             var level = path.StartsWith("$") ? 
-                JsonUtility.FromJson<Level>(Resources.Load<TextAsset>(path[1..]).text) : 
-                JsonUtility.FromJson<Level>(await File.ReadAllTextAsync(path));
+                JsonConvert.DeserializeObject<Level>(Resources.Load<TextAsset>(path[1..]).text) : 
+                JsonConvert.DeserializeObject<Level>(await File.ReadAllTextAsync(path));
             level.loadedPath = path;
             await LoadLevel(level);
             Debug.Log($"Load level [{currentLevel.levelName}] from {path} / music id: {currentLevel.musicPath}");
@@ -175,44 +304,16 @@ namespace _02.Scripts.Manager
 
         public async UniTask LoadLevel(Level level)
         {
+            print($"Load level [{level.levelUuid}]");
+            
             currentLevel = level;
             if (editorBindings) editorBindings.level = currentLevel;
-            
-            var bossObj = await Addressables.InstantiateAsync($"Boss/{currentLevel.bossId}");
-            if (!bossObj || !bossObj.TryGetComponent(out currentBoss))
-            {
-                throw new Exception($"Boss Load Failed (Id: {currentLevel.bossId})");
-            }
 
-            if (currentLevel.musicPath.StartsWith("$"))
-            {
-                // music path is addressable asset key
-                _audioSource.clip = await Addressables.LoadAssetAsync<AudioClip>($"Music/{currentLevel.musicPath[1..]}");
-            }
-            else
-            {
-                // music path is relative local audio file path
-                
-                var audioFilePath = Path.GetFullPath(Path.Combine(currentLevel.loadedPath, currentLevel.musicPath));
-                var audioType = AudioTypeFinder.GetAudioTypeFromFileExtension(audioFilePath);
 
-                if (audioType != AudioType.UNKNOWN)
-                {
-                    var handler = new DownloadHandlerAudioClip($"file://{audioFilePath}", audioType);
-                    handler.compressed = true;
-
-                    var request = new UnityWebRequest($"file://{audioFilePath}", "GET", handler, null);
-                    await request.SendWebRequest();
-                    if (request.responseCode == 200) _audioSource.clip = handler.audioClip;
-                }
-            }
-            
-            if (!_audioSource.clip)
-            {
-                throw new Exception($"Music Load Failed (Id: {currentLevel.musicPath})");
-            }
-
+            await LoadBoss();
             InitGame();
+            await LoadMusic();
+            
             isLoaded = true;
             onLoaded?.Invoke();
             
@@ -222,14 +323,104 @@ namespace _02.Scripts.Manager
             }
         }
 
+        public async UniTask LoadBoss()
+        {
+            if(currentBoss) Destroy(currentBoss.gameObject);
+            
+            Boss bossObj = null;
+            var loadedList = await Addressables.LoadAssetsAsync<GameObject>("boss", _ => { }).Task;
+            foreach (var bossPrefab in loadedList)
+            {
+                var boss = bossPrefab.GetComponent<Boss>();
+                if (boss.bossId == currentLevel.bossId)
+                {
+                    bossObj = Instantiate(boss, 
+                        Camera.main.ViewportToWorldPoint(playingViewportEnd), Quaternion.identity, transform);
+                }
+            }
+            if (!bossObj || !bossObj.TryGetComponent(out currentBoss))
+            {
+                throw new Exception($"Boss Load Failed (Id: {currentLevel.bossId})");
+            }
+        }
+
+        public async UniTask LoadMusic()
+        {
+            _audioSource.clip = await GetAudioClipFromLevel(currentLevel);
+        }
+
+        public static async UniTask<AudioClip> GetAudioClipFromLevel(Level level)
+        {
+            if (level.musicPath.StartsWith("$"))
+            {
+                // music path is addressable asset key
+                return await Addressables.LoadAssetAsync<AudioClip>($"Music/{level.musicPath[1..]}");
+            }
+            
+            if(!string.IsNullOrEmpty(level.musicPath))
+            {
+                // music path is relative local audio file path
+                
+                var audioFilePath = Path.GetFullPath(Path.Combine(level.loadedPath ?? "", level.musicPath));
+                var audioType = AudioTypeFinder.GetAudioTypeFromFileExtension(audioFilePath);
+
+                if (audioType != AudioType.UNKNOWN)
+                {
+                    var handler = new DownloadHandlerAudioClip($"file://{audioFilePath}", audioType);
+                    handler.compressed = false;
+                    handler.streamAudio = false;
+
+                    var request = new UnityWebRequest($"file://{audioFilePath}", "GET", handler, null);
+                    await request.SendWebRequest();
+                    if (request.responseCode == 200)
+                    {
+                        var clip = handler.audioClip;
+                        clip.LoadAudioData();
+                        return clip;
+                    }
+                }
+            }
+
+            return null;
+        }
+
         private void InitGame()
         {
+            if (currentLevel == null) return;
             Pause();
             _audioSource.Stop();
 
+            RespawnNotes();
+            
+            foreach (var evt in currentLevel.events.OrderByDescending(e => e.appearBeat))
+            {
+                evt.Prevent();
+            }
+            
+            currentBoss.InitHp(currentLevel.pattern.Count);
+
+            _checkpointData = new()
+            {
+                beat = 0f,
+                playerData = currentLevelPlayerData.Clone()
+            };
+
+            AdjustBossPosition();
+
+            _prepareEndBeat = 0f;
+            _nextPrepareCountdownBeat = 4;
+            _isPreparing = true;
+            
+            _accDspTime = -(BeatToPlayTime(4f) + 2f);
+            _pauseDspTime = 0;
+            _startDspTime = 0;
+        }
+
+        public void RespawnNotes()
+        {
             foreach (var noteObj in noteObjects)
             {
-                Destroy(noteObj.gameObject);
+                DestroyImmediate(noteObj.gameObject);
             }
             noteObjects.Clear();
             
@@ -237,19 +428,38 @@ namespace _02.Scripts.Manager
             {
                 AddNoteObject(note);
             }
+        }
+
+        public async UniTask ChangeBoss(Boss boss)
+        {
+            currentLevel.bossId = boss.bossId;
+            await LoadBoss();
             
-            currentBoss.InitHp(currentLevel.pattern.Count);
+            foreach (var note in currentLevel.pattern)
+            {
+                if (!currentBoss.noteMap.ContainsKey(note.noteType))
+                {
+                    note.noteType = currentBoss.noteMap.First().Key;
+                }
+            }
+            RespawnNotes();
+        }
 
-            AdjustBossPosition();
-
-            _lastCheckpointBeat = float.NaN;
-            _accDspTime = -2.0;
-            _pauseDspTime = 0;
-            _startDspTime = 0;
+        public void ChangeBackground(Sprite sprite)
+        {
+            if (currentLevel == null) return;
+            backgroundObject.sprite = sprite;
+        }
+        
+        public void ChangeGround(Sprite sprite)
+        {
+            if (currentLevel == null) return;
+            groundObject.sprite = sprite;
         }
 
         private NoteObject AddNoteObject(Note note)
         {
+            if (currentLevel == null) return null;
             var prefab = currentBoss.noteMap[note.noteType];
             var noteObj = Instantiate(prefab, transform, true);
                 
@@ -261,12 +471,14 @@ namespace _02.Scripts.Manager
 
         public NoteObject AddPattern(Note newNote)
         {
+            if (currentLevel == null) return null;
             currentLevel.pattern.Add(newNote);
             return AddNoteObject(newNote);
         }
 
         public LevelEvent AddEvent(LevelEvent levelEvent)
         {
+            if (currentLevel == null) return null;
             currentLevel.events.Add(levelEvent);
             return levelEvent;
         }
@@ -293,82 +505,167 @@ namespace _02.Scripts.Manager
 
         public void Pause()
         {
+            if (currentLevel == null) return;
+            SoundManager.instance.StopAllSfx();
             if (!isPlaying) return;
             
             _pauseDspTime = dspTime;
             _accDspTime += _pauseDspTime - _startDspTime;
-            if(_accDspTime >= 0f) _audioSource.Pause();
-            else _audioSource.Stop();
+            
+            _audioSource.Stop();
 
             isPlaying = false;
         }
 
         public void Stop()
         {
+            if (currentLevel == null) return;
             InitGame();
         }
 
-        public void Seek(double time)
+        public void Seek(double time, float prepareTime = 0f)
         {
-            var isCorrectTime = 0 <= time && time < _audioSource.clip.length;
+            if (currentLevel == null) return;
+            
+            SoundManager.instance.StopAllSfx();
+            time -= prepareTime;
             
             _startDspTime = dspTime;
             _accDspTime = time;
-            
+
             _audioSource.Stop();
-
-            if(isCorrectTime) _audioSource.time = (float)time + offset + currentLevel.startOffset;
-            
-            if (isPlaying && time < _audioSource.clip.length)
+            var scheduleDspTime = _startDspTime - offset - currentLevel.startOffset - time;
+            if (scheduleDspTime < _startDspTime)
             {
-                var realStartTime = _startDspTime - offset - currentLevel.startOffset + (time < 0f ? -time : 0f);
-
-                _audioSource.PlayScheduled(realStartTime);
+                // 현재 시간보다 전에 시작
+                var timeOffset = (float)(dspTime - scheduleDspTime + AudioStartEpsilon);
+                if (_audioSource.clip)
+                {
+                    _audioSource.timeSamples = (int)( timeOffset * _audioSource.clip.frequency);
+                }
+                if (isPlaying)
+                {
+                    _audioSource.PlayScheduled(dspTime + AudioStartEpsilon);
+                }
+            }
+            else if (isPlaying)
+            {
+                // 현재 시간 이후에 시작
+                _audioSource.PlayScheduled(scheduleDspTime);
             }
 
             var bossHp = 0;
             foreach (var noteObj in noteObjects)
             {
-                noteObj.wasHit = noteObj.note.appearBeat <= currentBeat;
+                noteObj.wasHit = noteObj.note.appearBeat < currentBeat + PlayTimeToBeat(prepareTime - judgementTimeSettings.perfect);
                 noteObj.canPlayHitSound = !noteObj.wasHit;
-                if (noteObj.canPlayHitSound && noteObj.hitType == HitType.Attack) ++bossHp;
+                if (noteObj.canPlayHitSound) ++bossHp;
             }
 
+            foreach (var e in currentLevel.events.OrderByDescending(e => e.appearBeat))
+            {
+                var newPerformed = e.appearBeat <= currentBeat + PlayTimeToBeat(prepareTime);
+                if (e.isPerformed && !newPerformed)
+                {
+                    e.Prevent();
+                }
+                else if (!e.isPerformed && newPerformed)
+                {
+                    PerformEvent(e);
+                }
+                else e.isPerformed = newPerformed;
+            }
+
+            player.ResetSkillBall();
             currentBoss.hp = bossHp;
+        }
+
+        public void PerformEvent(LevelEvent e)
+        {
+            if (currentLevel == null) return;
+            e.isPerformed = true;
+            if (e.isCheckpoint == true)
+            {
+                // 체크포인트 이벤트 실행
+                var beforeCheckpoint = _checkpointData?.Clone();
+                SetCheckpoint(e.appearBeat);
+                if(gameViewGUI) gameViewGUI.TriggerCheckpointVFX().Forget();
+                
+                e.preventActions.Add(() =>
+                {
+                    var respawnCount = currentLevelPlayerData.respawnCount;
+                    currentLevelPlayerData = _checkpointData.playerData.Clone();
+                    currentLevelPlayerData.respawnCount = respawnCount;
+                    
+                    _checkpointData = beforeCheckpoint;
+                });
+            }
         }
         
         public NoteObject GetNextNote()
         {
-            return noteObjects
-                .FindAll(noteObj => noteObj.note.appearBeat > currentBeat - 1f && !noteObj.wasHit)
-                .OrderBy(noteObj => noteObj.note.appearBeat)
-                .FirstOrDefault();
+            if (currentLevel == null) return null;
+            // 안 친 노트중에 미스판정 이상인 노트
+            var targets = noteObjects.FindAll(noteObj => 
+                    BeatToPlayTime(noteObj.note.appearBeat) > currentPlayTime - judgementTimeSettings.bad 
+                    && !noteObj.wasHit);
+
+            if (targets.Count == 0) return null;
+
+            var firstNote = targets[0];
+            var minAppearBeat = firstNote.note.appearBeat;
+            
+            foreach (var noteObject in targets)
+            {
+                if (noteObject.note.appearBeat < minAppearBeat)
+                {
+                    firstNote = noteObject;
+                    minAppearBeat = firstNote.note.appearBeat;
+                }
+            }
+            return firstNote;
         }
 
         public void Play()
         {
+            if (currentLevel == null) return;
             if(isPlaying) return;
             
-            _startDspTime = dspTime;
-            if (_accDspTime < 0f)
-            {
-                _audioSource.PlayScheduled(_startDspTime - _accDspTime - offset - currentLevel.startOffset);
-            }
-            else if(_audioSource.isPlaying)
-            {
-                _audioSource.UnPause();
-            }
-            else
-            {
-                _audioSource.Play();
-            }
-            
             isPlaying = true;
+            
+            _startDspTime = dspTime;
+            _audioSource.Stop();
+            var scheduleDspTime = _startDspTime - offset - currentLevel.startOffset - currentPlayTime;
+            if (scheduleDspTime < dspTime)
+            {
+                // 현재 시간보다 전에 시작
+                var timeOffset = (float)(dspTime - scheduleDspTime + AudioStartEpsilon);
+                if (_audioSource.clip)
+                {
+                    _audioSource.timeSamples = (int)( timeOffset * _audioSource.clip.frequency);
+                }
+                if (isPlaying && timeOffset < (_audioSource.clip?.length ?? 0f))
+                {
+                    _audioSource.PlayScheduled(dspTime + AudioStartEpsilon);
+                }
+            }
+            else if (isPlaying)
+            {
+                // 현재 시간 이후에 시작
+                _audioSource.PlayScheduled(scheduleDspTime);
+            }
         }
 
         public float BeatToPlayTime(float beat)
         {
+            if (currentLevel == null) return 0f;
             return beat * 60f / currentLevel.defaultBpm;
+        }
+
+        public float PlayTimeToBeat(float time)
+        {
+            if (currentLevel == null) return 0f;
+            return time / 60f * currentLevel.defaultBpm;
         }
     }
 
@@ -382,18 +679,54 @@ namespace _02.Scripts.Manager
         public int earlyCount = 0;
         public int missCount = 0;
 
+        public LevelPlayerData Clone()
+        {
+            var json = JsonConvert.SerializeObject(this);
+            return JsonConvert.DeserializeObject<LevelPlayerData>(json);
+        }
+
+        public void SaveData(string levelId)
+        {
+            var json = JsonConvert.SerializeObject(this);
+            var path = Path.Combine(Application.persistentDataPath, "PlayData", $"{levelId}.json");
+            if (!Directory.Exists(Path.GetDirectoryName(path)))
+            {
+                var dirPath = Path.GetDirectoryName(path);
+                if(dirPath != null) Directory.CreateDirectory(dirPath);
+            }
+            File.WriteAllText(path, json);
+        }
+
         public float GetAccuracy()
         {
             var score = perfectCount + goodCount * 0.8f + (lateCount + earlyCount) * 0.5f;
-            var maxScore = perfectCount + goodCount + lateCount + earlyCount + missCount + respawnCount * 2;
+            var maxScore = perfectCount + goodCount + lateCount + earlyCount + missCount;
 
             if (Mathf.Approximately(maxScore, 0f)) return 0f;
             
-            return score / maxScore;
+            return score / maxScore * 100f;
         }
 
-        public JudgementType AddJudgement(float inputTime, float originTime, JudgementTimeSettings judgementTimeSettings)
+        public int GetStarCount()
         {
+            var acc = GetAccuracy();
+            var result = 0;
+
+            if (acc >= 80f) result++;
+            if (acc >= 90f) result++;
+            if (acc >= 95f) result++;
+            if (respawnCount == 0) result++;
+            if (missCount == 0) result++;
+            
+            return result;
+        }
+        
+        public bool IsPerfectClear() => GetAccuracy() >= 100f;
+
+        public JudgementType GetJudgement(float inputTime, float originTime,
+            JudgementTimeSettings judgementTimeSettings)
+        {
+            
             var pos = Vector3.up * 1.4f;
             var offset = inputTime - originTime;
             var absOffset = Mathf.Abs(offset);
@@ -401,31 +734,56 @@ namespace _02.Scripts.Manager
 
             if (absOffset <= judgementTimeSettings.perfect)
             {
-                perfectCount++;
                 result = JudgementType.Perfect;
             }
             else if (absOffset <= judgementTimeSettings.good)
             {
-                goodCount++;
                 result = JudgementType.Good;
             }
             else if (absOffset <= judgementTimeSettings.bad)
             {
                 if (offset < 0f)
                 {
-                    earlyCount++;
                     result = JudgementType.Early;
                 }
                 else
                 {
-                    lateCount++;
                     result = JudgementType.Late;
                 }
             }
-            else
+
+            return result;
+        }
+
+        public JudgementType AddJudgement(float inputTime, float originTime, 
+            JudgementTimeSettings judgementTimeSettings)
+        {
+            return AddJudgement(GetJudgement(inputTime, originTime, judgementTimeSettings));
+        }
+        
+        public JudgementType AddJudgement(JudgementType result)
+        {
+
+            switch (result)
             {
-                missCount++;
-                result = JudgementType.Miss;
+                case JudgementType.Miss:
+                    missCount++;
+                    break;
+                case JudgementType.Perfect:
+                    perfectCount++;
+                    break;
+                case JudgementType.Good:
+                    goodCount++;
+                    break;
+                case JudgementType.Late:
+                    lateCount++;
+                    break;
+                case JudgementType.Early:
+                    earlyCount++;
+                    break;
+                default:
+                    missCount++;
+                    break;
             }
             
             LevelManager.instance.onAddJudgement?.Invoke(result);
@@ -438,22 +796,24 @@ namespace _02.Scripts.Manager
     {
         [NonSerialized] public string loadedPath;
         
-        public float startOffset;
-        public int beatsPerMeasure;
-        public int defaultBpm;
-        public float baseScrollSpeed;
-        public string bossId;
-        public string musicPath;
-
-        public string levelName;
-        public string musicName;
-        public string authorName;
-
-        public string backgroundId;
-        public string groundId;
+        public string levelUuid = Guid.NewGuid().ToString();
         
-        public List<Note> pattern;
-        public List<LevelEvent> events;
+        public float startOffset = 0f;
+        public int beatsPerMeasure = 4;
+        public int defaultBpm = 120;
+        public float baseScrollSpeed = 5.0f;
+        public string bossId = "Slime";
+        public string musicPath = "";
+
+        public string levelName = "Untitled";
+        public string musicName = "Untitled";
+        public string authorName = "Anonymous";
+
+        public string backgroundId = "Sky";
+        public string groundId = "Ground";
+        
+        public List<Note> pattern = new();
+        public List<LevelEvent> events = new();
     }
 
     [Serializable]
@@ -462,12 +822,42 @@ namespace _02.Scripts.Manager
         public float appearBeat;
         public bool? isCheckpoint;
 
+        [NonSerialized] public bool isPerformed = false;
+        [NonSerialized] public List<Action> preventActions = new();
+
         public LevelEvent Clone()
         {
             return new LevelEvent
             {
                 appearBeat = appearBeat,
                 isCheckpoint = isCheckpoint
+            };
+        }
+
+        public void Prevent()
+        {
+            isPerformed = false;
+            for (var i = preventActions.Count - 1; i >= 0; i--)
+            {
+                var action = preventActions[i];
+                action.Invoke();
+            }
+            preventActions.Clear();
+        }
+    }
+
+    [Serializable]
+    public class CheckpointData
+    {
+        public float beat;
+        public LevelPlayerData playerData;
+        
+        public CheckpointData Clone()
+        {
+            return new CheckpointData
+            {
+                beat = beat,
+                playerData = playerData.Clone()
             };
         }
     }

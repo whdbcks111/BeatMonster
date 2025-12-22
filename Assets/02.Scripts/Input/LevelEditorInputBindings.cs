@@ -46,7 +46,8 @@ namespace _02.Scripts.Input
         
         private void OnGoToEnd(InputValue value)
         {
-            editor.currentLeftEndBeat = LevelManager.instance.currentLevel.pattern.OrderBy(note => note.appearBeat).FirstOrDefault()?.appearBeat ?? 0f;
+            editor.currentLeftEndBeat = LevelManager.instance.currentLevel.pattern
+                .OrderByDescending(note => note.appearBeat).FirstOrDefault()?.appearBeat ?? 0f;
         }
         
         private void OnDelete(InputValue value)

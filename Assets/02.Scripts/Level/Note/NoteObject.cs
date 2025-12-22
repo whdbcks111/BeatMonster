@@ -55,20 +55,22 @@ namespace _02.Scripts.Level.Note
 
         protected virtual void UpdatePosition()
         {
+            if(!LevelManager.instance.currentBoss || LevelManager.instance.currentLevel == null) return;
+            
             var beatPos = note.appearBeat - LevelManager.instance.currentBeat;
             var playerToNoteDist = transform.position.x - LevelManager.instance.player.hitPoint.position.x;
-            var totalDist = LevelManager.instance.currentBoss.shootPoint.transform.position.x 
+            var totalDist = LevelManager.instance.currentBoss.shootPoint.transform.position.x
                             - LevelManager.instance.player.hitPoint.transform.position.x;
             var shootPointY = LevelManager.instance.currentBoss.shootPoint.position.y;
             var playerHitPointY = LevelManager.instance.player.hitPoint.position.y;
-            
-            var x = LevelManager.instance.player.hitPoint.transform.position.x 
-                + beatPos * LevelManager.instance.currentLevel.baseScrollSpeed * scrollSpeedRate;
-            var y = fitInShootPoint ? 
-                Mathf.Lerp(playerHitPointY, shootPointY, playerToNoteDist / totalDist)
+
+            var x = LevelManager.instance.player.hitPoint.transform.position.x
+                    + beatPos * LevelManager.instance.currentLevel.baseScrollSpeed * scrollSpeedRate;
+            var y = fitInShootPoint
+                ? Mathf.Lerp(playerHitPointY, shootPointY, playerToNoteDist / totalDist)
                 : 0f;
             y += moveCurve.Evaluate(playerToNoteDist / totalDist) * moveCurveHeight;
-            
+
             transform.position = new Vector3(x, y);
         }
 
@@ -77,10 +79,25 @@ namespace _02.Scripts.Level.Note
             UpdatePosition();
             CheckNoteAppear();
             CheckHitSound();
+            CheckPlayerHit();
+        }
+
+        private void CheckPlayerHit()
+        {
+            if (!wasHit && !LevelManager.instance.player.autoPlay &&
+                LevelManager.instance.BeatToPlayTime(note.appearBeat)
+                < LevelManager.instance.BeatToPlayTime(LevelManager.instance.currentBeat) -
+                LevelManager.instance.judgementTimeSettings.bad)
+            {
+                LevelManager.instance.player.Hit();
+                LevelManager.instance.GotoCheckpoint();
+            }
         }
 
         protected virtual void CheckNoteAppear()
         {
+            if(!LevelManager.instance.currentBoss || LevelManager.instance.currentLevel == null) return;
+            
             if (transform.position.x <= LevelManager.instance.currentBoss.shootPoint.position.x)
             {
                 if (wasHit || spriteRenderer.enabled) return;
@@ -103,6 +120,19 @@ namespace _02.Scripts.Level.Note
 
         public virtual void Hit()
         {
+            var judgementType = _ = LevelManager.instance.currentLevelPlayerData.GetJudgement(
+                LevelManager.instance.currentPlayTime,
+                LevelManager.instance.BeatToPlayTime(note.appearBeat),
+                LevelManager.instance.judgementTimeSettings
+            );
+            if (LevelManager.instance.player.autoPlay) judgementType = JudgementType.Perfect;
+
+            if (judgementType == JudgementType.Miss)
+            {
+                LevelManager.instance.currentLevelPlayerData.AddJudgement(judgementType);
+                return;
+            }
+            
             wasHit = true;
             spriteRenderer.enabled = false;
             _hitPointRenderer.enabled = spriteRenderer.enabled;
@@ -125,22 +155,22 @@ namespace _02.Scripts.Level.Note
             ParticleManager.instance.PlayParticle(ParticleManager.instance.hitParticle, 
                 LevelManager.instance.player.hitPoint.position);
             
-            var judgement = LevelManager.instance.currentLevelPlayerData.AddJudgement(
-                LevelManager.instance.currentPlayTime,
-                LevelManager.instance.BeatToPlayTime(note.appearBeat),
-                LevelManager.instance.judgementTimeSettings
-            );
-            print($"{judgement} {LevelManager.instance.currentPlayTime-LevelManager.instance.BeatToPlayTime(note.appearBeat):0.000}");
+            LevelManager.instance.currentLevelPlayerData.AddJudgement(judgementType);
         }
 
         private void CheckHitSound()
         {
-            var beatOffset = (note.appearBeat - LevelManager.instance.currentBeat) /
-                (LevelManager.instance.currentLevel.defaultBpm / 60f) - LevelManager.instance.offset;
+            var beatOffset = LevelManager.instance.BeatToPlayTime(note.appearBeat - LevelManager.instance.currentBeat) 
+                             - LevelManager.instance.offset;
             if (beatOffset < LevelManager.instance.offset)
             {
                 if (!canPlayHitSound) return;
-                if(LevelManager.instance.isPlaying) SoundManager.instance.PlaySfxScheduled(hitSound, LevelManager.instance.dspTime + beatOffset);
+                if (LevelManager.instance.isPlaying)
+                {
+                    var hitDspTime = LevelManager.instance.dspTime + beatOffset;
+                    SoundManager.instance.PlaySfxScheduled(hitSound, hitDspTime);
+                }
+
                 canPlayHitSound = false;
             }
             else

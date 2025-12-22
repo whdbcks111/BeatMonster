@@ -1,0 +1,11 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/10.UIToolkit/USS/UiDefault.uss?fileID=7433441132597879392&amp;guid=c0cb2bf18008bdd40bf15a1ed68b8adf&amp;type=3#UiDefault"/>
+    <ui:VisualElement style="flex-grow: 0; align-self: center;">
+        <ui:Label text="&#49828;&#53580;&#51060;&#51648; &#51060;&#47492;" name="StageNameLabel" style="-unity-text-align: upper-center; font-size: 20px; -unity-font-definition: resource(&quot;TextCore Assets/Paperlogy SDF&quot;); -unity-font-style: bold; color: rgb(255, 255, 255);"/>
+        <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: center;">
+            <ui:Image source="project://database/Assets/03.Graphics/UI/GameView/MusicalNote.png?fileID=2800000&amp;guid=ae4848e1fd4a09a48aa2494ca8bd62f8&amp;type=3#MusicalNote" style="height: 25px; width: 25px;"/>
+            <ui:Label text="&#51089;&#44257;&#44032; - &#51020;&#50501;&#51060;&#47492;" name="MusicNameLabel" style="-unity-text-align: middle-center; font-size: 15px; -unity-font-definition: resource(&quot;TextCore Assets/Paperlogy SDF&quot;); -unity-font-style: normal; color: rgb(255, 255, 255); height: 25px; margin-top: 0; margin-left: 0; margin-bottom: 0; margin-right: 0;"/>
+        </ui:VisualElement>
+        <ui:Button text="&#49828;&#53580;&#51060;&#51648; &#51077;&#51109;" name="StageEnterBtn" class="button" style="margin-top: 20px;"/>
+    </ui:VisualElement>
+</ui:UXML>

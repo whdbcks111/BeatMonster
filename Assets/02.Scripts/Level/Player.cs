@@ -5,6 +5,7 @@ using _02.Scripts.Level.Skill;
 using _02.Scripts.Manager;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace _02.Scripts.Level
 {
@@ -16,15 +17,24 @@ namespace _02.Scripts.Level
         
         private static readonly int AnimAttack = Animator.StringToHash("Attack");
         private static readonly int AnimDefend = Animator.StringToHash("Defend");
+        private static readonly int Intensity = Shader.PropertyToID("_Intensity");
 
         public bool autoPlay;
 
         public Transform bodyCenter;
         public Transform hitPoint;
 
+        public int currentSkillBallCount => skillBallContainer.childCount + shotSkillBallContainer.childCount;
+
         [Header("Skill")] 
-        [SerializeField] private Transform _skillBallContainer;
-        [SerializeField] private SkillBall _skillBallPrefab;
+        [SerializeField] private Transform skillBallContainer, shotSkillBallContainer;
+        [SerializeField] private SkillBall skillBallPrefab;
+
+        [Header("SFX")] 
+        [SerializeField] private AudioSource hitAudioSource;
+        [SerializeField] private float hitSoundVolume = 1f;
+
+        private float _prepareEndBeat = float.NaN;
 
         private void Awake()
         {
@@ -52,33 +62,56 @@ namespace _02.Scripts.Level
                 }
             }
 
-            var maxCount = 8;
+            const int maxCount = 8;
             var shootTargets = new List<SkillBall>();
-            for (int i = 0; i < _skillBallContainer.childCount; i++)
+            for (var i = 0; i < skillBallContainer.childCount; i++)
             {
-                var skillBall = _skillBallContainer.GetChild(i).gameObject.GetComponent<SkillBall>();
+                var skillBall = skillBallContainer.GetChild(i).gameObject.GetComponent<SkillBall>();
                 var span = 0.3f;
-                var targetPos = Vector3.right * ((i - (_skillBallContainer.childCount - 1) * 0.5f) * span);
+                var targetPos = Vector3.right * ((i - (skillBallContainer.childCount - 1) * 0.5f) * span);
 
                 skillBall.transform.localPosition =
                     Vector3.Lerp(skillBall.transform.localPosition, targetPos, 0.5f);
 
                 if (LevelManager.instance.currentBeat - skillBall.awakenBeat > skillBall.duration || 
-                    _skillBallContainer.childCount - shootTargets.Count > maxCount)
+                    skillBallContainer.childCount - shootTargets.Count > maxCount)
                 {
                     shootTargets.Add(skillBall);
                 }
             }
             foreach (var skillBall in shootTargets)
             {
-                skillBall.Shoot();
+                skillBall.Shoot(shotSkillBallContainer);
+            }
+
+            if (LevelManager.instance.currentBeat < _prepareEndBeat && !float.IsNaN(_prepareEndBeat))
+            {
+                spriteRenderer.material.SetFloat(Intensity, (Mathf.Sin(Mathf.PI * 2 * LevelManager.instance.currentBeat) + 1) / 2f);
+            }
+            else
+            {
+                spriteRenderer.material.SetFloat(Intensity, 0f);
             }
         }
 
         private void AddSkillBall()
         {
-            var skillBall = Instantiate(_skillBallPrefab, _skillBallContainer);
+            var skillBall = Instantiate(skillBallPrefab, skillBallContainer);
             skillBall.transform.localPosition = Vector3.zero;
+        }
+
+        public void ResetSkillBall()
+        {
+            for (int i = 0; i < skillBallContainer.childCount; i++)
+            {
+                var skillBallObj = skillBallContainer.GetChild(i).gameObject;
+                Destroy(skillBallObj);
+            }
+            for (int i = 0; i < shotSkillBallContainer.childCount; i++)
+            {
+                var skillBallObj = shotSkillBallContainer.GetChild(i).gameObject;
+                Destroy(skillBallObj);
+            }
         }
 
         public void Attack()
@@ -117,6 +150,16 @@ namespace _02.Scripts.Level
                 nextNote.Hit();
                 AddSkillBall();
             }
+        }
+
+        public void SetPrepareVfx(float endBeat)
+        {
+            _prepareEndBeat = endBeat;
+        }
+
+        public void Hit()
+        {
+            hitAudioSource.PlayOneShot(hitAudioSource.clip, hitSoundVolume);
         }
     }
 }

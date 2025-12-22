@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _09.ScriptableObjects
 {
-    [CreateAssetMenu(fileName = "LevelEditorBindings", menuName = "LevelEditor", order = 0)]
+    [CreateAssetMenu(fileName = "LevelEditorBindings", menuName = "Binding/LevelEditor", order = 0)]
     public class LevelEditorBindings : ScriptableObject
     {
         public Level level;

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a4e7f4ab6494841b67d06f7a7a836d8, type: 3}
+  m_Name: GreenGround
+  m_EditorClassIdentifier: Assembly-CSharp::_02.Scripts.ScriptableObjects.WorldData
+  worldName: "\uCD08\uC6D0"
+  worldBackground: {fileID: 21300000, guid: 973a56f90f900bb43bc72f61bf87f54d, type: 3}
+  worldGround: {fileID: 21300000, guid: f9b495bb7555f4f4eb3da2d951e12f86, type: 3}
+  stages:
+  - boss: {fileID: 852130712501896464, guid: 710a0aa320456154aaf08bec6214b2c4, type: 3}
+    levelFileAsset: {fileID: 4900000, guid: 8836b16c8520f9840b8783952c3009c3, type: 3}
+  - boss: {fileID: 852130712501896464, guid: a8b763ce5898ef248bb8e423f2a0c7fa, type: 3}
+    levelFileAsset: {fileID: 4900000, guid: 18ed4cb883f030d4aad9b09cbecd80f2, type: 3}

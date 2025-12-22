@@ -1,0 +1,1558 @@
+{
+  "levelUuid": "1673c26b-f91b-4d21-a82a-c93349f807a8",
+  "startOffset": 0.0,
+  "beatsPerMeasure": 4,
+  "defaultBpm": 180,
+  "baseScrollSpeed": 6.0,
+  "bossId": "MushBoom",
+  "musicPath": "$Stage_1_2",
+  "levelName": "Test Level",
+  "musicName": "Platform Shoes",
+  "authorName": "nickpanek",
+  "backgroundId": "Sky",
+  "groundId": "Ground",
+  "pattern": [
+    {
+      "appearBeat": 0.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 1.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 1.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 2.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 3.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 3.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 4.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 5.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 6.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 7.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 8.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 9.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 10.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 11.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 12.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 13.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 14.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 16.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 17.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 17.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 18.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 19.0207577,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 19.99934,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 20.9957161,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 22.0098839,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 22.9884663,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 23.9848423,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 24.9990082,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 25.9953861,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 29.99868,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 32.0072136,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 32.9809875,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 33.49443,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 34.0078735,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 35.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 35.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 36.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 36.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 37.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 38.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 39.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 39.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 40.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 41.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 41.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 42.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 43.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 43.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 44.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 45.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 46.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 47.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 48.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 49.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 49.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 50.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 19.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 20.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 23.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 28.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 51.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 51.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 51.9999962,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 52.4999924,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 52.9999924,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 53.99999,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 54.9999847,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 55.4999847,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 55.99998,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 57.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 58.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 60.0000076,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 62.0000076,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 64.0000153,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 65.5000153,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 65.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 66.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 67.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 67.49999,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 68.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 69.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 68.9999847,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 70.4999847,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 70.9999847,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 71.49998,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 72.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 73.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 72.9999847,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 74.4999847,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 74.9999847,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 75.49998,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 76.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 77.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 76.9999847,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 78.4999847,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 78.9999847,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 79.49998,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 80.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 81.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 80.9999847,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 82.4999847,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 82.9999847,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 83.49998,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 84.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 85.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 84.9999847,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 86.4999847,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 86.9999847,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 87.49998,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 88.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 89.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 88.9999847,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 90.4999847,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 90.9999847,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 91.49998,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 92.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 93.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 92.9999847,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 94.4999847,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 94.9999847,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 95.49998,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 96.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 97.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 97.99999,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 98.9999847,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 99.9999847,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 100.999985,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 101.999977,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 102.999969,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 103.999969,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 104.999969,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 105.999962,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 106.999954,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 107.999954,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 108.999954,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 109.999947,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 110.999939,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 111.999939,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 112.499939,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 112.999947,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 113.499954,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 113.999954,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 114.999962,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 114.499954,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 115.499969,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 115.999969,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 116.499969,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 116.999977,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 117.499985,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 117.999985,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 118.499985,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 118.999992,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 119.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 120.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 120.25,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 120.499992,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 120.749985,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 120.999985,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 121.249985,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 121.499977,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 121.749969,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 121.999969,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 122.249969,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 122.499962,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 122.749954,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 122.999954,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 123.249954,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 123.499947,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 123.749939,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 125.499924,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 125.999924,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 126.499908,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 126.999908,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 127.499893,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 124.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 125.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 128.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 129.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 129.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 130.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 131.000015,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 131.500015,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 132.000031,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 132.500031,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 133.000031,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 134.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 135.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 135.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 136.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 137.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 137.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 138.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 139.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 139.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 140.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 141.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 142.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 143.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 144.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 145.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 145.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 146.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 147.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 147.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 148.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 148.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 149.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 150.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 151.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 151.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 152.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 153.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 154.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 156.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 158.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 160.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 161.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 161.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 162.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 163.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 163.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 164.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 164.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 165.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 166.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 167.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 167.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 168.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 169.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 169.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 170.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 171.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 171.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 172.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 173.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 174.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 176.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 177.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 177.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 178.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 179.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 179.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 180.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 180.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 181.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 182.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 183.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 183.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 184.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 185.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 186.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 188.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 190.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 192.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 193.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 193.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 194.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 195.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 195.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 196.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 196.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 197.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 197.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 198.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 199.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 199.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 201.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 201.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 202.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 203.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 203.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 205.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 205.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 206.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 207.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 207.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 209.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 209.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 210.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 211.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 211.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 212.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 212.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 213.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 213.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 214.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 215.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 215.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 217.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 217.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 218.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 219.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 219.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 221.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 221.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 222.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 223.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 223.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 225.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 225.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 226.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 227.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 227.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 228.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 228.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 229.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 229.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 230.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 231.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 231.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 233.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 233.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 234.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 235.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 235.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 237.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 237.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 238.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 239.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 239.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 241.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 241.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 242.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 243.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 243.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 244.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 244.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 245.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 245.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 246.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 247.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 247.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 249.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 249.5,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 250.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 251.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 251.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 253.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 253.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 254.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 255.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 255.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 254.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 256.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 257.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 258.000031,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 259.000031,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 260.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 261.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 262.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 263.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 262.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 263.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 264.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 265.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 266.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 267.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 268.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 269.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 270.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 271.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 272.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 273.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 270.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 271.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 274.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 275.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 276.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 277.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 278.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 278.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 279.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 279.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 280.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 281.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 282.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 283.0,
+      "noteType": "Attack"
+    },
+    {
+      "appearBeat": 284.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 285.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 286.0,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 286.5,
+      "noteType": "Defend"
+    },
+    {
+      "appearBeat": 287.0,
+      "noteType": "Defend"
+    }
+  ],
+  "events": [
+    {
+      "appearBeat": 64.0,
+      "isCheckpoint": true
+    },
+    {
+      "appearBeat": 128.0,
+      "isCheckpoint": true
+    },
+    {
+      "appearBeat": 192.0,
+      "isCheckpoint": true
+    }
+  ]
+}

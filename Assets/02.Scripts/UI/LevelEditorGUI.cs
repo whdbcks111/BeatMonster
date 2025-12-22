@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using _02.Scripts.Level;
 using _02.Scripts.Level.Note;
 using _02.Scripts.Manager;
+using _02.Scripts.ScriptableObjects;
 using _02.Scripts.Utils;
 using Cysharp.Threading.Tasks;
 using SFB;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -25,43 +30,60 @@ namespace _02.Scripts.UI
         public VisualTreeAsset snapGuideTemplate;
         public VisualTreeAsset noteTemplate;
         public VisualTreeAsset eventTemplate;
+        public VisualTreeAsset selectWindowElementTemplate;
 
-        [NonSerialized] public Button playBtn, stopBtn, pauseBtn, autoPlayBtn, 
+        [NonSerialized] public Button playInGameBtn, stopBtn, playAndPauseBtn, autoPlayBtn, 
             zoomOutBtn, zoomInBtn,
             openBtn, saveBtn, saveAsBtn, exitBtn,
             addNoteBtn, addEventBtn, duplicateBtn, copyBtn, pasteBtn,
             delBtn, moveLeftBtn, moveRightBtn,
-            menuSnapEnableBtn, snapEnableBtn;
+            menuSnapEnableBtn, snapEnableBtn,
+            musicFileLoadBtn, bossChangeBtn, bgChangeBtn, groundChangeBtn, quantizeBtn,
+            noteTypeChangeBtn;
 
         [NonSerialized] public Label curTimeLabel, curBeatLabel, toastLabel, 
             currentBossNameLabel, currentBgNameLabel, currentGroundNameLabel,
-            musicFilePathLabel;
+            musicFilePathLabel, currentNoteTypeLabel;
 
         [NonSerialized] public VisualElement timePicker, 
             noteTrack, eventTrack, 
-            timeline, timeLabels, timeChangeZone, timeGuideContainer, snapGuideContainer,
-            noteSelectionBox, eventSelectionBox;
+            timeline, timeChangeZone, timeGuideContainer, snapGuideContainer,
+            noteSelectionBox, eventSelectionBox,
+            selectWindow, noteImageVisualElement;
+
+        private ScrollView _selectWindowScrollView;
+        private readonly List<VisualElement> _selectWindowRows = new();
+        private readonly List<VisualElement> _selectWindowElements = new();
 
         [NonSerialized] private VisualElement _gameViewVisualElement;
 
         [NonSerialized] public VisualElement levelMenuSelector, propsMenuSelector, editorMenuSelector;
         [NonSerialized] public VisualElement levelMenu, propsMenu, editorMenu;
 
+        [NonSerialized] public VisualElement notePropsMenu, eventPropsMenu;
+
         [NonSerialized] public DropdownField snapSizeDropdown;
 
-        [NonSerialized] public TextField startOffsetTextField, bpmTextField, snapSizeTextField;
+        [NonSerialized] public Toggle checkpointToggle;
+
+        [NonSerialized] public TextField startOffsetTextField, bpmTextField, snapSizeTextField,
+            measureTextField, noteScrollSpeedTextField, noteAppearBeatTextField;
 
         [SerializeField] private float normalBeatGuidelineHideSpan = 15f, subBeatGuidelineHideSpan = 70f;
         [SerializeField] private float snapSpaceSize = 0.3f;
+        
+        [SerializeField] private LoadingScreenGUI loadingScreenGUI;
 
         [Header("SFX")] 
         [SerializeField] private AudioClip buttonSoundClip;
+        [SerializeField] private float buttonSoundVolume = 1f;
         
         private bool _isCurrentTimeChanging = false;
         private bool _isTimelineDragging = false;
         private bool _isNoteTrackDragging = false;
         private bool _isEventTrackDragging = false;
         private bool _isSnapEnabled = false;
+        private bool _isNoteAppearBeatChanging = false;
         
         private float _horizontalGuideSpan = 100f;
         [NonSerialized] public float currentLeftEndBeat = -5f;
@@ -78,6 +100,8 @@ namespace _02.Scripts.UI
         
         public readonly List<NoteElementWrapper> noteWrappers = new();
         public readonly List<EventElementWrapper> eventWrappers = new();
+
+        private const int SelectWindowColumnCount = 3;
         
         private void OnEnable()
         {
@@ -132,7 +156,7 @@ namespace _02.Scripts.UI
                 var currentBeat = LevelManager.instance.currentBeat;
                 var measure = LevelManager.instance.currentLevel.beatsPerMeasure;
                 
-                musicFilePathLabel.text = Path.GetFileName(LevelManager.instance.currentLevel.musicPath);
+                musicFilePathLabel.text = LevelManager.instance.currentLevel.musicPath;
                 currentGroundNameLabel.text = LevelManager.instance.currentLevel.groundId;
                 currentBgNameLabel.text = LevelManager.instance.currentLevel.backgroundId;
                 
@@ -140,10 +164,44 @@ namespace _02.Scripts.UI
                     new StyleLength(new Length(
                         (currentBeat - currentLeftEndBeat) * _horizontalGuideSpan, 
                         LengthUnit.Pixel));
+                timePicker.style.display =
+                    LevelManager.instance.currentLevel == null ? DisplayStyle.None : DisplayStyle.Flex;
                 if(curTimeLabel != null) curTimeLabel.text = 
                     $"{(currentPlayTime < 0f ? "-":"")}{(int)Mathf.Abs(currentPlayTime / 60) :D2}:{(int)Mathf.Abs(currentPlayTime % 60) :D2}";
                 if(curBeatLabel != null) curBeatLabel.text =
                     $"{Mathf.FloorToInt(currentBeat / measure)} bar {Mathf.FloorToInt(ExtraMath.PositiveMod(currentBeat, measure))} beat";
+            }
+            
+            var selectedNotes = noteWrappers.FindAll(w => w.isSelected);
+            var selectedEvents = eventWrappers.FindAll(w => w.isSelected);
+            notePropsMenu.style.display = selectedNotes.Count > 0 ? DisplayStyle.Flex : DisplayStyle.None;
+            eventPropsMenu.style.display = selectedEvents.Count > 0 ? DisplayStyle.Flex : DisplayStyle.None;
+            
+            if (selectedNotes.Count > 0)
+            {
+                if (!_isNoteAppearBeatChanging)
+                {
+                    noteAppearBeatTextField.value = selectedNotes.All(
+                        n => Mathf.Approximately(
+                            n.noteObject.note.appearBeat, 
+                            selectedNotes[0].noteObject.note.appearBeat
+                        )
+                    ) ? $"{selectedNotes[0].noteObject.note.appearBeat:F3}" : "-";
+                }
+                currentNoteTypeLabel.text = selectedNotes.All(
+                    n => n.noteObject.note.noteType 
+                         == selectedNotes[0].noteObject.note.noteType
+                ) ? selectedNotes[0].noteObject.note.noteType : "-";
+                noteImageVisualElement.style.backgroundImage = currentNoteTypeLabel.text == "-"
+                    ? null
+                    : selectedNotes[0].noteObject.spriteRenderer.sprite.texture;
+            }
+
+            if (selectedEvents.Count > 0)
+            {
+                checkpointToggle.value = selectedEvents.All(
+                    e => e.levelEvent.isCheckpoint 
+                         == selectedEvents[0].levelEvent.isCheckpoint) && (selectedEvents[0].levelEvent.isCheckpoint ?? false);
             }
         }
 
@@ -220,7 +278,7 @@ namespace _02.Scripts.UI
         
         private void EventRenderUpdate()
         {
-            if (!LevelManager.instance) return;
+            if (!LevelManager.instance || LevelManager.instance.currentLevel == null) return;
             var eventCount = LevelManager.instance.currentLevel.events.Count;
 
             if (eventWrappers.Count > eventCount)
@@ -274,6 +332,7 @@ namespace _02.Scripts.UI
         {
             if (!LevelManager.instance) return;
             var neededGuideLineCount = Mathf.FloorToInt(timeChangeZone.resolvedStyle.width / _horizontalGuideSpan + 2) * 4;
+            if (LevelManager.instance.currentLevel == null) neededGuideLineCount = 0;
             
             if (_timeGuideLines.Count > neededGuideLineCount && neededGuideLineCount >= 0)
             {
@@ -405,9 +464,9 @@ namespace _02.Scripts.UI
         {
             _gameViewVisualElement = _root.Q<VisualElement>("GameView");
             
-            playBtn = _root.Q<Button>("PlayButton");
+            playInGameBtn = _root.Q<Button>("PlayInGameButton");
             stopBtn = _root.Q<Button>("StopButton");
-            pauseBtn = _root.Q<Button>("PauseButton");
+            playAndPauseBtn = _root.Q<Button>("PlayAndPauseButton");
             autoPlayBtn = _root.Q<Button>("AutoPlayButton");
             
             zoomOutBtn = _root.Q<Button>("ZoomOutButton");
@@ -434,7 +493,6 @@ namespace _02.Scripts.UI
             timePicker = _root.Q<VisualElement>("TimePicker");
             noteTrack = _root.Q<VisualElement>("NoteTrack");
             eventTrack = _root.Q<VisualElement>("EventTrack");
-            timeLabels = _root.Q<VisualElement>("TimeLabels");
             timeline = _root.Q<VisualElement>("Timeline");
             timeChangeZone = _root.Q<VisualElement>("TimeChangeZone");
 
@@ -448,6 +506,9 @@ namespace _02.Scripts.UI
             levelMenu = _root.Q<VisualElement>("LevelMenu");
             propsMenu = _root.Q<VisualElement>("PropsMenu");
             editorMenu = _root.Q<VisualElement>("EditorMenu");
+            
+            notePropsMenu = _root.Q<VisualElement>("NotePropsMenu");
+            eventPropsMenu = _root.Q<VisualElement>("EventPropsMenu");
 
             musicFilePathLabel = _root.Q<Label>("MusicFilePathLabel");
             currentBossNameLabel = _root.Q<Label>("CurrentBossNameLabel");
@@ -463,16 +524,37 @@ namespace _02.Scripts.UI
             toastLabel = _root.Q<Label>("ToastLabel");
             snapEnableBtn = _root.Q<Button>("SnapEnableButton");
             menuSnapEnableBtn = _root.Q<Button>("MenuSnapActiveBtn");
+            
+            musicFileLoadBtn = _root.Q<Button>("MusicFileLoadBtn");
+            bossChangeBtn = _root.Q<Button>("BossChangeBtn");
+            bgChangeBtn = _root.Q<Button>("BGChangeBtn");
+            groundChangeBtn = _root.Q<Button>("GroundChangeBtn");
 
             snapSizeDropdown = _root.Q<DropdownField>("SnapSizeDropdownField");
             snapSizeTextField = _root.Q<TextField>("SnapSizeTextField");
             snapSizeDropdown.value = "1/4";
+            
+            quantizeBtn = _root.Q<Button>("QuantizeBtn");
+            
+            noteAppearBeatTextField = _root.Q<TextField>("NoteAppearBeatTextField");
+            noteTypeChangeBtn = _root.Q<Button>("NoteTypeChangeBtn");
+            noteImageVisualElement = _root.Q<VisualElement>("NoteImage");
+            currentNoteTypeLabel = _root.Q<Label>("CurrentNoteTypeLabel");
+
+            measureTextField = _root.Q<TextField>("MeasureTextField");
+            noteScrollSpeedTextField = _root.Q<TextField>("NoteScrollSpeedTextField");
+            
+            selectWindow = _root.Q<VisualElement>("SelectWindow");
+            _selectWindowScrollView = selectWindow.Q<ScrollView>();
+            
+            // 이벤트 속성창 요소
+            checkpointToggle = _root.Q<Toggle>("CheckpointToggle");
         }
 
         private async UniTask RegisterEvents()
         {
-            playBtn.clicked += () => LevelManager.instance.Play();
-            pauseBtn.clicked += () => LevelManager.instance.Pause();
+            playInGameBtn.clicked += PlayInGame;
+            playAndPauseBtn.clicked += TogglePause;
             stopBtn.clicked += () => LevelManager.instance.Stop();
 
             zoomInBtn.clicked += () => _horizontalGuideSpan /= 1.1f;
@@ -491,6 +573,7 @@ namespace _02.Scripts.UI
             saveBtn.clicked += SaveLevel;
             saveAsBtn.clicked += SaveLevelAs;
             openBtn.clicked += OpenLevel;
+            exitBtn.clicked += GoToTitle;
             
             timeChangeZone.RegisterCallback<PointerDownEvent>(OnPointerDownInTimeChangeZone);
             timeline.RegisterCallback<PointerDownEvent>(OnPointerDownInTimeline);
@@ -501,17 +584,33 @@ namespace _02.Scripts.UI
             editorMenuSelector.RegisterCallback<ClickEvent>(_ => SelectMenu(editorMenuSelector, editorMenu));
             propsMenuSelector.RegisterCallback<ClickEvent>(_ => SelectMenu(propsMenuSelector, propsMenu));
             
-            snapEnableBtn.RegisterCallback<ClickEvent>(_ => ToggleSnap());
-            menuSnapEnableBtn.RegisterCallback<ClickEvent>(_ => ToggleSnap());
+            snapEnableBtn.clicked += ToggleSnap;
+            menuSnapEnableBtn.clicked += ToggleSnap;
+
+            quantizeBtn.clicked += QuantizeSelected;
+            
+            musicFileLoadBtn.clicked += LoadMusicFile;
 
             bpmTextField.RegisterCallback<FocusOutEvent>(OnFocusOutBpmTextField);
             startOffsetTextField.RegisterCallback<FocusOutEvent>(OnFocusOutStartOffsetTextField);
             snapSizeTextField.RegisterCallback<FocusOutEvent>(OnFocusOutSnapSizeTextField);
+            
+            measureTextField.RegisterCallback<FocusOutEvent>(OnFocusOutMeasureTextField);
+            noteScrollSpeedTextField.RegisterCallback<FocusOutEvent>(OnFocusOutNoteScrollSpeedTextField);
+            noteAppearBeatTextField.RegisterCallback<FocusOutEvent>(OnFocusOutNoteAppearBeatTextField);
+            noteAppearBeatTextField.RegisterCallback<FocusInEvent>(OnFocusInNoteAppearBeatTextField);
+            noteTypeChangeBtn.clicked += OnClickNoteChangeBtn;
 
             autoPlayBtn.clicked += ToggleAutoPlay;
             
             noteTrack.RegisterCallback<PointerDownEvent>(OnPointerDownInNoteTrack);
             eventTrack.RegisterCallback<PointerDownEvent>(OnPointerDownInEventTrack);
+
+            bossChangeBtn.clicked += OnClickBossChangeBtn;
+            bgChangeBtn.clicked += OnClickBGChangeBtn;
+            groundChangeBtn.clicked += OnClickGroundChangeBtn;
+
+            checkpointToggle.RegisterValueChangedCallback(OnCheckpointToggleValueChanged);
             
             foreach (var button in _root.Query<Button>().ToList())
             {
@@ -519,18 +618,209 @@ namespace _02.Scripts.UI
             }
 
             await UniTask.WaitUntil(() => LevelManager.instance != null);
-            // Level Manager is not null after this context
 
             LevelManager.instance.onLoaded += () =>
             {
                 startOffsetTextField.value = $"{LevelManager.instance.currentLevel.startOffset}";
                 bpmTextField.value = $"{LevelManager.instance.currentLevel.defaultBpm}";
+                measureTextField.value = $"{LevelManager.instance.currentLevel.beatsPerMeasure}";
+                noteScrollSpeedTextField.value = $"{LevelManager.instance.currentLevel.baseScrollSpeed:0.0}";
             };
+        }
+
+        private void GoToTitle()
+        {
+            loadingScreenGUI.ShowLoadingPanel(() =>
+            {
+                SceneManager.LoadSceneAsync("TitleScene");
+            });
+        }
+
+        private void OnCheckpointToggleValueChanged(ChangeEvent<bool> evt)
+        {
+            var selectedEvents = eventWrappers.FindAll(w => w.isSelected);
+            
+            selectedEvents.ForEach(w => w.levelEvent.isCheckpoint = evt.newValue);
+        }
+
+        private void OnClickNoteChangeBtn()
+        {
+            ClearSelectWindow();
+            
+            foreach (var noteObj in LevelManager.instance.currentBoss.noteMap.Values)
+            {
+                AddSelectWindowElement(noteObj.noteType, noteObj.spriteRenderer.sprite, evt =>
+                {
+                    var selectedNotes = noteWrappers.FindAll(w => w.isSelected);
+                    foreach (var w in selectedNotes)
+                    {
+                        w.noteObject.note.noteType = noteObj.noteType;
+                        LevelManager.instance.RespawnNotes();
+                    }
+                    HideSelectWindow();
+                });
+            }
+            
+            FillSelectWindowRowEmptySpace();
+            ShowSelectWindow();
+        }
+
+        private void OnFocusInNoteAppearBeatTextField(FocusInEvent _)
+        {
+            _isNoteAppearBeatChanging = true;
+        }
+
+        private void OnFocusOutNoteAppearBeatTextField(FocusOutEvent _)
+        {
+            var selectedNotes = noteWrappers.FindAll(w => w.isSelected);
+            if (float.TryParse(noteAppearBeatTextField.value, out var beat))
+            {
+                foreach (var noteElementWrapper in selectedNotes)
+                {
+                    noteElementWrapper.noteObject.note.appearBeat = beat;
+                }
+            }
+            
+            _isNoteAppearBeatChanging = false;
+        }
+
+        public void QuantizeSelected()
+        {
+            foreach (var w in noteWrappers.Where(n => n.isSelected))
+            {
+                w.noteObject.note.appearBeat = ToQuantizedBeat(w.noteObject.note.appearBeat, false);
+            }
+            foreach (var w in eventWrappers.Where(e => e.isSelected))
+            {
+                w.levelEvent.appearBeat = ToQuantizedBeat(w.levelEvent.appearBeat, false);
+            }
+        }
+
+        private void OnClickGroundChangeBtn()
+        {
+            ClearSelectWindow();
+
+            Addressables.LoadAssetsAsync<GroundData>("ground", data =>
+            {
+                AddSelectWindowElement(data.groundName, data.sprite, evt =>
+                {
+                    LevelManager.instance.ChangeGround(data.sprite);
+                    HideSelectWindow();
+                });
+            }).Completed += _ =>
+            {
+                FillSelectWindowRowEmptySpace();
+                ShowSelectWindow();
+            };
+        }
+
+        private void OnClickBGChangeBtn()
+        {
+            ClearSelectWindow();
+
+            Addressables.LoadAssetsAsync<BackgroundData>("background", data =>
+            {
+                AddSelectWindowElement(data.backgroundName, data.sprite, evt =>
+                {
+                    LevelManager.instance.ChangeBackground(data.sprite);
+                    HideSelectWindow();
+                });
+            }).Completed += _ =>
+            {
+                FillSelectWindowRowEmptySpace();
+                ShowSelectWindow();
+            };
+        }
+
+        private void OnClickBossChangeBtn()
+        {
+            ClearSelectWindow();
+
+            Addressables.LoadAssetsAsync<GameObject>("boss", bossObj =>
+            {
+                var boss = bossObj.GetComponent<Boss>();
+                AddSelectWindowElement(boss.bossName, boss.displaySprite, evt =>
+                {
+                    LevelManager.instance.ChangeBoss(boss).Forget();
+                    HideSelectWindow();
+                });
+            }).Completed += _ =>
+            {
+                FillSelectWindowRowEmptySpace();
+                ShowSelectWindow();
+            };
+        }
+
+        private void ShowSelectWindow()
+        {
+            selectWindow.style.display = DisplayStyle.Flex;
+        }
+
+        private void HideSelectWindow()
+        {
+            selectWindow.style.display = DisplayStyle.None;
+        }
+
+        private void FillSelectWindowRowEmptySpace()
+        {
+            while (_selectWindowElements.Count % 3 != 0)
+            {
+                AddSelectWindowElement("", null, null, true);
+            }
+        }
+
+        private void ClearSelectWindow()
+        {
+            _selectWindowScrollView.contentContainer.Clear();
+            _selectWindowElements.Clear();
+            _selectWindowRows.Clear();
+        }
+
+        private void AddSelectWindowElement(string labelText, Sprite sprite, EventCallback<ClickEvent> onClick, bool hide = false)
+        {
+            VisualElement element = selectWindowElementTemplate.Instantiate();
+            foreach (var j in element.Children())
+            {
+                element = j;
+                break;
+            }
+
+            if (_selectWindowRows.Count < _selectWindowElements.Count / SelectWindowColumnCount + 1)
+            {
+                // create new visual element
+                var row = new VisualElement();
+                row.style.flexDirection = FlexDirection.Row;
+                _selectWindowScrollView.contentContainer.Add(row);
+                _selectWindowRows.Add(row);
+            }
+            
+            element.Q<Label>().text = labelText;
+            element.Q<Image>().sprite = sprite;
+            _selectWindowElements.Add(element);
+            _selectWindowRows[^1].Add(element);
+            
+            if(onClick != null) element.RegisterCallback(onClick);
+            if(hide) element.style.visibility = Visibility.Hidden;
+        }
+
+        private void PlayInGame()
+        {
+            loadingScreenGUI.ShowLoadingPanel(() =>
+            {
+                SceneTransitionData.levelData = LevelManager.instance.currentLevel;
+                SceneManager.LoadSceneAsync("GameScene");
+            });
+        }
+
+        private void TogglePause()
+        {
+            if(LevelManager.instance.isPlaying) LevelManager.instance.Pause();
+            else LevelManager.instance.Play();
         }
 
         private void OnClickButton()
         {
-            SoundManager.instance.PlaySfx(buttonSoundClip, volume: 10f);
+            SoundManager.instance.PlaySfx(buttonSoundClip, volume: buttonSoundVolume);
         }
 
         private void OnFocusOutSnapSizeTextField(FocusOutEvent evt)
@@ -556,6 +846,30 @@ namespace _02.Scripts.UI
                     snapSize = 1f;
                     snapSizeTextField.value = "1";
                     break;
+            }
+        }
+
+        private void OnFocusOutNoteScrollSpeedTextField(FocusOutEvent evt)
+        {
+            if (float.TryParse(noteScrollSpeedTextField.value, out var speed))
+            {
+                LevelManager.instance.currentLevel.baseScrollSpeed = Mathf.Clamp(speed, 1f, 20f);
+            }
+            else
+            {
+                noteScrollSpeedTextField.value = $"{LevelManager.instance.currentLevel.baseScrollSpeed :0.0}";
+            }
+        }
+
+        private void OnFocusOutMeasureTextField(FocusOutEvent evt)
+        {
+            if (int.TryParse(measureTextField.value, out var measure))
+            {
+                LevelManager.instance.currentLevel.beatsPerMeasure = Mathf.Clamp(measure, 1, 16);
+            }
+            else
+            {
+                measureTextField.value = $"{LevelManager.instance.currentLevel.beatsPerMeasure}";
             }
         }
 
@@ -595,6 +909,29 @@ namespace _02.Scripts.UI
                 paths =>
                 {
                     if(paths.Length > 0) LevelManager.instance.LoadLevel(paths[0]).Forget();
+                });
+        }
+
+        private void LoadMusicFile()
+        {
+            
+            StandaloneFileBrowser.OpenFilePanelAsync(
+                "음악 파일 선택", 
+                Application.dataPath, 
+                AudioTypeFinder.avaliableExtensions.Select(ext => new ExtensionFilter(ext.ToUpper(), ext)).ToArray(), 
+                false,
+                paths =>
+                {
+                    if (paths.Length > 0)
+                    {
+                        var path = paths[0];
+                        if (LevelManager.instance.currentLevel.loadedPath != null)
+                        {
+                            path = Path.GetRelativePath(LevelManager.instance.currentLevel.loadedPath, path);
+                        }
+                        LevelManager.instance.currentLevel.musicPath = path;
+                        LevelManager.instance.LoadMusic().Forget();
+                    }
                 });
         }
 
@@ -661,14 +998,14 @@ namespace _02.Scripts.UI
                 var addedNoteObject = LevelManager.instance.AddPattern(clone);
                 
                 selectTargetNoteObjects.Add(addedNoteObject);
-                wrapper.isSelected = false;
             }
             
             NoteRenderUpdate();
+            DeselectNote(null);
             
             foreach (var wrapper in noteWrappers.Where(wrapper => selectTargetNoteObjects.Contains(wrapper.noteObject)))
             {
-                wrapper.isSelected = true;
+                SelectNote(wrapper, true);
             }
         }
 
@@ -751,14 +1088,20 @@ namespace _02.Scripts.UI
 
                 if (_isSnapEnabled)
                 {
-                    //adjust to snap size * integer value
-                    var m = ExtraMath.PositiveMod(beat, snapSize);
-                    if (m <= snapSize * snapSpaceSize) beat -= m;
-                    else if (m >= snapSize * (1 - snapSpaceSize)) beat += snapSize - m;
+                    beat = ToQuantizedBeat(beat);
                 }
 
                 LevelManager.instance.Seek(LevelManager.instance.BeatToPlayTime(beat));
             }
+        }
+
+        public float ToQuantizedBeat(float beat, bool useSnapSpaceSize = true)
+        {
+            var m = ExtraMath.PositiveMod(beat, snapSize);
+            if (m <= snapSize * (useSnapSpaceSize ? snapSpaceSize : 0.5f)) beat -= m;
+            else if (m >= snapSize * (1 - (useSnapSpaceSize ? snapSpaceSize : 0.5f))) beat += snapSize - m;
+
+            return beat;
         }
 
         private void OnTimelineDragging(float curX)
@@ -818,19 +1161,31 @@ namespace _02.Scripts.UI
 
         public void AddNote()
         {
-            LevelManager.instance.AddPattern(new Note
+            var newNote = new Note
             {
                 appearBeat = LevelManager.instance.currentBeat,
                 noteType = LevelManager.instance.currentBoss.noteMap.Keys.ToList()[0]
-            });
+            };
+            LevelManager.instance.AddPattern(newNote);
+            NoteRenderUpdate();
+            foreach (var w in noteWrappers)
+            {
+                if(w.noteObject.note == newNote) SelectNote(w);
+            }
         }
         
         public void AddEvent()
         {
-            LevelManager.instance.AddEvent(new LevelEvent
+            var newEvent = new LevelEvent
             {
                 appearBeat = LevelManager.instance.currentBeat
-            });
+            };
+            LevelManager.instance.AddEvent(newEvent);
+            EventRenderUpdate();
+            foreach (var w in eventWrappers)
+            {
+                if(w.levelEvent == newEvent) SelectEvent(w);
+            }
         }
 
         public void SelectNote(NoteElementWrapper wrapper, bool isMultiSelect = false)
@@ -843,6 +1198,8 @@ namespace _02.Scripts.UI
                 }
             }
             wrapper.isSelected = true;
+            
+            SelectMenu(propsMenuSelector, propsMenu);
         }
 
         public void DeselectNote(NoteElementWrapper wrapper, bool isMultiDeselect = false)
@@ -867,6 +1224,8 @@ namespace _02.Scripts.UI
                 }
             }
             wrapper.isSelected = true;
+            
+            SelectMenu(propsMenuSelector, propsMenu);
         }
 
         public void DeselectEvent(EventElementWrapper wrapper, bool isMultiDeselect = false)
@@ -989,24 +1348,34 @@ namespace _02.Scripts.UI
 
         private void OnPointerUpInRoot(PointerUpEvent e)
         {
-            _isCurrentTimeChanging = false;
-            _isTimelineDragging = false;
-            _isNoteTrackDragging = false;
-            _isEventTrackDragging = false;
-            
             noteSelectionBox.AddToClassList("hidden");
             eventSelectionBox.AddToClassList("hidden");
+
+            if (!e.shiftKey)
+            {
+                if(_isNoteTrackDragging && 
+                   noteSelectionBox.resolvedStyle.width > 5 && 
+                   noteSelectionBox.resolvedStyle.height > 5) DeselectNote(null);
+                if(_isEventTrackDragging && 
+                   eventSelectionBox.resolvedStyle.width > 5 && 
+                   eventSelectionBox.resolvedStyle.height > 5) DeselectEvent(null);
+            }
             
             foreach (var w in noteWrappers)
             {
-                if (w.isInSelectionBox) w.isSelected = true;
+                if (w.isInSelectionBox) SelectNote(w, true);
                 w.isInSelectionBox = false;
             }
             foreach (var w in eventWrappers)
             {
-                if (w.isInSelectionBox) w.isSelected = true;
+                if (w.isInSelectionBox) SelectEvent(w, true);
                 w.isInSelectionBox = false;
             }
+            
+            _isCurrentTimeChanging = false;
+            _isTimelineDragging = false;
+            _isNoteTrackDragging = false;
+            _isEventTrackDragging = false;
         }
 
         public void CopyElements()
@@ -1034,30 +1403,32 @@ namespace _02.Scripts.UI
 
         private void PasteNotes()
         {
+            if (_copiedNotes == null || _copiedNotes.Count == 0) return;
+            
             DeselectNote(null);
             DeselectEvent(null);
-            print("deselect");
-            var startAppearBeat = _copiedNotes.Count > 0 ? _copiedNotes[0].appearBeat : LevelManager.instance.currentBeat;
-            var selectTargetNoteObjects = _copiedNotes.Select(note =>
-            {
-                note.appearBeat = LevelManager.instance.currentBeat +
-                                        (note.appearBeat - startAppearBeat);
-                return LevelManager.instance.AddPattern(note);
-            }).ToList();
             
-            print("select targets :" + selectTargetNoteObjects.Count);
+            var levelManager = LevelManager.instance;
+            var currentBeat = levelManager.currentBeat;
+            var beatOffset = currentBeat - _copiedNotes[0].appearBeat;
+            
+            var pastedNotes = _copiedNotes
+                .Select(note => 
+                {
+                    note.appearBeat += beatOffset;
+                    return levelManager.AddPattern(note.Clone());
+                })
+                .ToList();
+            
             NoteRenderUpdate();
             
-            print("match wrappers : " + noteWrappers.Count(wrapper => selectTargetNoteObjects.Contains(wrapper.noteObject)));
-            
-            foreach (var wrapper in noteWrappers.Where(wrapper => selectTargetNoteObjects.Contains(wrapper.noteObject)))
+            foreach (var wrapper in noteWrappers)
             {
-                print("Select : " + wrapper.noteObject.note.appearBeat);
-                
-                wrapper.isSelected = true;
+                if (pastedNotes.Contains(wrapper.noteObject))
+                {
+                    SelectNote(wrapper, true);
+                }
             }
-
-            CopyNotes();
         }
 
         private void CopyEvents()
@@ -1088,7 +1459,7 @@ namespace _02.Scripts.UI
             
             foreach (var wrapper in eventWrappers.Where(wrapper => selectTargetEvents.Contains(wrapper.levelEvent)))
             {
-                wrapper.isSelected = true;
+                SelectEvent(wrapper, true);
             }
             
             CopyEvents();

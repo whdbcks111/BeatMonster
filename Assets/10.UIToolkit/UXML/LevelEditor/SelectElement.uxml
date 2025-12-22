@@ -1,0 +1,6 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="SelectElement" style="flex-grow: 1; height: 200px; background-color: rgba(0, 0, 0, 0.39); border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; margin-top: 5px; margin-right: 5px; margin-bottom: 5px; margin-left: 5px;">
+        <ui:Image name="" source="project://database/Assets/03.Graphics/Boss/Slime/Slime_Display.png?fileID=2800000&amp;guid=d0b2cdda721657c4fa547d635d016f85&amp;type=3#Slime_Display"/>
+        <ui:Label text="&#49836;&#46972;&#51076; &#45824;&#47560;&#50773;" style="-unity-text-align: upper-center; font-size: 27px; -unity-font-style: normal;"/>
+    </ui:VisualElement>
+</ui:UXML>

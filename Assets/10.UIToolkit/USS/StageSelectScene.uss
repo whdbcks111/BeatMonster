@@ -1,0 +1,4 @@
+:root {
+    -unity-font-definition: resource("TextCore Assets/Paperlogy SDF");
+    font-size: 20px;
+}

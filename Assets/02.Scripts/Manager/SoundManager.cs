@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -14,6 +16,7 @@ namespace _02.Scripts.Manager
         public AudioMixerGroup sfxGroup;
 
         private ObjectPool<AudioSource> _pool;
+        private readonly List<AudioSource> _activeSources = new();
 
         private void Awake()
         {
@@ -26,8 +29,17 @@ namespace _02.Scripts.Manager
                     source.playOnAwake = false;
                     return source;
                 },
-                source => source.enabled = true,
-                source => source.enabled = false,
+                source =>
+                {
+                    source.enabled = true;
+                    _activeSources.Add(source);
+                },
+                source =>
+                {
+                    source.Stop();
+                    source.enabled = false;
+                    _activeSources.Remove(source);
+                },
                 Destroy);
             
             _pool.Release(_pool.Get());
@@ -41,7 +53,7 @@ namespace _02.Scripts.Manager
             source.pitch = pitch;
             source.clip = clip;
             source.Play();
-            WaitForReturn(source).Forget();
+            WaitForRelease(source).Forget();
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
@@ -52,14 +64,40 @@ namespace _02.Scripts.Manager
             source.pitch = pitch;
             source.clip = clip;
             source.PlayScheduled(dspTime);
-            WaitForReturn(source).Forget();
+            WaitForReleaseScheduled(source, dspTime).Forget();
+        }
+
+        public void StopAllSfx()
+        {
+            var releaseTarget = _activeSources.Where(activeSource => activeSource.enabled).ToList();
+            foreach (var audioSource in releaseTarget)
+            {
+                _pool.Release(audioSource);
+            }
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
-        private async UniTask WaitForReturn(AudioSource source)
+        private async UniTask WaitForRelease(AudioSource source)
         {
-            if(source.clip) await UniTask.Delay(TimeSpan.FromSeconds(source.clip.length + 1f), cancellationToken: destroyCancellationToken);
-            if(source) _pool.Release(source);
+            if (source.clip)
+            {
+                await UniTask.WaitWhile(() => source.enabled && source.isPlaying,
+                    cancellationToken: source.GetCancellationTokenOnDestroy());
+                if(source && source.enabled) _pool.Release(source);
+            }
+        }
+
+        // ReSharper disable Unity.PerformanceAnalysis
+        private async UniTask WaitForReleaseScheduled(AudioSource source, double dspTime)
+        {
+            if (source.clip)
+            {
+                await UniTask.WaitWhile(() => source.enabled && AudioSettings.dspTime <= dspTime,
+                    cancellationToken: source.GetCancellationTokenOnDestroy());
+                await UniTask.WaitWhile(() => source.enabled && source.isPlaying,
+                    cancellationToken: source.GetCancellationTokenOnDestroy());
+                if(source && source.enabled) _pool.Release(source);
+            }
         }
     }
 }

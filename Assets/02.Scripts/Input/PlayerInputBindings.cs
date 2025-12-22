@@ -8,12 +8,12 @@ namespace _02.Scripts.Input
     {
         private void OnAttack(InputValue value)
         {
-            LevelManager.instance.player.Attack();
+            if(value.isPressed) LevelManager.instance.player.Attack();
         }
 
         private void OnDefend(InputValue value)
         {
-            LevelManager.instance.player.Defend();
+            if(value.isPressed) LevelManager.instance.player.Defend();
         }
     }
 }

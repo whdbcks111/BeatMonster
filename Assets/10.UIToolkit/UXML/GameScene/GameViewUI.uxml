@@ -1,0 +1,73 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/10.UIToolkit/USS/GameView.uss?fileID=7433441132597879392&amp;guid=b7edea65ad3187b4fa4a19c95ae896ca&amp;type=3#GameView"/>
+    <Style src="project://database/Assets/10.UIToolkit/USS/Editor.uss?fileID=7433441132597879392&amp;guid=652f52cd5fb47704b9a3b249d1e12c31&amp;type=3#Editor"/>
+    <ui:VisualElement name="TopGradient" style="flex-grow: 0; position: absolute; bottom: 0; top: 0; left: 0; right: 0; background-image: url(&quot;project://database/Assets/03.Graphics/UI/VerticalGradient.png?fileID=2800000&amp;guid=4af711fb7a9559f478c3d1c34366f7d6&amp;type=3#VerticalGradient&quot;); -unity-background-image-tint-color: rgb(0, 0, 0); flex-shrink: 0; height: 200px; scale: 1 -1;"/>
+    <ui:VisualElement name="BottomGradient" style="flex-grow: 0; position: absolute; bottom: 0; top: auto; left: 0; right: 0; background-image: url(&quot;project://database/Assets/03.Graphics/UI/VerticalGradient.png?fileID=2800000&amp;guid=4af711fb7a9559f478c3d1c34366f7d6&amp;type=3#VerticalGradient&quot;); -unity-background-image-tint-color: rgba(0, 0, 0, 0.72); flex-shrink: 0; height: 200px; scale: 1 1;"/>
+    <ui:VisualElement style="flex-grow: 0; top: auto; left: 10px; position: absolute; flex-shrink: 0; flex-direction: row; bottom: 5px;">
+        <ui:Image source="project://database/Assets/03.Graphics/UI/GameView/MusicalNote.png?fileID=2800000&amp;guid=ae4848e1fd4a09a48aa2494ca8bd62f8&amp;type=3#MusicalNote" style="flex-shrink: 0; width: 30px; height: 30px;"/>
+        <ui:Label text="Level Name (Author - Music Name)" name="LevelNameLabel" style="position: relative; color: rgb(255, 255, 255); font-size: 20px; width: 100px; height: 30px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; -unity-text-align: middle-left;"/>
+    </ui:VisualElement>
+    <ui:VisualElement name="BossBarContainer" style="flex-grow: 0; position: absolute; flex-shrink: 0; height: auto; width: 100%; max-height: 80%; top: 0; left: 0; right: 0; margin-top: 20px; align-items: center;">
+        <ui:VisualElement name="" style="flex-grow: 1; width: 1000px;">
+            <ui:Label text="&#48372;&#49828; &#47788;&#49828;&#53552; &#51060;&#47492;" name="BossNameLabel" style="-unity-font-definition: resource(&quot;TextCore Assets/Paperlogy SDF&quot;); font-size: 25px; -unity-text-align: upper-center; color: rgb(255, 255, 255); -unity-text-outline-color: rgb(0, 0, 0); -unity-font-style: bold;"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="BossBarOutline" style="flex-grow: 0; flex-shrink: 0; max-height: 80%; height: 15px; width: 1000px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; background-color: rgba(0, 0, 0, 0.71); border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; overflow: hidden;">
+            <ui:VisualElement name="BossBarCombo" style="flex-grow: 1; position: absolute; top: 0; left: 0; right: 5%; bottom: 0; background-color: rgba(255, 255, 255, 0.78); transition-property: right; transition-duration: 0.1s; transition-delay: 0.5s;"/>
+            <ui:VisualElement name="BossBarHP" style="flex-grow: 1; position: absolute; top: 0; left: 0; right: 10%; bottom: 0; background-color: rgb(255, 36, 57);"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:Label text="PERFECT " name="JudgementLabel" class="judgement"/>
+    <ui:VisualElement name="CheckpointOutline" picking-mode="Ignore" class="checkpoint-outline"/>
+    <ui:Label text="&#52404;&#53356;&#54252;&#51064;&#53944; &#49444;&#51221;&#46120;" name="CheckpointLabel" picking-mode="Ignore" class="checkpoint-label"/>
+    <ui:Label text="" name="PrepareCountdownLabel" enable-rich-text="false" picking-mode="Ignore" style="position: absolute; top: 50%; left: 50%; translate: -50% -50%; color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 100px;"/>
+    <ui:VisualElement name="PauseWindow" class="window" style="align-items: center; justify-content: space-between;">
+        <ui:Label text="&#51068;&#49884;&#51221;&#51648;" style="color: rgb(255, 255, 255); -unity-font-style: bold; -unity-font-definition: resource(&quot;TextCore Assets/Paperlogy SDF&quot;); font-size: 30px; margin-bottom: 30px; -unity-text-align: upper-center;"/>
+        <ui:VisualElement style="flex-grow: 1; flex-shrink: 0; align-items: center; width: 350px;">
+            <ui:VisualElement name="" style="flex-grow: 0; flex-direction: row; flex-shrink: 0; width: 100%; justify-content: space-between;">
+                <ui:Label text="&#54540;&#47112;&#51060; &#49884;&#44036;" style="color: rgb(255, 255, 255); font-size: 20px; -unity-font-style: bold;"/>
+                <ui:Label text="00:35 / 02:31" name="PauseWindowCurTimeLabel" style="color: rgb(255, 255, 255); font-size: 20px;"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="" style="flex-grow: 0; flex-direction: row; flex-shrink: 0; width: 100%; justify-content: space-between;">
+                <ui:Label text="&#51652;&#54665;&#46020;" style="color: rgb(255, 255, 255); font-size: 20px; -unity-font-style: bold;"/>
+                <ui:Label text="24.13%" name="PauseWindowProgressLabel" style="color: rgb(255, 255, 255); font-size: 20px;"/>
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 0; flex-direction: row; flex-shrink: 0; width: 100%; justify-content: space-between;">
+                <ui:Label text="&#51221;&#54869;&#46020;" style="color: rgb(255, 255, 255); font-size: 20px; -unity-font-style: bold;"/>
+                <ui:Label text="98.78%" name="PauseWindowAccuracyLabel" style="color: rgb(255, 255, 255); font-size: 20px;"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="" style="flex-grow: 0; flex-shrink: 0;">
+            <ui:Button text="&#44172;&#51076;&#51004;&#47196; &#46028;&#50500;&#44032;&#44592;" name="PlayBtn" class="button" style="width: 500px; height: 50px; margin-top: 10px;"/>
+            <ui:Button text="&#47112;&#48296; &#50640;&#46356;&#53552; &#50676;&#44592;" name="LevelEditorBtn" class="button" style="width: 500px; height: 50px; margin-top: 10px;"/>
+            <ui:Button text="&#53440;&#51060;&#53952;&#47196; &#46028;&#50500;&#44032;&#44592;" name="GoToTitleBtn" class="button" style="width: 500px; height: 50px; margin-top: 5px;"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="ClearWindow" class="window" style="align-items: center; justify-content: space-between; display: flex; height: 550px;">
+        <ui:Label text="CLEAR" style="color: rgb(255, 255, 255); -unity-font-style: bold; -unity-font-definition: resource(&quot;TextCore Assets/Paperlogy SDF&quot;); font-size: 70px; margin-bottom: 30px; -unity-text-align: upper-center;"/>
+        <ui:VisualElement style="flex-grow: 1; flex-shrink: 0; align-items: center; width: 350px; justify-content: center;">
+            <ui:VisualElement name="" style="flex-grow: 0; flex-direction: row; flex-shrink: 0; width: 100%; justify-content: space-between;">
+                <ui:Label text="&#54540;&#47112;&#51060; &#49884;&#44036;" style="color: rgb(255, 255, 255); font-size: 25px; -unity-font-style: bold;"/>
+                <ui:Label text="02:31" name="ClearWindowPlayTimeLabel" style="color: rgb(255, 255, 255); font-size: 25px;"/>
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 0; flex-direction: row; flex-shrink: 0; width: 100%; justify-content: space-between;">
+                <ui:Label text="&#51221;&#54869;&#46020;" style="color: rgb(255, 255, 255); font-size: 25px; -unity-font-style: bold;"/>
+                <ui:Label text="98.78%" name="ClearWindowAccuracyLabel" style="color: rgb(255, 255, 255); font-size: 25px;"/>
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 0; flex-direction: row; flex-shrink: 0; width: 100%; justify-content: space-between;">
+                <ui:Label text="&#52404;&#53356;&#54252;&#51064;&#53944; &#51060;&#50857;" style="color: rgb(255, 255, 255); font-size: 25px; -unity-font-style: bold;"/>
+                <ui:Label text="5&#48264;" name="CheckpointUseCountLabel" style="color: rgb(255, 255, 255); font-size: 25px;"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="StarContainer" style="flex-grow: 1; flex-direction: row; flex-shrink: 0; width: 100%; justify-content: center; margin-top: 20px; align-items: flex-start;">
+            <ui:Image source="project://database/Assets/03.Graphics/UI/GameView/Star_Filled_Perfect.png?fileID=2800000&amp;guid=e24fd796b40ce424c8bdbe18f4bf1dc1&amp;type=3#Star_Filled_Perfect" name="Image" style="width: 80px; height: 80px;"/>
+            <ui:Image source="project://database/Assets/03.Graphics/UI/GameView/Star_Filled_Normal.png?fileID=2800000&amp;guid=ca8b970a780fafa4782d4eb986219efc&amp;type=3#Star_Filled_Normal" name="Image" style="width: 80px; height: 80px;"/>
+            <ui:Image source="project://database/Assets/03.Graphics/UI/GameView/Star_Filled_Normal.png?fileID=2800000&amp;guid=ca8b970a780fafa4782d4eb986219efc&amp;type=3#Star_Filled_Normal" name="Image" style="width: 80px; height: 80px;"/>
+            <ui:Image source="project://database/Assets/03.Graphics/UI/GameView/Star_Filled_Normal.png?fileID=2800000&amp;guid=ca8b970a780fafa4782d4eb986219efc&amp;type=3#Star_Filled_Normal" name="Image" style="width: 80px; height: 80px;"/>
+            <ui:Image source="project://database/Assets/03.Graphics/UI/GameView/Star_Filled_Normal.png?fileID=2800000&amp;guid=ca8b970a780fafa4782d4eb986219efc&amp;type=3#Star_Filled_Normal" name="Image" style="width: 80px; height: 80px;"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="" style="flex-grow: 0; flex-shrink: 0;">
+            <ui:Button text="&#51116;&#46020;&#51204;" name="ClearWindowRestartBtn" class="button" style="width: 500px; height: 50px; margin-top: 10px;"/>
+            <ui:Button text="&#44228;&#49549;&#54616;&#44592;" name="ClearWindowContinueBtn" class="button" style="width: 500px; height: 50px; margin-top: 10px;"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
