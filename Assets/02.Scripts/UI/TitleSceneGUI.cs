@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using _02.Scripts.Manager;
+using _02.Scripts.ScriptableObjects;
+using _02.Scripts.Utils;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -75,6 +77,7 @@ namespace _02.Scripts.UI
         {
             loadingScreenGUI.ShowLoadingPanel(() =>
             {
+                SceneTransitionData.returnSceneName = "TitleScene";
                 SceneManager.LoadScene("CalibrationScene");
             });
         }
@@ -83,7 +86,16 @@ namespace _02.Scripts.UI
         {
             loadingScreenGUI.ShowLoadingPanel(() =>
             {
-                SceneManager.LoadScene("StageSelectScene");
+                if (PlayerPrefs.HasKey("BeforePlayed"))
+                {
+                    SceneManager.LoadScene("StageSelectScene");
+                }
+                else
+                {
+                    PlayerPrefs.SetInt("BeforePlayed", 1);
+                    SceneTransitionData.returnSceneName = "StageSelectScene";
+                    SceneManager.LoadScene("CalibrationScene");
+                }
             });
         }
 

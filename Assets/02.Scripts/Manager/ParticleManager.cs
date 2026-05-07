@@ -14,6 +14,8 @@ namespace _02.Scripts.Manager
         
         public ParticleSystem defendParticle;
         public ParticleSystem attackParticle;
+        
+        public ParticleSystem globalDustParticle;
 
         private readonly Dictionary<string, (ParticleSystem, ParticleSystem)> _noteSplitParticleMap = new();
         private readonly Dictionary<string, ParticleSystem> _noteParryParticleMap = new();

@@ -1,0 +1,1 @@
+C:\Users\whdbc\OneDrive\Desktop\Programming\Unity\BeatMonster\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\build\intermediates\cxx\RelWithDebInfo\2c2s2w1a\obj\armeabi-v7a

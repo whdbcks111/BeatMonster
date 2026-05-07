@@ -15,6 +15,12 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: c96071bb448e03a4884dd25ef44b0415
   m_SerializeEntries:
+  - m_GUID: 288bf348784aaa24ead1b0dcad8c50d2
+    m_Address: Boss/GuardianOfGrassland
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - boss
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6668d4728aa3c134ea837d140c78899c
     m_Address: Background/Sky
     m_ReadOnly: 0
@@ -29,6 +35,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 755c304f5c21d1348b1fea96635f8add
     m_Address: Music/Stage_1_1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 848aec6f1ce2f8149987ea94c3800044
+    m_Address: Music/Stage_1_3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

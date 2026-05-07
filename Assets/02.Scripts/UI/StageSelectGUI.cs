@@ -55,6 +55,7 @@ namespace _02.Scripts.UI
             _stageNameLabel.text = currentStageData.levelData.levelName;
             _musicNameLabel.text = $"{currentStageData.levelData.authorName} - {currentStageData.levelData.musicName}";
             stageSpriteRenderer.sprite = currentStageData.boss.displaySprite;
+            bossNameLabelUIDoc.gameObject.transform.localPosition = Vector2.up * (stageSpriteRenderer.sprite.bounds.size.y + 1f);
             
             _stageEnterBtn.style.display = isSelected ? DisplayStyle.Flex : DisplayStyle.None;
         }

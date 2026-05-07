@@ -756,19 +756,18 @@
   "events": [
     {
       "appearBeat": 64.0,
-      "isCheckpoint": true
-    },
-    {
-      "appearBeat": 32.0,
-      "isCheckpoint": true
+      "isCheckpoint": true,
+      "playDustParticle": true
     },
     {
       "appearBeat": 96.0,
-      "isCheckpoint": true
+      "isCheckpoint": true,
+      "playDustParticle": false
     },
     {
       "appearBeat": 128.0,
-      "isCheckpoint": true
+      "isCheckpoint": true,
+      "playDustParticle": true
     }
   ]
 }

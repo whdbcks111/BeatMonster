@@ -46,6 +46,8 @@ namespace _02.Scripts.Level
             if (!LevelManager.instance || !LevelManager.instance.isLoaded) return;
             
             var nextNote = LevelManager.instance.GetNextNote();
+
+            if (Keyboard.current.f6Key.wasPressedThisFrame) autoPlay = !autoPlay;
             
             if (autoPlay && nextNote && nextNote.note.appearBeat <= LevelManager.instance.currentBeat)
             {

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using _02.Scripts.Settings;
 using _02.Scripts.UI;
+using _02.Scripts.Utils;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
@@ -55,6 +57,7 @@ namespace _02.Scripts.Manager
                     SceneManager.LoadSceneAsync("TitleScene");
                 });
             });
+            
         }
 
         private void Start()
@@ -77,19 +80,6 @@ namespace _02.Scripts.Manager
                 SoundManager.instance.PlaySfxScheduled(beatClip, _nextDspTime, beatVolume);
             }
 
-            if (Keyboard.current.anyKey.wasPressedThisFrame && _offsets.Count < _markers.Count)
-            {
-                _markers[_offsets.Count].image = filledMarkerSprite.texture;
-                var offset = Mathf.Min(
-                    Mathf.Abs((float)(_nextDspTime - AudioSettings.dspTime)),
-                    Mathf.Abs((float)((_nextDspTime - 1 / bpm * 60) - AudioSettings.dspTime)),
-                    Mathf.Abs((float)((_nextDspTime - 2 / bpm * 60) - AudioSettings.dspTime)),
-                    Mathf.Abs((float)((_nextDspTime + 1 / bpm * 60) - AudioSettings.dspTime)),
-                    Mathf.Abs((float)((_nextDspTime + 2 / bpm * 60) - AudioSettings.dspTime))
-                );
-                _offsets.Add(offset);
-            }
-
             if (_offsets.Count > 0)
             {
                 _offsetLabel.text = $"{Mathf.RoundToInt(_offsets.Average() * 1000)}";
@@ -102,6 +92,19 @@ namespace _02.Scripts.Manager
             }
         }
 
+        private void OnAnyInput(InputValue value)
+        {
+            _markers[_offsets.Count].image = filledMarkerSprite.texture;
+            var offset = Mathf.Min(
+                Mathf.Abs((float)(_nextDspTime - AudioSettings.dspTime)),
+                Mathf.Abs((float)((_nextDspTime - 1 / bpm * 60) - AudioSettings.dspTime)),
+                Mathf.Abs((float)((_nextDspTime - 2 / bpm * 60) - AudioSettings.dspTime)),
+                Mathf.Abs((float)((_nextDspTime + 1 / bpm * 60) - AudioSettings.dspTime)),
+                Mathf.Abs((float)((_nextDspTime + 2 / bpm * 60) - AudioSettings.dspTime))
+            );
+            _offsets.Add(offset);
+        }
+
         private async UniTask OnFinish()
         {
             var settings = GameSettings.settings;
@@ -110,7 +113,14 @@ namespace _02.Scripts.Manager
             
             await UniTask.Delay(TimeSpan.FromSeconds(1f));
             await loadingScreenGUI.ShowLoadingPanelAsync();
-            await SceneManager.LoadSceneAsync("TitleScene");
+            
+            var sceneName = "TitleScene";
+            if (SceneTransitionData.returnSceneName != null)
+            {
+                sceneName = SceneTransitionData.returnSceneName;
+                SceneTransitionData.returnSceneName = null;
+            }
+            await SceneManager.LoadSceneAsync(sceneName);
         }
     }
 }

@@ -6,7 +6,7 @@
   "baseScrollSpeed": 6.0,
   "bossId": "MushBoom",
   "musicPath": "$Stage_1_2",
-  "levelName": "Test Level",
+  "levelName": "Mushroom Power",
   "musicName": "Platform Shoes",
   "authorName": "nickpanek",
   "backgroundId": "Sky",
@@ -1544,15 +1544,23 @@
   "events": [
     {
       "appearBeat": 64.0,
-      "isCheckpoint": true
+      "isCheckpoint": true,
+      "playDustParticle": true
+    },
+    {
+      "appearBeat": 96.0,
+      "isCheckpoint": null,
+      "playDustParticle": false
     },
     {
       "appearBeat": 128.0,
-      "isCheckpoint": true
+      "isCheckpoint": true,
+      "playDustParticle": true
     },
     {
       "appearBeat": 192.0,
-      "isCheckpoint": true
+      "isCheckpoint": true,
+      "playDustParticle": null
     }
   ]
 }

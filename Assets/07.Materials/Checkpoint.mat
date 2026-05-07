@@ -37,10 +37,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Radius: 0
+    - _Radius: 6987.11
     - _Strength: 113
     - _Thickness: 59
     m_Colors:
-    - _Center: {r: 114.27904, g: 626.2585, b: 10, a: 0}
+    - _Center: {r: 256.38422, g: 354.65503, b: 10, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

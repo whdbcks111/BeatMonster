@@ -247,6 +247,7 @@ namespace _02.Scripts.Manager
             _isPreparing = true;
             Seek(_checkpointData == null ? 0f : BeatToPlayTime(_checkpointData.beat), prepareTime);
             player.SetPrepareVfx(_prepareEndBeat);
+            currentLevelPlayerData.respawnCount++;
             
             if (_checkpointData != null)
             {
@@ -584,6 +585,7 @@ namespace _02.Scripts.Manager
         {
             if (currentLevel == null) return;
             e.isPerformed = true;
+            
             if (e.isCheckpoint == true)
             {
                 // 체크포인트 이벤트 실행
@@ -595,9 +597,30 @@ namespace _02.Scripts.Manager
                 {
                     var respawnCount = currentLevelPlayerData.respawnCount;
                     currentLevelPlayerData = _checkpointData.playerData.Clone();
+                    
+                    print($"{currentLevelPlayerData.respawnCount} -> {respawnCount}");
                     currentLevelPlayerData.respawnCount = respawnCount;
                     
                     _checkpointData = beforeCheckpoint;
+                });
+            }
+
+            if (e.playDustParticle == true)
+            {
+                var beforeIsPlaying = ParticleManager.instance.globalDustParticle.isPlaying;
+                ParticleManager.instance.globalDustParticle.Play();
+                e.preventActions.Add(() =>
+                {
+                    if(!beforeIsPlaying) ParticleManager.instance.globalDustParticle.Stop(); 
+                });
+            }
+            else if (e.playDustParticle == false)
+            {
+                var beforeIsPlaying = ParticleManager.instance.globalDustParticle.isPlaying;
+                ParticleManager.instance.globalDustParticle.Stop();
+                e.preventActions.Add(() =>
+                {
+                    if(beforeIsPlaying) ParticleManager.instance.globalDustParticle.Play(); 
                 });
             }
         }
@@ -820,7 +843,9 @@ namespace _02.Scripts.Manager
     public class LevelEvent
     {
         public float appearBeat;
+        
         public bool? isCheckpoint;
+        public bool? playDustParticle;
 
         [NonSerialized] public bool isPerformed = false;
         [NonSerialized] public List<Action> preventActions = new();
